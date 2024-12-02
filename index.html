@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>تطبيق حجز ملعب</title>
+  <style>
+    /* الأساسيات */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Arial', sans-serif;
+      direction: rtl;
+      background-color: #f0f0f5;
+      color: #333;
+    }
+
+    header {
+      background-color: #4CAF50;
+      color: white;
+      padding: 15px;
+      text-align: center;
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    h1 {
+      font-size: 36px;
+      text-align: center;
+      margin: 15px 0;
+      color: #4CAF50;
+      font-weight: 600;
+    }
+
+    /* الشعار */
+    .logo {
+      width: 160px;
+      height: 100px;
+      background-image: url('1000067588.png'); /* استبدل الرابط هنا بصورة الشعار */
+      background-size: cover;
+      background-position: center;
+      border-radius: 50%;
+      margin: 10px auto;
+    }
+
+    /* أقسام الرئيسية */
+    .section {
+      padding: 20px;
+      text-align: center;
+    }
+
+    .card {
+      background-color: #fff;
+      margin: 10px auto;
+      padding: 20px;
+      width: 80%;
+      max-width: 400px;
+      border-radius: 10px;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      transition: transform 0.3s ease;
+      cursor: pointer;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+    }
+
+    .card h2 {
+      font-size: 20px;
+      color: #4CAF50;
+      margin-bottom: 10px;
+    }
+
+    .card p {
+      font-size: 16px;
+      color: #555;
+    }
+
+    /* زر عائم */
+    .floating-button {
+      position: fixed;
+      bottom: 20px;
+      right: 40px;
+      width: 180px;
+      height: 60px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 25px;
+      font-size: 18px;
+      font-weight: bold;
+      text-align: center;
+      line-height: 50px;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+      cursor: pointer;
+    }
+
+    /* القائمة الجانبية */
+    .menu {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 250px;
+      height: 100%;
+      background-color: #4CAF50;
+      color: white;
+      padding: 15px;
+      box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+      display: none;
+      z-index: 1000;
+      transition: transform 0.3s ease;
+    }
+
+    .menu a {
+      display: block;
+      color: white;
+      text-decoration: none;
+      margin: 10px 0;
+      font-size: 18px;
+      padding: 10px;
+      background-color: rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      text-align: center;
+    }
+
+    .menu a:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .menu-btn {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      font-size: 24px;
+      line-height: 50px;
+      text-align: center;
+      cursor: pointer;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    @media (max-width: 600px) {
+      .card {
+        width: 90%;
+        font-size: 14px;
+      }
+
+      .menu {
+        width: 80%;
+      }
+
+      .floating-button {
+        width: 100px;
+        font-size: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- رأس الصفحة -->
+  <header>تطبيق كين ماتش</header>
+
+  <!-- الشعار -->
+  <div class="logo"></div>
+
+  <!-- محتوى الصفحة -->
+  <div class="section">
+    <h1>مرحبًا بك!</h1>
+    <div class="card">
+      <h2>حجوزاتي</h2>
+      <p>عرض الحجز السابقا.</p>
+    </div>
+    <div class="card">
+      <h2>إشعارات</h2>
+      <p>تفقد التنبيهات الجديدة هنا.</p>
+    </div>
+    <!-- خانة حجز الملابس الرياضية -->
+    <div class="card" onclick="redirectToSportsBooking()">
+      <h2>حجز الملابس الرياضية</h2>
+      <p>اضغط هنا وقم بحجز الملابس المناسبة للمباريات.</p>
+    </div>
+  </div>
+
+  <!-- زر الحجز العائم -->
+  <button class="floating-button" onclick="redirectToBooking()">احجز ملعبك الآن</button>
+
+  <!-- زر القائمة -->
+  <button class="menu-btn" onclick="toggleMenu()">&#9776;</button>
+
+  <!-- القائمة الجانبية -->
+  <div class="menu" id="menu">
+    <a href="#" onclick="loginWithGoogle(); closeMenu()">تسجيل دخول باستخدام Google</a>
+    <a href="#" onclick="loginWithFacebook(); closeMenu()">تسجيل دخول باستخدام Facebook</a>
+    <a href="#" onclick="showInfo(); closeMenu()">معلومات التطبيق</a>
+  </div>
+
+  <script>
+    // فتح وإغلاق القائمة
+    function toggleMenu() {
+      const menu = document.getElementById('menu');
+      menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
+    }
+
+    // إغلاق القائمة عند الضغط على خيار داخلها
+    function closeMenu() {
+      const menu = document.getElementById('menu');
+      menu.style.display = 'none';
+    }
+
+    // توجيه إلى صفحة الحجز
+    function redirectToBooking() {
+      window.location.href = "KainMatch now.html"; // استبدل الرابط بصفحة الحجز
+    }
+
+    // توجيه إلى صفحة حجز الملابس الرياضية
+    function redirectToSportsBooking() {
+      window.location.href = "واجهة حجز الملابس.html"; // استبدل الرابط بصفحة حجز الملابس الرياضية
+    }
+
+    // تسجيل الدخول باستخدام Google
+    function loginWithGoogle() {
+      alert('تسجيل الدخول باستخدام Google');
+    }
+
+    // تسجيل الدخول باستخدام Facebook
+    function loginWithFacebook() {
+      alert('تسجيل الدخول باستخدام Facebook');
+    }
+
+    // عرض معلومات التطبيق
+    function showInfo() {
+      alert('تطبيق حجز الملاعب - الإصدار 1.0');
+    }
+
+    // إغلاق القائمة عند الضغط خارجها
+    document.addEventListener('click', function(event) {
+      const menu = document.getElementById('menu');
+      const menuBtn = document.querySelector('.menu-btn');
+      if (!menu.contains(event.target) && event.target !== menuBtn) {
+        menu.style.display = 'none';
+      }
+    });
+  </script>
+</body>
+</html>

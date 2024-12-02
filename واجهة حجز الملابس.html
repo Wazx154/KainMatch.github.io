@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>حجز الملابس الرياضية</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7fa;
+            color: #333;
+            line-height: 1.6;
+            direction: rtl;
+        }
+
+        header {
+            background: linear-gradient(to right, #4CAF50, #333);
+            color: white;
+            padding: 30px 0;
+            text-align: center;
+            border-radius: 0 0 15px 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        header .logo {
+            font-size: 32px;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .products {
+            display: flex;
+            justify-content: space-between;
+            padding: 40px 5%;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin-top: 20px;
+        }
+
+        .product-card {
+            background-color: white;
+            width: 48%;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            margin-bottom: 30px;
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .product-card img {
+            width: 100%;
+            height: auto;
+            margin-bottom: 15px;
+            border-radius: 8px;
+        }
+
+        .product-card h3 {
+            font-size: 22px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .product-card p {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: #666;
+        }
+
+        .product-card button {
+            padding: 12px 20px;
+            background-color: #00796b;
+            color: white;
+            font-size: 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: background-color 0.3s ease, transform 0.3s ease-in-out;
+        }
+
+        .product-card button:hover {
+            background-color: #004d40;
+            transform: scale(1.05);
+        }
+
+        .cart {
+            background-color: white;
+            padding: 20px;
+            margin: 40px auto;
+            max-width: 800px;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            display: none;
+        }
+
+        .cart h2 {
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+
+        .cart p {
+            font-size: 18px;
+            color: #666;
+            margin-bottom: 25px;
+        }
+
+        .cart button {
+            padding: 12px 25px;
+            background-color: #4CAF50;
+            color: white;
+            font-size: 18px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .cart button:hover {
+            background-color: #45a049;
+        }
+
+        .cart-items {
+            list-style: none;
+            padding: 0;
+            text-align: left;
+        }
+
+        .cart-items li {
+            margin: 10px 0;
+            font-size: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .cart-items button {
+            background-color: #ff4d4d;
+            color: white;
+            padding: 6px 12px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .cart-items button:hover {
+            background-color: #ff1a1a;
+        }
+
+        @media screen and (max-width: 768px) {
+            .products {
+                justify-content: center;
+            }
+
+            .product-card {
+                width: 100%;
+                margin-bottom: 20px;
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            .product-card {
+                width: 90%;
+                margin-bottom: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- رأس الصفحة -->
+    <header>
+        <div class="logo">حجز الملابس الرياضية</div>
+    </header>
+
+    <!-- عرض المنتجات -->
+    <section class="products">
+        <div class="product-card">
+            <img src="IMG-20241127-WA0006.jpg" alt="لباس كامل للعب">
+            <h3>لباس رياضي كامل للعب</h3>
+            <p>سعر: 180 ريال</p>
+            <label for="size1">القياس (تيشرت + شورت):</label>
+            <select id="size1">
+                <option value="small">S (صغير)</option>
+                <option value="medium">M (متوسط)</option>
+                <option value="large">L (كبير)</option>
+            </select>
+            <button class="add-to-cart">
+                <i class="fa fa-shopping-cart"></i> إضافة إلى السلة
+            </button>
+        </div>
+
+        <div class="product-card">
+            <img src="IMG-20241127-WA0007.jpg" alt="حذاء رياضي">
+            <h3>حذاء رياضي</h3>
+            <p>سعر: 200 ريال</p>
+            <label for="size2">القياس (بالحجم الدولي):</label>
+            <select id="size2">
+                <option value="38">EU 38 (مقاس 38)</option>
+                <option value="39">EU 39 (مقاس 39)</option>
+                <option value="40">EU 40 (مقاس 40)</option>
+                <option value="41">EU 41 (مقاس 41)</option>
+                <option value="42">EU 42 (مقاس 42)</option>
+                <option value="43">EU 43 (مقاس 43)</option>
+                <option value="44">EU 44 (مقاس 44)</option>
+            </select>
+            <button class="add-to-cart">
+                <i class="fa fa-shopping-cart"></i> إضافة إلى السلة
+            </button>
+        </div>
+    </section>
+
+    <!-- سلة المشتريات -->
+    <div class="cart" id="cart">
+        <h2>سلة المشتريات</h2>
+        <p>ليس لديك أي منتجات في السلة.</p>
+        <ul class="cart-items" id="cart-items">
+            <!-- سيتم إضافة العناصر هنا عبر JavaScript -->
+        </ul>
+        <button id="checkout-button">إتمام الدفع</button>
+    </div>
+
+    <script>
+        let cart = [];
+
+        function updateCart() {
+            const cartItems = document.getElementById('cart-items');
+            cartItems.innerHTML = '';  // تفريغ السلة من المحتويات السابقة
+            let total = 0;  // متغير لتخزين إجمالي السعر
+            cart.forEach(item => {
+                // إنشاء عنصر li جديد لكل منتج في السلة
+                const li = document.createElement('li');
+                li.innerHTML = `
+                    ${item.name} - ${item.size} - ${item.price} ريال
+                    <button onclick="removeFromCart('${item.id}')">حذف</button>
+                `;
+                cartItems.appendChild(li);  // إضافة العنصر إلى القائمة
+                total += parseFloat(item.price);  // إضافة السعر إلى الإجمالي
+            });
+
+            const cartDiv = document.getElementById('cart');
+            const cartEmptyMessage = document.querySelector('.cart p');
+            if (cart.length > 0) {
+                cartDiv.style.display = 'block';  // عرض السلة إذا كانت تحتوي على منتجات
+                cartEmptyMessage.textContent = 'إجمالي السلة: ' + total.toFixed(2) + ' ريال';
+            } else {
+                cartDiv.style.display = 'none';  // إخفاء السلة إذا كانت فارغة
+            }
+        }
+
+        function addToCart(name, size, price) {
+            const id = `${name}-${size}`;  // إنشاء معرف فريد للمنتج
+            // التحقق من وجود المنتج بالفعل في السلة
+            const existingItem = cart.find(item => item.id === id);
+            if (existingItem) {
+                existingItem.quantity += 1;  // زيادة الكمية إذا كان المنتج موجودًا بالفعل
+            } else {
+                // إضافة المنتج الجديد إلى السلة
+                cart.push({ id, name, size, price, quantity: 1 });
+            }
+            updateCart();  // تحديث عرض السلة
+        }
+
+        function removeFromCart(id) {
+            // حذف المنتج من السلة باستخدام المعرف الفريد
+            cart = cart.filter(item => item.id !== id);
+            updateCart();  // تحديث عرض السلة بعد الحذف
+        }
+
+        // إضافة حدث لكل زر "إضافة إلى السلة"
+        document.querySelectorAll('.add-to-cart').forEach(button => {
+            button.addEventListener('click', (e) => {
+                const card = e.target.closest('.product-card');
+                const name = card.querySelector('h3').textContent;
+                const size = card.querySelector('select').value;
+                const price = card.querySelector('p').textContent.split(' ')[1]; // استخراج السعر
+                addToCart(name, size, price);  // إضافة المنتج إلى السلة
+            });
+        });
+
+        document.getElementById('checkout-button').addEventListener('click', () => {
+            alert('إتمام الدفع...');  // عملية إتمام الدفع (مؤقتة في هذه الحالة)
+        });
+    </script>
+</body>
+</html>
