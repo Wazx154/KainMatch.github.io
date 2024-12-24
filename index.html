@@ -378,29 +378,98 @@
       startCountdown(newDate);
     }
 
-    window.onload = function() {
-  const bookingData = JSON.parse(localStorage.getItem('bookingData')) || {}; // استرجاع البيانات
-  const bookingInfo = document.getElementById("bookingInfo");
+        // تحميل بيانات الحجز وعرضها
+    window.onload = function () {
+      const bookingData = JSON.parse(localStorage.getItem('bookingData'));
+      const bookingInfo = document.getElementById("bookingInfo");
 
-  if (bookingData) {
-    let playersInfo = bookingData.players && bookingData.players.length > 0 ?
-      `<tr><th style="padding: 8px; border: 1px solid #ddd; text-align: right;">بطاقات اللاعبين</th><td style="padding: 8px; border: 1px solid #ddd;"><ul>${bookingData.players.map((player, index) => `<li>${index + 1}. ${player}</li>`).join('')}</ul></td></tr>` :
-      `<tr><th style="padding: 8px; border: 1px solid #ddd; text-align: right;">بطاقات اللاعبين</th><td style="padding: 8px; border: 1px solid #ddd;">غير متوفرة</td></tr>`;
+      if (bookingData) {
+        let playersInfo = '';
 
-    bookingInfo.innerHTML = `
-      <table>
-        <tr><th>الاسم</th><td>${bookingData.name || 'غير متوفر'}</td></tr>
-        <tr><th>العمر</th><td>${bookingData.age || 'غير متوفر'}</td></tr>
-        <tr><th>رقم البطاقة</th><td>${bookingData.idCard || 'غير متوفر'}</td></tr>
-        <tr><th>الحالة</th><td>${bookingData.teamStatus || 'غير متوفر'}</td></tr>
-        <tr><th>عدد الأشخاص في الفريق</th><td>${bookingData.teamSize || 'N/A'}</td></tr>
-        ${playersInfo}
-        <tr><th>تاريخ الحجز</th><td>${bookingData.date || 'غير متوفر'}</td></tr>
-        <tr><th>وقت الحجز</th><td>${bookingData.time || 'غير متوفر'}</td></tr>
-        <tr><th>الملعب</th><td>${bookingData.field || 'غير متوفر'}</td></tr>
-        <tr><th>المركز</th><td>${bookingData.position || 'غير متوفر'}</td></tr>
-      </table>
-    `;
+        if (bookingData.players && bookingData.players.length > 0) {
+          playersInfo = `
+            <tr>
+              <th style="padding: 8px; border: 1px solid #ddd; text-align: right;">بطاقات اللاعبين</th>
+              <td style="padding: 8px; border: 1px solid #ddd;">
+                <ul>
+                  ${bookingData.players.map((player, index) => `<li>${index + 1}. ${player}</li>`).join('')}
+                </ul>
+              </td>
+            </tr>
+          `;
+        } else {
+          playersInfo = `
+            <tr>
+              <th style="padding: 8px; border: 1px solid #ddd; text-align: right;">بطاقات اللاعبين</th>
+              <td style="padding: 8px; border: 1px solid #ddd;">غير متوفرة</td>
+            </tr>
+          `;
+        }
+
+        bookingInfo.innerHTML = `
+          <table>
+            <tr>
+              <th>الاسم</th>
+              <td>${bookingData.name}</td>
+            </tr>
+            <tr>
+              <th>العمر</th>
+              <td>${bookingData.age}</td>
+            </tr>
+            <tr>
+              <th>رقم البطاقة</th>
+              <td>${bookingData.idCard}</td>
+            </tr>
+            ${playersInfo}
+            <tr>
+              <th>تاريخ الحجز</th>
+              <td>${bookingData.date}</td>
+            </tr>
+            <tr>
+              <th>وقت الحجز</th>
+              <td>${bookingData.time}</td>
+            </tr>
+            <tr>
+              <th>الفريق</th>
+              <td>${bookingData.teamStatus}</td>
+            </tr>
+            <tr>
+              <th>عدد الأشخاص في الفريق</th>
+              <td>${bookingData.teamSize || 'N/A'}</td>
+            </tr>
+            <tr>
+              <th>الملعب</th>
+              <td>${bookingData.field}</td>
+            </tr>
+            <tr>
+              <th>المركز</th>
+              <td>${bookingData.position}</td>
+            </tr>
+          </table>
+        `;
+      } else {
+        bookingInfo.innerHTML = `
+          <p style="text-align: center;">لا توجد معلومات حجز حالياً.</p>
+        `;
+      }
+    };
+
+
+    // إغلاق القائمة
+    function closeMenu() {
+      const menu = document.getElementById('menu');
+      menu.style.transform = 'translateX(-100%)'; // إخفاء القائمة
+    }
+
+// تغيير حالة الزر العائم
+    function toggleBookingInfo() {
+      const bookingInfo = document.getElementById("bookingInfo");
+      if (bookingInfo.style.display === "none") {
+        bookingInfo.style.display = "block";
+      } else {
+        bookingInfo.style.display = "none";
+      }
+    }
 
     updateCountdown(bookingData.date + "T" + bookingData.time); // التحديث حسب تاريخ ووقت الحجز
   } else {
