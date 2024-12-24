@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ar">
 <head>
@@ -381,9 +382,7 @@
   const bookingData = JSON.parse(localStorage.getItem('bookingData')) || {}; // استرجاع البيانات
   const bookingInfo = document.getElementById("bookingInfo");
 
-  if (Object.keys(bookingData).length === 0) {
-    bookingInfo.innerHTML = "<p style='color: red; font-size: 18px;'>لم تحجز ملعبك اليوم.</p>"; // رسالة للمستخدم إذا لم توجد بيانات
-  } else {
+  if (bookingData) {
     let playersInfo = bookingData.players && bookingData.players.length > 0 ?
       `<tr><th style="padding: 8px; border: 1px solid #ddd; text-align: right;">بطاقات اللاعبين</th><td style="padding: 8px; border: 1px solid #ddd;"><ul>${bookingData.players.map((player, index) => `<li>${index + 1}. ${player}</li>`).join('')}</ul></td></tr>` :
       `<tr><th style="padding: 8px; border: 1px solid #ddd; text-align: right;">بطاقات اللاعبين</th><td style="padding: 8px; border: 1px solid #ddd;">غير متوفرة</td></tr>`;
@@ -402,6 +401,12 @@
         <tr><th>المركز</th><td>${bookingData.position || 'غير متوفر'}</td></tr>
       </table>
     `;
+
     updateCountdown(bookingData.date + "T" + bookingData.time); // التحديث حسب تاريخ ووقت الحجز
+  } else {
+    bookingInfo.innerHTML = "لا توجد معلومات حجوزات."; // إذا كانت البيانات غير موجودة
   }
-    }
+}
+  </script>
+</body>
+</html>
