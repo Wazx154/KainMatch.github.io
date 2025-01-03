@@ -268,63 +268,58 @@
     }
 
     function bookField() {
-      const name = document.getElementById("name").value;
-      const age = parseInt(document.getElementById("age").value, 10);
-      const idCard = document.getElementById("idCard").value;
-      const date = document.getElementById("date").value;
-      const time = document.getElementById("time").value;
-      const teamStatus = document.getElementById("teamStatus").value;
-      const teamSize = document.getElementById("teamSize") ? parseInt(document.getElementById("teamSize").value, 10) : null;
-      const field = document.getElementById("field").value;
-      const position = document.getElementById("position").value;
+  const name = document.getElementById("name").value;
+  const age = parseInt(document.getElementById("age").value, 10);
+  const idCard = document.getElementById("idCard").value;
+  const date = document.getElementById("date").value;
+  const time = document.getElementById("time").value;
+  const teamStatus = document.getElementById("teamStatus").value;
+  const teamSize = document.getElementById("teamSize") ? parseInt(document.getElementById("teamSize").value, 10) : null;
+  const field = document.getElementById("field").value;
+  const position = document.getElementById("position").value;
 
-      // التحقق من جميع الحقول
-      if (!name || !age || !idCard || !date || !time || !teamStatus || (teamStatus === "مع فريق" && !teamSize) || !field || !position) {
-        showMessage("يرجى ملء جميع الحقول بشكل صحيح.", "error");
-        return;
-      }
+  // التحقق من جميع الحقول
+  if (!name || !age || !idCard || !date || !time || !teamStatus || (teamStatus === "مع فريق" && !teamSize) || !field || !position) {
+    showMessage("يرجى ملء جميع الحقول بشكل صحيح.", "error");
+    return;
+  }
 
-      if (teamStatus === "مع فريق" && teamSize < 2) {
-        showMessage("يجب أن يكون عدد الأشخاص في الفريق بين 2 و 12.", "error");
-        return;
-      }
+  if (teamStatus === "مع فريق" && teamSize < 2) {
+    showMessage("يجب أن يكون عدد الأشخاص في الفريق بين 2 و 12.", "error");
+    return;
+  }
 
-      // جمع أرقام بطاقات الفريق (إذا كان الحجز مع فريق)
-      let teamCards = [];
-      if (teamStatus === "مع فريق") {
-        for (let i = 1; i <= teamSize; i++) {
-          const teamCard = document.getElementById(`teamCard${i}`).value;
-          if (teamCard) {
-            teamCards.push(teamCard);
-          }
-        }
-      }
+  // جمع أرقام بطاقات الفريق (إذا كان الحجز مع فريق)
+  const templateParams = {
+    name: name,
+    age: age,
+    idCard: idCard,
+    date: date,
+    time: time,
+    teamStatus: teamStatus,
+    teamSize: teamSize,
+    field: field,
+    position: position
+  };
 
-      // إعداد بيانات البريد الإلكتروني
-      const templateParams = {
-        name: name,
-        age: age,
-        idCard: idCard,
-        date: date,
-        time: time,
-        teamStatus: teamStatus,
-        teamSize: teamSize,
-        teamCards: teamCards.join(", "), // تحويل المصفوفة إلى نص
-        field: field,
-        position: position
-      };
-
-      // تحديد القالب بناءً على حالة الحجز
-      const templateID = teamStatus === "وحده" ? "template_rdl06xl" : "template_khnhk2h";
-
-      // إرسال البريد الإلكتروني
-      emailjs.send("service_gn9yb8t", templateID, templateParams)
-        .then(function(response) {
-          showMessage("تم حجز الملعب بنجاح.", "success");
-        }, function(error) {
-          showMessage("حدث خطأ أثناء إرسال البريد الإلكتروني. يرجى المحاولة مرة أخرى.", "error");
-        });
+  if (teamStatus === "مع فريق") {
+    for (let i = 1; i <= teamSize; i++) {
+      const teamCard = document.getElementById(`teamCard${i}`).value;
+      templateParams[`teamCard${i}`] = teamCard; // إضافة كل بطاقة كمفتاح منفصل
     }
+  }
+
+  // تحديد القالب بناءً على حالة الحجز
+  const templateID = teamStatus === "وحده" ? "template_rdl06xl" : "template_khnhk2h";
+
+  // إرسال البريد الإلكتروني
+  emailjs.send("service_gn9yb8t", templateID, templateParams)
+    .then(function(response) {
+      showMessage("تم حجز الملعب بنجاح", "success");
+    }, function(error) {
+      showMessage("حدث خطأ أثناء يرجى المحاولة مرة أخرى.", "error");
+    });
+}
   </script>
 </body>
 </html>
