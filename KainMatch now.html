@@ -194,7 +194,13 @@
     <div id="message"></div>
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
   <script>
+    // تهيئة EmailJS
+    (function() {
+      emailjs.init("Pw4nQhcJsLJvfqtrt");
+    })();
+
     function toggleTeamSizeField() {
       const teamStatus = document.getElementById("teamStatus").value;
       const teamSizeField = document.getElementById("teamSizeField");
@@ -204,6 +210,7 @@
         teamSizeField.style.display = "block";
       } else {
         teamSizeField.style.display = "none";
+        teamCardsField.style.display = "none";
       }
     }
 
@@ -282,10 +289,42 @@
         return;
       }
 
-      // إظهار رسالة تأكيد الحجز
-      showMessage("تم حجز الملعب بنجاح!", "success");
-    }
+      // جمع أرقام بطاقات الفريق (إذا كان الحجز مع فريق)
+      let teamCards = [];
+      if (teamStatus === "مع فريق") {
+        for (let i = 1; i <= teamSize; i++) {
+          const teamCard = document.getElementById(`teamCard${i}`).value;
+          if (teamCard) {
+            teamCards.push(teamCard);
+          }
+        }
+      }
 
+      // إعداد بيانات البريد الإلكتروني
+      const templateParams = {
+        name: name,
+        age: age,
+        idCard: idCard,
+        date: date,
+        time: time,
+        teamStatus: teamStatus,
+        teamSize: teamSize,
+        teamCards: teamCards.join(", "), // تحويل المصفوفة إلى نص
+        field: field,
+        position: position
+      };
+
+      // تحديد القالب بناءً على حالة الحجز
+      const templateID = teamStatus === "وحده" ? "template_rdl06xl" : "template_khnhk2h";
+
+      // إرسال البريد الإلكتروني
+      emailjs.send("service_gn9yb8t", templateID, templateParams)
+        .then(function(response) {
+          showMessage("تم حجز الملعب بنجاح.", "success");
+        }, function(error) {
+          showMessage("حدث خطأ أثناء إرسال البريد الإلكتروني. يرجى المحاولة مرة أخرى.", "error");
+        });
+    }
   </script>
 </body>
 </html>
