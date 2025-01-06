@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>تطبيق حجز ملعب</title>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+  <!-- إضافة مكتبة jsPDF -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <style>
     /* الأساسيات */
     * {
@@ -272,7 +274,7 @@
     <div class="card" onclick="toggleBookingInfo()">
       <h2>حجوزاتي <span class="icon">📅</span></h2>
       <div id="bookingInfo" style="display: none;">
-        <button id="downloadButton" style="display: none; margin-top: 20px; padding: 10px 20px; background-color: #4CAF50; color: white; border: none; border-radius: 5px; cursor: pointer;" onclick="downloadBooking()">تنزيل الحجز</button>
+        <button id="downloadButton" style="display: none; margin-top: 20px; padding: 10px 20px; background-color: #4CAF50; color: white; border: none; border-radius: 5px; cursor: pointer;" onclick="downloadBooking()">تنزيل الحجز (PDF)</button>
       </div>
     </div>
     <div class="card">
@@ -301,6 +303,9 @@
   <div id="countdown" style="text-align: center; font-size: 20px;"></div>
 
   <script>
+    // تهيئة jsPDF
+    const { jsPDF } = window.jspdf;
+
     function toggleMenu() {
       const menu = document.getElementById('menu');
       menu.style.transform = menu.style.transform === 'translateX(0px)' ? 'translateX(-100%)' : 'translateX(0)';
@@ -374,16 +379,26 @@
 
     function downloadBooking() {
       const bookingData = JSON.parse(localStorage.getItem('bookingData')) || {};
-      const content = `تفاصيل الحجز:\n\nالاسم: ${bookingData.name || 'غير متوفر'}\nالعمر: ${bookingData.age || 'غير متوفر'}\nرقم البطاقة: ${bookingData.idCard || 'غير متوفر'}\nالحالة: ${bookingData.teamStatus || 'غير متوفر'}\nعدد الأشخاص في الفريق: ${bookingData.teamSize || 'N/A'}\nتاريخ الحجز: ${bookingData.date || 'غير متوفر'}\nوقت الحجز: ${bookingData.time || 'غير متوفر'}\nالملعب: ${bookingData.field || 'غير متوفر'}\nالمركز: ${bookingData.position || 'غير متوفر'}`;
-      const blob = new Blob([content], { type: 'text/plain' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'تفاصيل الحجز.txt';
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
+
+      // إنشاء مستند PDF
+      const doc = new jsPDF();
+
+      // إضافة محتوى إلى PDF
+      doc.setFontSize(18);
+      doc.text("تفاصيل الحجز", 10, 10);
+      doc.setFontSize(12);
+      doc.text(`الاسم: ${bookingData.name || 'غير متوفر'}`, 10, 20);
+      doc.text(`العمر: ${bookingData.age || 'غير متوفر'}`, 10, 30);
+      doc.text(`رقم البطاقة: ${bookingData.idCard || 'غير متوفر'}`, 10, 40);
+      doc.text(`الحالة: ${bookingData.teamStatus || 'غير متوفر'}`, 10, 50);
+      doc.text(`عدد الأشخاص في الفريق: ${bookingData.teamSize || 'N/A'}`, 10, 60);
+      doc.text(`تاريخ الحجز: ${bookingData.date || 'غير متوفر'}`, 10, 70);
+      doc.text(`وقت الحجز: ${bookingData.time || 'غير متوفر'}`, 10, 80);
+      doc.text(`الملعب: ${bookingData.field || 'غير متوفر'}`, 10, 90);
+      doc.text(`المركز: ${bookingData.position || 'غير متوفر'}`, 10, 100);
+
+      // تنزيل الملف
+      doc.save('تفاصيل الحجز.pdf');
     }
 
     window.onload = function() {
@@ -412,7 +427,7 @@
             <tr><th>الملعب</th><td>${bookingData.field || 'غير متوفر'}</td></tr>
             <tr><th>المركز</th><td>${bookingData.position || 'غير متوفر'}</td></tr>
           </table>
-          <button id="downloadButton" style="margin-top: 20px; padding: 10px 20px; background-color: #4CAF50; color: white; border: none; border-radius: 5px; cursor: pointer;" onclick="downloadBooking()">تنزيل الحجز</button>
+          <button id="downloadButton" style="margin-top: 20px; padding: 10px 20px; background-color: #4CAF50; color: white; border: none; border-radius: 5px; cursor: pointer;" onclick="downloadBooking()">تنزيل الحجز (PDF)</button>
         `;
 
         if (bookingData.date && bookingData.time) {
