@@ -283,7 +283,7 @@
     </div>
   </div>
 
-  <button class="floating-button" onclick="redirectToBooking()">احجز ملعبك لأن<span class="icon">⚽</span></button>
+  <button class="floating-button" onclick="redirectToBooking()">احجز ملعبك الآن<span class="icon">⚽</span></button>
   <button class="menu-btn" onclick="toggleMenu()">&#9776;</button>
 
   <div class="menu" id="menu">
@@ -353,7 +353,8 @@
 
         if (distance < 0) {
           clearInterval(countdownInterval);
-          document.getElementById("countdown").innerHTML = "انتهى الوقت!";
+          document.getElementById("countdown").innerHTML = "انتهى وقت الحجز!";
+          document.getElementById("bookingInfo").innerHTML = "لا يوجد حجز.";
         } else {
           const days = Math.floor(distance / (1000 * 60 * 60 * 24));
           const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
