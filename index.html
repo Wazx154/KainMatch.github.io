@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ar">
 <head>
@@ -7,263 +6,261 @@
   <title>تطبيق حجز ملعب</title>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
   <style>
-  /* الأساسيات */
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-
-  body {
-    font-family: 'Cairo', sans-serif;
-    direction: rtl;
-    background: linear-gradient(to bottom, #4CAF50, #f0f0f5);
-    color: #333;
-  }
-
-  header {
-    background-color: #4CAF50;
-    color: white;
-    padding: 15px;
-    text-align: center;
-    font-size: 24px;
-    font-weight: bold;
-  }
-
-  h1 {
-    font-size: 36px;
-    text-align: center;
-    margin: 15px 0;
-    color: #4CAF50;
-    font-weight: 600;
-  }
-
-  .logo {
-    width: 160px;
-    height: 100px;
-    background-image: url('1000067588.png');
-    background-size: cover;
-    background-position: center;
-    border-radius: 50%;
-    margin: 10px auto;
-  }
-
-  .section {
-    padding: 20px;
-    text-align: center;
-  }
-
-  .card {
-    background-color: #fff;
-    margin: 10px auto;
-    padding: 20px;
-    width: 80%;
-    max-width: 400px;
-    border-radius: 10px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    transition: transform 0.3s ease;
-    cursor: pointer;
-  }
-
-  .card:hover {
-    transform: translateY(-5px);
-  }
-
-  .card h2 {
-    font-size: 20px;
-    color: #4CAF50;
-    margin-bottom: 10px;
-  }
-
-  .card p {
-    font-size: 16px;
-    color: #555;
-  }
-
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-    font-size: 16px;
-  }
-
-  th,
-  td {
-    padding: 10px;
-    border: 1px solid #ddd;
-    text-align: right;
-    color: #333;
-  }
-
-  th {
-    background-color: #4CAF50;
-    color: white;
-    font-weight: bold;
-  }
-
-  td {
-    background-color: #f9f9f9;
-  }
-
-  .floating-button {
-    position: fixed;
-    bottom: 20px;
-    right: 30px;
-    width: 180px;
-    height: 80px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 35px;
-    font-size: 18px;
-    font-weight: bold;
-    text-align: center;
-    line-height: 50px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-    cursor: pointer;
-    animation: bounce 1s infinite; /* إضافة التأثير المتكرر */
-  }
-
-  /* إضافة الحركة */
-  @keyframes bounce {
-    0% {
-      transform: translateY(0);
+    /* الأساسيات */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
     }
-    30% {
-      transform: translateY(-10px); /* قفزة صغيرة إلى الأعلى */
+
+    body {
+      font-family: 'Cairo', sans-serif;
+      direction: rtl;
+      background: linear-gradient(to bottom, #4CAF50, #f0f0f5);
+      color: #333;
     }
-    50% {
-      transform: translateY(0);
+
+    header {
+      background-color: #4CAF50;
+      color: white;
+      padding: 15px;
+      text-align: center;
+      font-size: 24px;
+      font-weight: bold;
     }
-    70% {
-      transform: translateY(-5px); /* قفزة أصغر */
+
+    h1 {
+      font-size: 36px;
+      text-align: center;
+      margin: 15px 0;
+      color: #4CAF50;
+      font-weight: 600;
     }
-    100% {
-      transform: translateY(0);
+
+    .logo {
+      width: 160px;
+      height: 100px;
+      background-image: url('1000067588.png');
+      background-size: cover;
+      background-position: center;
+      border-radius: 50%;
+      margin: 10px auto;
     }
-  }
 
-  .menu {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 250px;
-    height: 100%;
-    background-color: #4CAF50;
-    color: white;
-    padding: 15px;
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
-    transform: translateX(-100%);
-    transition: transform 0.3s ease;
-    z-index: 1000;
-  }
+    .section {
+      padding: 20px;
+      text-align: center;
+    }
 
-  .menu a {
-    display: block;
-    color: white;
-    text-decoration: none;
-    margin: 10px 0;
-    font-size: 18px;
-    padding: 10px;
-    background-color: rgba(255, 255, 255, 0.1);
-    border-radius: 8px;
-    text-align: center;
-  }
-
-  .menu a:hover {
-    background-color: rgba(255, 255, 255, 0.2);
-  }
-
-  .menu-btn {
-    position: fixed;
-    top: 20px;
-    left: 20px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    font-size: 24px;
-    line-height: 50px;
-    text-align: center;
-    cursor: pointer;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-  }
-
-  .info-box {
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 10px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-    margin-top: 20px;
-    text-align: center;
-    transition: transform 0.3s ease-in-out;
-    max-width: 90%;
-    margin: 50px auto;
-    background: rgba(255, 255, 255, 0.9);
-  }
-
-  .info-box h3 {
-    color: #4CAF50;
-    font-size: 22px;
-    margin-bottom: 15px;
-    font-weight: 600;
-  }
-
-  .info-box p {
-    font-size: 18px;
-    color: #666;
-    line-height: 1.5;
-    margin-bottom: 15px;
-  }
-
-  .info-box.active {
-    transform: scale(1.05);
-  }
-
-  .toast {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: #4CAF50;
-    color: white;
-    padding: 20px 30px;
-    border-radius: 10px;
-    font-size: 18px;
-    text-align: center;
-    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
-    z-index: 1000;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.5s ease, visibility 0.5s ease;
-  }
-
-  .toast.show {
-    opacity: 1;
-    visibility: visible;
-  }
-
-  @media (max-width: 600px) {
     .card {
-      width: 90%;
-      font-size: 14px;
+      background-color: #fff;
+      margin: 10px auto;
+      padding: 20px;
+      width: 80%;
+      max-width: 400px;
+      border-radius: 10px;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      transition: transform 0.3s ease;
+      cursor: pointer;
     }
 
-    .menu {
-      width: 80%;
+    .card:hover {
+      transform: translateY(-5px);
+    }
+
+    .card h2 {
+      font-size: 20px;
+      color: #4CAF50;
+      margin-bottom: 10px;
+    }
+
+    .card p {
+      font-size: 16px;
+      color: #555;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      font-size: 16px;
+    }
+
+    th,
+    td {
+      padding: 10px;
+      border: 1px solid #ddd;
+      text-align: right;
+      color: #333;
+    }
+
+    th {
+      background-color: #4CAF50;
+      color: white;
+      font-weight: bold;
+    }
+
+    td {
+      background-color: #f9f9f9;
     }
 
     .floating-button {
-      width: 100px;
-      font-size: 14px;
+      position: fixed;
+      bottom: 20px;
+      right: 30px;
+      width: 180px;
+      height: 80px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 35px;
+      font-size: 18px;
+      font-weight: bold;
+      text-align: center;
+      line-height: 50px;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+      cursor: pointer;
+      animation: bounce 1s infinite;
     }
-  }
-</style>
-</head>
 
+    @keyframes bounce {
+      0% {
+        transform: translateY(0);
+      }
+      30% {
+        transform: translateY(-10px);
+      }
+      50% {
+        transform: translateY(0);
+      }
+      70% {
+        transform: translateY(-5px);
+      }
+      100% {
+        transform: translateY(0);
+      }
+    }
+
+    .menu {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 250px;
+      height: 100%;
+      background-color: #4CAF50;
+      color: white;
+      padding: 15px;
+      box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+      transform: translateX(-100%);
+      transition: transform 0.3s ease;
+      z-index: 1000;
+    }
+
+    .menu a {
+      display: block;
+      color: white;
+      text-decoration: none;
+      margin: 10px 0;
+      font-size: 18px;
+      padding: 10px;
+      background-color: rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      text-align: center;
+    }
+
+    .menu a:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .menu-btn {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      font-size: 24px;
+      line-height: 50px;
+      text-align: center;
+      cursor: pointer;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .info-box {
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+      margin-top: 20px;
+      text-align: center;
+      transition: transform 0.3s ease-in-out;
+      max-width: 90%;
+      margin: 50px auto;
+      background: rgba(255, 255, 255, 0.9);
+    }
+
+    .info-box h3 {
+      color: #4CAF50;
+      font-size: 22px;
+      margin-bottom: 15px;
+      font-weight: 600;
+    }
+
+    .info-box p {
+      font-size: 18px;
+      color: #666;
+      line-height: 1.5;
+      margin-bottom: 15px;
+    }
+
+    .info-box.active {
+      transform: scale(1.05);
+    }
+
+    .toast {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: #4CAF50;
+      color: white;
+      padding: 20px 30px;
+      border-radius: 10px;
+      font-size: 18px;
+      text-align: center;
+      box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+      z-index: 1000;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.5s ease, visibility 0.5s ease;
+    }
+
+    .toast.show {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    @media (max-width: 600px) {
+      .card {
+        width: 90%;
+        font-size: 14px;
+      }
+
+      .menu {
+        width: 80%;
+      }
+
+      .floating-button {
+        width: 100px;
+        font-size: 14px;
+      }
+    }
+  </style>
+</head>
 <body>
   <header>تطبيق كين ماتش</header>
   <div class="logo"></div>
@@ -298,12 +295,6 @@
     تطبيق حجز الملاعب - الإصدار 1.0<br>
     يوفر لك هذا التطبيق تجربة حجز الملاعب الرياضية بكل سهولة!
   </div>
-
-  <script>
-    // بقية الكود هنا كما هو
-  </script>
-</body>
-</html>
 
   <div id="countdown" style="text-align: center; font-size: 20px;"></div>
 
@@ -379,34 +370,39 @@
     }
 
     window.onload = function() {
-  const bookingData = JSON.parse(localStorage.getItem('bookingData')) || {}; // استرجاع البيانات
-  const bookingInfo = document.getElementById("bookingInfo");
+      const bookingData = JSON.parse(localStorage.getItem('bookingData')) || {};
+      const bookingInfo = document.getElementById("bookingInfo");
 
-  if (bookingData) {
-    let playersInfo = bookingData.players && bookingData.players.length > 0 ?
-      `<tr><th style="padding: 8px; border: 1px solid #ddd; text-align: right;">بطاقات اللاعبين</th><td style="padding: 8px; border: 1px solid #ddd;"><ul>${bookingData.players.map((player, index) => `<li>${index + 1}. ${player}</li>`).join('')}</ul></td></tr>` :
-      `<tr><th style="padding: 8px; border: 1px solid #ddd; text-align: right;">بطاقات اللاعبين</th><td style="padding: 8px; border: 1px solid #ddd;">غير متوفرة</td></tr>`;
+      if (bookingData && Object.keys(bookingData).length > 0) {
+        let playersInfo = '';
+        if (bookingData.teamCards && bookingData.teamCards.length > 0) {
+          playersInfo = bookingData.teamCards.map((card, index) => `<li>${index + 1}. ${card}</li>`).join('');
+        } else {
+          playersInfo = '<li>لا توجد بطاقات لاعبين.</li>';
+        }
 
-    bookingInfo.innerHTML = `
-      <table>
-        <tr><th>الاسم</th><td>${bookingData.name || 'غير متوفر'}</td></tr>
-        <tr><th>العمر</th><td>${bookingData.age || 'غير متوفر'}</td></tr>
-        <tr><th>رقم البطاقة</th><td>${bookingData.idCard || 'غير متوفر'}</td></tr>
-        <tr><th>الحالة</th><td>${bookingData.teamStatus || 'غير متوفر'}</td></tr>
-        <tr><th>عدد الأشخاص في الفريق</th><td>${bookingData.teamSize || 'N/A'}</td></tr>
-        ${playersInfo}
-        <tr><th>تاريخ الحجز</th><td>${bookingData.date || 'غير متوفر'}</td></tr>
-        <tr><th>وقت الحجز</th><td>${bookingData.time || 'غير متوفر'}</td></tr>
-        <tr><th>الملعب</th><td>${bookingData.field || 'غير متوفر'}</td></tr>
-        <tr><th>المركز</th><td>${bookingData.position || 'غير متوفر'}</td></tr>
-      </table>
-    `;
+        bookingInfo.innerHTML = `
+          <table>
+            <tr><th>الاسم</th><td>${bookingData.name || 'غير متوفر'}</td></tr>
+            <tr><th>العمر</th><td>${bookingData.age || 'غير متوفر'}</td></tr>
+            <tr><th>رقم البطاقة</th><td>${bookingData.idCard || 'غير متوفر'}</td></tr>
+            <tr><th>الحالة</th><td>${bookingData.teamStatus || 'غير متوفر'}</td></tr>
+            <tr><th>عدد الأشخاص في الفريق</th><td>${bookingData.teamSize || 'N/A'}</td></tr>
+            <tr><th>بطاقات اللاعبين</th><td><ul>${playersInfo}</ul></td></tr>
+            <tr><th>تاريخ الحجز</th><td>${bookingData.date || 'غير متوفر'}</td></tr>
+            <tr><th>وقت الحجز</th><td>${bookingData.time || 'غير متوفر'}</td></tr>
+            <tr><th>الملعب</th><td>${bookingData.field || 'غير متوفر'}</td></tr>
+            <tr><th>المركز</th><td>${bookingData.position || 'غير متوفر'}</td></tr>
+          </table>
+        `;
 
-    updateCountdown(bookingData.date + "T" + bookingData.time); // التحديث حسب تاريخ ووقت الحجز
-  } else {
-    bookingInfo.innerHTML = "لا توجد معلومات حجوزات."; // إذا كانت البيانات غير موجودة
-  }
-}
+        if (bookingData.date && bookingData.time) {
+          updateCountdown(bookingData.date + "T" + bookingData.time);
+        }
+      } else {
+        bookingInfo.innerHTML = "لا توجد معلومات حجوزات.";
+      }
+    };
   </script>
 </body>
 </html>
