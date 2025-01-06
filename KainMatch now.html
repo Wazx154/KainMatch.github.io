@@ -270,6 +270,14 @@
     function validateTime(date, time) {
       const now = new Date();
       const selectedDateTime = new Date(`${date}T${time}`);
+      const selectedHour = selectedDateTime.getHours();
+
+      // التحقق من أن الوقت بين 8 صباحًا و10 مساءً
+      if (selectedHour < 8 || selectedHour >= 22) {
+        return false;
+      }
+
+      // التحقق من أن الوقت في المستقبل
       return selectedDateTime > now;
     }
 
@@ -297,7 +305,7 @@
 
       // التحقق من الوقت
       if (!validateTime(date, time)) {
-        showMessage("الوقت المحدد غير صالح. يرجى اختيار وقت في المستقبل.", "error");
+        showMessage("الوقت المحدد غير صالح. يرجى اختيار وقت بين 8 صباحًا و10 مساءً.", "error");
         return;
       }
 
