@@ -382,34 +382,20 @@
           playersInfo = '<li>لا توجد بطاقات لاعبين.</li>';
         }
 
-        if (bookingData.bookingType === 'فردي') {
-          bookingInfo.innerHTML = `
-            <table>
-              <tr><th>الاسم</th><td>${bookingData.name || 'غير متوفر'}</td></tr>
-              <tr><th>العمر</th><td>${bookingData.age || 'غير متوفر'}</td></tr>
-              <tr><th>رقم البطاقة</th><td>${bookingData.idCard || 'غير متوفر'}</td></tr>
-              <tr><th>تاريخ الحجز</th><td>${bookingData.date || 'غير متوفر'}</td></tr>
-              <tr><th>وقت الحجز</th><td>${bookingData.time || 'غير متوفر'}</td></tr>
-              <tr><th>الملعب</th><td>${bookingData.field || 'غير متوفر'}</td></tr>
-              <tr><th>المركز</th><td>${bookingData.position || 'غير متوفر'}</td></tr>
-            </table>
-          `;
-        } else if (bookingData.bookingType === 'جماعي') {
-          bookingInfo.innerHTML = `
-            <table>
-              <tr><th>الاسم</th><td>${bookingData.name || 'غير متوفر'}</td></tr>
-              <tr><th>العمر</th><td>${bookingData.age || 'غير متوفر'}</td></tr>
-              <tr><th>رقم البطاقة</th><td>${bookingData.idCard || 'غير متوفر'}</td></tr>
-              <tr><th>الحالة</th><td>${bookingData.teamStatus || 'غير متوفر'}</td></tr>
-              <tr><th>عدد الأشخاص في الفريق</th><td>${bookingData.teamSize || 'N/A'}</td></tr>
-              <tr><th>بطاقات اللاعبين</th><td><ul>${playersInfo}</ul></td></tr>
-              <tr><th>تاريخ الحجز</th><td>${bookingData.date || 'غير متوفر'}</td></tr>
-              <tr><th>وقت الحجز</th><td>${bookingData.time || 'غير متوفر'}</td></tr>
-              <tr><th>الملعب</th><td>${bookingData.field || 'غير متوفر'}</td></tr>
-              <tr><th>المركز</th><td>${bookingData.position || 'غير متوفر'}</td></tr>
-            </table>
-          `;
-        }
+        bookingInfo.innerHTML = `
+          <table>
+            <tr><th>الاسم</th><td>${bookingData.name || 'غير متوفر'}</td></tr>
+            <tr><th>العمر</th><td>${bookingData.age || 'غير متوفر'}</td></tr>
+            <tr><th>رقم البطاقة</th><td>${bookingData.idCard || 'غير متوفر'}</td></tr>
+            <tr><th>الحالة</th><td>${bookingData.teamStatus || 'غير متوفر'}</td></tr>
+            <tr><th>عدد الأشخاص في الفريق</th><td>${bookingData.teamSize || 'N/A'}</td></tr>
+            <tr><th>بطاقات اللاعبين</th><td><ul>${playersInfo}</ul></td></tr>
+            <tr><th>تاريخ الحجز</th><td>${bookingData.date || 'غير متوفر'}</td></tr>
+            <tr><th>وقت الحجز</th><td>${bookingData.time || 'غير متوفر'}</td></tr>
+            <tr><th>الملعب</th><td>${bookingData.field || 'غير متوفر'}</td></tr>
+            <tr><th>المركز</th><td>${bookingData.position || 'غير متوفر'}</td></tr>
+          </table>
+        `;
 
         if (bookingData.date && bookingData.time) {
           updateCountdown(bookingData.date + "T" + bookingData.time);
