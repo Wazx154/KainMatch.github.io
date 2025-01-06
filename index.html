@@ -376,10 +376,17 @@
 
       if (bookingData && Object.keys(bookingData).length > 0) {
         let playersInfo = '';
-        if (bookingData.teamCards && bookingData.teamCards.length > 0) {
-          playersInfo = bookingData.teamCards.map((card, index) => `<li>${index + 1}. ${card}</li>`).join('');
-        } else {
-          playersInfo = '<li>لا توجد بطاقات لاعبين.</li>';
+        let teamSizeInfo = '';
+        let teamCardsInfo = '';
+
+        if (bookingData.teamStatus === "جماعي") {
+          if (bookingData.teamCards && bookingData.teamCards.length > 0) {
+            playersInfo = bookingData.teamCards.map((card, index) => `<li>${index + 1}. ${card}</li>`).join('');
+          } else {
+            playersInfo = '<li>لا توجد بطاقات لاعبين.</li>';
+          }
+          teamSizeInfo = `<tr><th>عدد الأشخاص في الفريق</th><td>${bookingData.teamSize || 'غير متوفر'}</td></tr>`;
+          teamCardsInfo = `<tr><th>بطاقات اللاعبين</th><td><ul>${playersInfo}</ul></td></tr>`;
         }
 
         bookingInfo.innerHTML = `
@@ -388,8 +395,8 @@
             <tr><th>العمر</th><td>${bookingData.age || 'غير متوفر'}</td></tr>
             <tr><th>رقم البطاقة</th><td>${bookingData.idCard || 'غير متوفر'}</td></tr>
             <tr><th>الحالة</th><td>${bookingData.teamStatus || 'غير متوفر'}</td></tr>
-            <tr><th>عدد الأشخاص في الفريق</th><td>${bookingData.teamSize || 'N/A'}</td></tr>
-            <tr><th>بطاقات اللاعبين</th><td><ul>${playersInfo}</ul></td></tr>
+            ${teamSizeInfo}
+            ${teamCardsInfo}
             <tr><th>تاريخ الحجز</th><td>${bookingData.date || 'غير متوفر'}</td></tr>
             <tr><th>وقت الحجز</th><td>${bookingData.time || 'غير متوفر'}</td></tr>
             <tr><th>الملعب</th><td>${bookingData.field || 'غير متوفر'}</td></tr>
