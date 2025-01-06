@@ -115,7 +115,7 @@
     }
 
     .team-cards-group div {
-      width: calc(50% - 5px); /* توزيع الحقول على نصف العرض مع ترك فراغ بينهما */
+      width: calc(50% - 5px);
     }
 
     .idCard-group input, .team-cards-group input {
@@ -260,11 +260,17 @@
       const idCardField = document.getElementById("idCardField");
 
       if (age >= 18 && age <= 70) {
-        idCardField.style.display = "block"; // إظهار خانة رقم البطاقة إذا كان العمر ضمن النطاق المسموح
+        idCardField.style.display = "block";
       } else {
-        idCardField.style.display = "none"; // إخفاء خانة البطاقة في حال كان العمر غير مناسب
+        idCardField.style.display = "none";
         showMessage("يجب أن يكون العمر 18 أو أكثر", "error");
       }
+    }
+
+    function validateTime(date, time) {
+      const now = new Date();
+      const selectedDateTime = new Date(`${date}T${time}`);
+      return selectedDateTime > now;
     }
 
     function bookField() {
@@ -284,8 +290,14 @@
         return;
       }
 
-      if (teamStatus === "مع فريق" && teamSize < 2) {
+      if (teamStatus === "مع فريق" && (teamSize < 2 || teamSize > 12)) {
         showMessage("يجب أن يكون عدد الأشخاص في الفريق بين 2 و 12.", "error");
+        return;
+      }
+
+      // التحقق من الوقت
+      if (!validateTime(date, time)) {
+        showMessage("الوقت المحدد غير صالح. يرجى اختيار وقت في المستقبل.", "error");
         return;
       }
 
@@ -321,14 +333,12 @@
       emailjs.send("service_gn9yb8t", "template_rdl06xl", bookingData)
         .then(function(response) {
           showMessage("تم حجز الملعب بنجاح", "success");
+          setTimeout(() => {
+            window.location.href = "/index.html"; // توجيه المستخدم إلى الصفحة الرئيسية
+          }, 2000);
         }, function(error) {
           showMessage("حدث خطأ أثناء يرجى المحاولة مرة أخرى.", "error");
         });
-    }
-    // إعادة توجيه المستخدم أو إجراء أي عمل آخر
-  setTimeout(() => {
-    window.location.href = "/index.html"; // توجيه المستخدم إلى الصفحة الرئيسية
-  }, 2000);
     }
   </script>
 </body>
