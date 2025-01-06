@@ -271,7 +271,9 @@
 
     <div class="card" onclick="toggleBookingInfo()">
       <h2>حجوزاتي <span class="icon">📅</span></h2>
-      <div id="bookingInfo" style="display: none;"></div>
+      <div id="bookingInfo" style="display: none;">
+        <button id="downloadButton" style="display: none; margin-top: 20px; padding: 10px 20px; background-color: #4CAF50; color: white; border: none; border-radius: 5px; cursor: pointer;" onclick="downloadBooking()">تنزيل الحجز</button>
+      </div>
     </div>
     <div class="card">
       <h2>إشعارات <span class="icon">🔔</span></h2>
@@ -370,9 +372,24 @@
       startCountdown(newDate);
     }
 
+    function downloadBooking() {
+      const bookingData = JSON.parse(localStorage.getItem('bookingData')) || {};
+      const content = `تفاصيل الحجز:\n\nالاسم: ${bookingData.name || 'غير متوفر'}\nالعمر: ${bookingData.age || 'غير متوفر'}\nرقم البطاقة: ${bookingData.idCard || 'غير متوفر'}\nالحالة: ${bookingData.teamStatus || 'غير متوفر'}\nعدد الأشخاص في الفريق: ${bookingData.teamSize || 'N/A'}\nتاريخ الحجز: ${bookingData.date || 'غير متوفر'}\nوقت الحجز: ${bookingData.time || 'غير متوفر'}\nالملعب: ${bookingData.field || 'غير متوفر'}\nالمركز: ${bookingData.position || 'غير متوفر'}`;
+      const blob = new Blob([content], { type: 'text/plain' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'تفاصيل الحجز.txt';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
     window.onload = function() {
       const bookingData = JSON.parse(localStorage.getItem('bookingData')) || {};
       const bookingInfo = document.getElementById("bookingInfo");
+      const downloadButton = document.getElementById("downloadButton");
 
       if (bookingData && Object.keys(bookingData).length > 0) {
         let playersInfo = '';
@@ -395,6 +412,7 @@
             <tr><th>الملعب</th><td>${bookingData.field || 'غير متوفر'}</td></tr>
             <tr><th>المركز</th><td>${bookingData.position || 'غير متوفر'}</td></tr>
           </table>
+          <button id="downloadButton" style="margin-top: 20px; padding: 10px 20px; background-color: #4CAF50; color: white; border: none; border-radius: 5px; cursor: pointer;" onclick="downloadBooking()">تنزيل الحجز</button>
         `;
 
         if (bookingData.date && bookingData.time) {
