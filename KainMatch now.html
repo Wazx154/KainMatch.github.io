@@ -282,82 +282,85 @@
     }
 
     function bookField() {
-  const name = document.getElementById("name").value;
-  const age = parseInt(document.getElementById("age").value, 10);
-  const idCard = document.getElementById("idCard").value;
-  const date = document.getElementById("date").value;
-  const time = document.getElementById("time").value;
-  const teamStatus = document.getElementById("teamStatus").value;
-  const teamSize = document.getElementById("teamSize") ? parseInt(document.getElementById("teamSize").value, 10) : null;
-  const field = document.getElementById("field").value;
-  const position = document.getElementById("position").value;
+      const name = document.getElementById("name").value;
+      const age = parseInt(document.getElementById("age").value, 10);
+      const idCard = document.getElementById("idCard").value;
+      const date = document.getElementById("date").value;
+      const time = document.getElementById("time").value;
+      const teamStatus = document.getElementById("teamStatus").value;
+      const teamSize = document.getElementById("teamSize") ? parseInt(document.getElementById("teamSize").value, 10) : null;
+      const field = document.getElementById("field").value;
+      const position = document.getElementById("position").value;
 
-  // التحقق من جميع الحقول
-  if (!name || !age || !idCard || !date || !time || !teamStatus || (teamStatus === "مع فريق" && !teamSize) || !field || !position) {
-    showMessage("يرجى ملء جميع الحقول بشكل صحيح.", "error");
-    return;
-  }
-
-  if (teamStatus === "مع فريق" && teamSize < 2) {
-    showMessage("يجب أن يكون عدد الأشخاص في الفريق بين 2 و 12.", "error");
-    return;
-  }
-
-  // جمع أرقام بطاقات الفريق (إذا كان الحجز مع فريق)
-  const teamCards = [];
-  if (teamStatus === "مع فريق") {
-    for (let i = 1; i <= teamSize; i++) {
-      const teamCard = document.getElementById(`teamCard${i}`).value;
-      if (!teamCard) {
-        showMessage(`يرجى إدخال رقم بطاقة الشخص ${i}`, "error");
+      // التحقق من جميع الحقول
+      if (!name || !age || !idCard || !date || !time || !teamStatus || (teamStatus === "مع فريق" && !teamSize) || !field || !position) {
+        showMessage("يرجى ملء جميع الحقول بشكل صحيح.", "error");
         return;
       }
-      teamCards.push(teamCard); // إضافة كل بطاقة إلى المصفوفة
+
+      if (teamStatus === "مع فريق" && teamSize < 2) {
+        showMessage("يجب أن يكون عدد الأشخاص في الفريق بين 2 و 12.", "error");
+        return;
+      }
+
+      // جمع أرقام بطاقات الفريق (إذا كان الحجز مع فريق)
+      const teamCards = [];
+      if (teamStatus === "مع فريق") {
+        for (let i = 1; i <= teamSize; i++) {
+          const teamCard = document.getElementById(`teamCard${i}`).value;
+          if (!teamCard) {
+            showMessage(`يرجى إدخال رقم بطاقة الشخص ${i}`, "error");
+            return;
+          }
+          teamCards.push(teamCard); // إضافة كل بطاقة إلى المصفوفة
+        }
+      }
+
+      // تخزين البيانات في كائن واحد
+      const bookingData = {
+        name: name,
+        age: age,
+        idCard: idCard,
+        date: date,
+        time: time,
+        teamStatus: teamStatus,
+        teamSize: teamSize,
+        teamCards: teamCards, // تخزين أرقام بطاقات الفريق كمصفوفة
+        field: field,
+        position: position
+      };
+
+      // تخزين البيانات في localStorage
+      localStorage.setItem('bookingData', JSON.stringify(bookingData));
+
+      // إعداد بيانات البريد الإلكتروني
+      const templateParams = {
+        name: name,
+        age: age,
+        idCard: idCard,
+        date: date,
+        time: time,
+        teamStatus: teamStatus,
+        teamSize: teamSize,
+        teamCards: teamCards.join(', '), // تحويل المصفوفة إلى نص مفصول بفواصل
+        field: field,
+        position: position
+      };
+
+      // تحديد القالب بناءً على حالة الحجز
+      const templateID = teamStatus === "وحده" ? "template_rdl06xl" : "template_khnhk2h";
+
+      // إرسال البريد الإلكتروني
+      emailjs.send("service_gn9yb8t", templateID, templateParams)
+        .then(function(response) {
+          showMessage("تم حجز الملعب بنجاح", "success");
+          setTimeout(() => {
+            window.location.href = "/index.html"; // توجيه المستخدم إلى الصفحة الرئيسية
+          }, 2000);
+        }, function(error) {
+          showMessage("حدث خطأ اعد المحاوله مره اخرى.", "error");
+        });
     }
-  }
-
-  // تخزين البيانات في كائن واحد
-  const bookingData = {
-    name: name,
-    age: age,
-    idCard: idCard,
-    date: date,
-    time: time,
-    teamStatus: teamStatus,
-    teamSize: teamSize,
-    teamCards: teamCards, // تخزين أرقام بطاقات الفريق كمصفوفة
-    field: field,
-    position: position
-  };
-
-  // تخزين البيانات في localStorage
-  localStorage.setItem('bookingData', JSON.stringify(bookingData));
-
-  // إعداد بيانات البريد الإلكتروني
-  const templateParams = {
-    name: name,
-    age: age,
-    idCard: idCard,
-    date: date,
-    time: time,
-    teamStatus: teamStatus,
-    teamSize: teamSize,
-    teamCards: teamCards.join(', '), // تحويل المصفوفة إلى نص مفصول بفواصل
-    field: field,
-    position: position
-  };
-
-  // تحديد القالب بناءً على حالة الحجز
-  const templateID = teamStatus === "وحده" ? "template_rdl06xl" : "template_khnhk2h";
-
-  // إرسال البريد الإلكتروني
-  emailjs.send("service_gn9yb8t", templateID, templateParams)
-    .then(function(response) {
-      showMessage("تم حجز الملعب بنجاح", "success");
-      setTimeout(() => {
-        window.location.href = "/index.html"; // توجيه المستخدم إلى الصفحة الرئيسية
-      }, 2000);
-    }, function(error) {
-      showMessage("حدث خطأ اعد المحاوله مره اخرى.", "error");
-    });
-}
+  </script>
+</body>
+</html>
