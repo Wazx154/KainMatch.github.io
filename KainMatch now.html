@@ -325,7 +325,8 @@
 
   // تحديد القالب بناءً على حالة الحجز
   const templateID = teamStatus === "وحده" ? "template_rdl06xl" : "template_khnhk2h";
-
+// تخزين البيانات في localStorage
+      localStorage.setItem('bookingData', JSON.stringify(bookingData));
   // إرسال البريد الإلكتروني
   emailjs.send("service_gn9yb8t", templateID, templateParams)
     .then(function(response) {
