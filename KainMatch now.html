@@ -298,7 +298,13 @@
         return;
       }
 
-      if (teamStatus === "مع فريق" && teamSize < 2) {
+      // التحقق من أن الوقت صالح
+      if (!validateTime(date, time)) {
+        showMessage("الوقت المحدد غير صالح. يجب أن يكون بين 8 صباحًا و10 مساءً وفي المستقبل.", "error");
+        return;
+      }
+
+      if (teamStatus === "مع فريق" && (teamSize < 2 || teamSize > 12)) {
         showMessage("يجب أن يكون عدد الأشخاص في الفريق بين 2 و 12.", "error");
         return;
       }
