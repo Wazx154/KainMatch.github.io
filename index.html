@@ -391,10 +391,11 @@
       doc.text(`رقم البطاقة: ${bookingData.idCard || 'غير متوفر'}`, 10, 40);
       doc.text(`الحالة: ${bookingData.teamStatus || 'غير متوفر'}`, 10, 50);
       doc.text(`عدد الأشخاص في الفريق: ${bookingData.teamSize || 'N/A'}`, 10, 60);
-      doc.text(`تاريخ الحجز: ${bookingData.date || 'غير متوفر'}`, 10, 70);
-      doc.text(`وقت الحجز: ${bookingData.time || 'غير متوفر'}`, 10, 80);
-      doc.text(`الملعب: ${bookingData.field || 'غير متوفر'}`, 10, 90);
-      doc.text(`المركز: ${bookingData.position || 'غير متوفر'}`, 10, 100);
+      doc.text(`بطاقات اللاعبين: ${bookingData.teamCards ? bookingData.teamCards.join(', ') : 'غير متوفر'}`, 10, 70);
+      doc.text(`تاريخ الحجز: ${bookingData.date || 'غير متوفر'}`, 10, 80);
+      doc.text(`وقت الحجز: ${bookingData.time || 'غير متوفر'}`, 10, 90);
+      doc.text(`الملعب: ${bookingData.field || 'غير متوفر'}`, 10, 100);
+      doc.text(`المركز: ${bookingData.position || 'غير متوفر'}`, 10, 110);
 
       doc.save('تفاصيل الحجز.pdf');
     }
