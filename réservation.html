@@ -35,16 +35,18 @@
             top: 0;
             left: 0;
             z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
 
         header {
             background: linear-gradient(to right, #00796b, #004d40);
             color: white;
-            padding: 40px 0;
+            padding: 60px 0;
             text-align: center;
             border-radius: 0 0 25px 25px;
             box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
             font-size: 30px;
+            margin-top: 40px;
         }
 
         header .logo {
@@ -54,10 +56,12 @@
         }
 
         header .logo img {
-            max-width: 150px; /* تحديد حجم الشعار */
+            max-width: 150px;
             height: auto;
             display: block;
-            margin: 0 auto 10px; /* لجعل الشعار في المنتصف */
+            margin: 0 auto 10px;
+            border-radius: 50%;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
         }
 
         .products {
@@ -118,6 +122,8 @@
             margin-bottom: 15px;
             border: 1px solid #ddd;
             width: 100%;
+            background-color: #f9f9f9;
+            color: #333;
         }
 
         .product-card button {
@@ -151,6 +157,7 @@
         .cart h2 {
             font-size: 26px;
             margin-bottom: 15px;
+            color: #00796b;
         }
 
         .cart p {
@@ -186,6 +193,10 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
 
         .cart-items button {
