@@ -133,16 +133,6 @@
       box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.3);
     }
 
-    .floating-button:active {
-      transform: scale(0.95);
-    }
-
-    @keyframes pulse {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.1); }
-      100% { transform: scale(1); }
-    }
-
     .menu {
       position: fixed;
       top: 0;
@@ -170,10 +160,6 @@
       text-align: center;
     }
 
-    .menu a:hover {
-      background-color: rgba(255, 255, 255, 0.2);
-    }
-
     .menu-btn {
       position: fixed;
       top: 20px;
@@ -189,37 +175,6 @@
       text-align: center;
       cursor: pointer;
       box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-    }
-
-    .info-box {
-      padding: 20px;
-      background-color: #fff;
-      border-radius: 10px;
-      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-      margin-top: 20px;
-      text-align: center;
-      transition: transform 0.3s ease-in-out;
-      max-width: 90%;
-      margin: 50px auto;
-      background: rgba(255, 255, 255, 0.9);
-    }
-
-    .info-box h3 {
-      color: #4CAF50;
-      font-size: 22px;
-      margin-bottom: 15px;
-      font-weight: 600;
-    }
-
-    .info-box p {
-      font-size: 18px;
-      color: #666;
-      line-height: 1.5;
-      margin-bottom: 15px;
-    }
-
-    .info-box.active {
-      transform: scale(1.05);
     }
 
     .toast {
@@ -272,9 +227,7 @@
 
     <div class="card" onclick="toggleBookingInfo()">
       <h2>حجوزاتي <span class="icon">📅</span></h2>
-      <div id="bookingInfo" style="display: none;">
-        <button id="downloadButton" style="display: none; margin-top: 20px; padding: 10px 20px; background-color: #4CAF50; color: white; border: none; border-radius: 5px; cursor: pointer;" onclick="downloadBooking()">تنزيل الحجز (PDF)</button>
-      </div>
+      <div id="bookingInfo" style="display: none;"></div>
     </div>
     <div class="card">
       <h2>إشعارات <span class="icon">🔔</span></h2>
@@ -341,6 +294,43 @@
     function toggleBookingInfo() {
       const bookingInfo = document.getElementById("bookingInfo");
       bookingInfo.style.display = bookingInfo.style.display === "none" ? "block" : "none";
+
+      if (bookingInfo.style.display === "block") {
+        displayBookingInfo();
+      }
+    }
+
+    function displayBookingInfo() {
+      const bookingData = JSON.parse(localStorage.getItem('bookingData')) || {};
+      const bookingInfo = document.getElementById("bookingInfo");
+
+      if (bookingData && Object.keys(bookingData).length > 0) {
+        let playersInfo = bookingData.teamCards && bookingData.teamCards.length > 0
+          ? bookingData.teamCards.map((card, index) => `<li>${index + 1}. ${card}</li>`).join('')
+          : '<li>لا توجد بطاقات لاعبين.</li>';
+
+        bookingInfo.innerHTML = `
+          <table>
+            <tr><th>الاسم</th><td>${bookingData.name || 'غير متوفر'}</td></tr>
+            <tr><th>العمر</th><td>${bookingData.age || 'غير متوفر'}</td></tr>
+            <tr><th>رقم البطاقة</th><td>${bookingData.idCard || 'غير متوفر'}</td></tr>
+            <tr><th>الحالة</th><td>${bookingData.teamStatus || 'غير متوفر'}</td></tr>
+            <tr><th>عدد الأشخاص في الفريق</th><td>${bookingData.teamSize || 'N/A'}</td></tr>
+            <tr><th>بطاقات اللاعبين</th><td><ul>${playersInfo}</ul></td></tr>
+            <tr><th>تاريخ الحجز</th><td>${bookingData.date || 'غير متوفر'}</td></tr>
+            <tr><th>وقت الحجز</th><td>${bookingData.time || 'غير متوفر'}</td></tr>
+            <tr><th>الملعب</th><td>${bookingData.field || 'غير متوفر'}</td></tr>
+            <tr><th>المركز</th><td>${bookingData.position || 'غير متوفر'}</td></tr>
+          </table>
+          <button id="downloadButton" style="margin-top: 20px; padding: 10px 20px; background-color: #4CAF50; color: white; border: none; border-radius: 5px; cursor: pointer;" onclick="downloadBooking()">تنزيل الحجز (PDF)</button>
+        `;
+
+        if (bookingData.date && bookingData.time) {
+          updateCountdown(bookingData.date + "T" + bookingData.time);
+        }
+      } else {
+        bookingInfo.innerHTML = "لا توجد معلومات حجوزات.";
+      }
     }
 
     function showInfo() {
@@ -380,8 +370,11 @@
 
     function downloadBooking() {
       const bookingData = JSON.parse(localStorage.getItem('bookingData')) || {};
-
       const doc = new jsPDF();
+
+      // تحميل الخط العربي
+      doc.addFont('https://fonts.googleapis.com/css2?family=Amiri&display=swap', 'Amiri', 'normal');
+      doc.setFont('Amiri');
 
       doc.setFontSize(18);
       doc.text("تفاصيل الحجز", 10, 10);
@@ -403,35 +396,9 @@
     window.onload = function() {
       const bookingData = JSON.parse(localStorage.getItem('bookingData')) || {};
       const bookingInfo = document.getElementById("bookingInfo");
-      const downloadButton = document.getElementById("downloadButton");
 
       if (bookingData && Object.keys(bookingData).length > 0) {
-        let playersInfo = '';
-        if (bookingData.teamCards && bookingData.teamCards.length > 0) {
-          playersInfo = bookingData.teamCards.map((card, index) => `<li>${index + 1}. ${card}</li>`).join('');
-        } else {
-          playersInfo = '<li>لا توجد بطاقات لاعبين.</li>';
-        }
-
-        bookingInfo.innerHTML = `
-          <table>
-            <tr><th>الاسم</th><td>${bookingData.name || 'غير متوفر'}</td></tr>
-            <tr><th>العمر</th><td>${bookingData.age || 'غير متوفر'}</td></tr>
-            <tr><th>رقم البطاقة</th><td>${bookingData.idCard || 'غير متوفر'}</td></tr>
-            <tr><th>الحالة</th><td>${bookingData.teamStatus || 'غير متوفر'}</td></tr>
-            <tr><th>عدد الأشخاص في الفريق</th><td>${bookingData.teamSize || 'N/A'}</td></tr>
-            <tr><th>بطاقات اللاعبين</th><td><ul>${playersInfo}</ul></td></tr>
-            <tr><th>تاريخ الحجز</th><td>${bookingData.date || 'غير متوفر'}</td></tr>
-            <tr><th>وقت الحجز</th><td>${bookingData.time || 'غير متوفر'}</td></tr>
-            <tr><th>الملعب</th><td>${bookingData.field || 'غير متوفر'}</td></tr>
-            <tr><th>المركز</th><td>${bookingData.position || 'غير متوفر'}</td></tr>
-          </table>
-          <button id="downloadButton" style="margin-top: 20px; padding: 10px 20px; background-color: #4CAF50; color: white; border: none; border-radius: 5px; cursor: pointer;" onclick="downloadBooking()">تنزيل الحجز (PDF)</button>
-        `;
-
-        if (bookingData.date && bookingData.time) {
-          updateCountdown(bookingData.date + "T" + bookingData.time);
-        }
+        displayBookingInfo();
       } else {
         bookingInfo.innerHTML = "لا توجد معلومات حجوزات.";
       }
