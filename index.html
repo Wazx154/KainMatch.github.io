@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>تطبيق حجز ملعب</title>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <style>
     * {
       margin: 0;
@@ -258,8 +257,6 @@
   <div id="countdown" style="text-align: center; font-size: 20px;"></div>
 
   <script>
-    const { jsPDF } = window.jspdf;
-
     function toggleMenu() {
       const menu = document.getElementById('menu');
       menu.style.transform = menu.style.transform === 'translateX(0px)' ? 'translateX(-100%)' : 'translateX(0)';
@@ -306,8 +303,8 @@
 
       if (bookingData && Object.keys(bookingData).length > 0) {
         let playersInfo = bookingData.teamCards && bookingData.teamCards.length > 0
-          ? bookingData.teamCards.map((card, index) => `<li>${index + 1}. ${card}</li>`).join('')
-          : '<li>لا توجد بطاقات لاعبين.</li>';
+          ? bookingData.teamCards.map((card, index) => `${index + 1}. ${card}`).join('\n')
+          : 'لا توجد بطاقات لاعبين.';
 
         bookingInfo.innerHTML = `
           <table>
@@ -322,7 +319,7 @@
             <tr><th>الملعب</th><td>${bookingData.field || 'غير متوفر'}</td></tr>
             <tr><th>المركز</th><td>${bookingData.position || 'غير متوفر'}</td></tr>
           </table>
-          <button id="downloadButton" style="margin-top: 20px; padding: 10px 20px; background-color: #4CAF50; color: white; border: none; border-radius: 5px; cursor: pointer;" onclick="downloadBooking()">تنزيل الحجز (PDF)</button>
+          <button id="downloadButton" style="margin-top: 20px; padding: 10px 20px; background-color: #4CAF50; color: white; border: none; border-radius: 5px; cursor: pointer;" onclick="downloadBooking()">تنزيل الحجز (ملف نصي)</button>
         `;
 
         if (bookingData.date && bookingData.time) {
@@ -370,37 +367,34 @@
 
     function downloadBooking() {
       const bookingData = JSON.parse(localStorage.getItem('bookingData')) || {};
-      const doc = new jsPDF();
+      let textContent = `تفاصيل الحجز\n\n`;
+      textContent += `الاسم: ${bookingData.name || 'غير متوفر'}\n`;
+      textContent += `العمر: ${bookingData.age || 'غير متوفر'}\n`;
+      textContent += `رقم البطاقة: ${bookingData.idCard || 'غير متوفر'}\n`;
+      textContent += `الحالة: ${bookingData.teamStatus || 'غير متوفر'}\n`;
+      textContent += `عدد الأشخاص في الفريق: ${bookingData.teamSize || 'N/A'}\n`;
 
-      // تحميل الخط العربي
-      doc.addFont('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap', 'Cairo', 'normal');
-      doc.setFont('Cairo');
-
-      doc.setFontSize(16);
-      doc.text('تفاصيل الحجز', 20, 20);
-
-      doc.setFontSize(12);
-      doc.text(`الاسم: ${bookingData.name || 'غير متوفر'}`, 20, 30);
-      doc.text(`العمر: ${bookingData.age || 'غير متوفر'}`, 20, 40);
-      doc.text(`رقم البطاقة: ${bookingData.idCard || 'غير متوفر'}`, 20, 50);
-      doc.text(`الحالة: ${bookingData.teamStatus || 'غير متوفر'}`, 20, 60);
-      doc.text(`عدد الأشخاص في الفريق: ${bookingData.teamSize || 'N/A'}`, 20, 70);
-
-      let playersInfo = '';
       if (bookingData.teamCards && bookingData.teamCards.length > 0) {
-        playersInfo = bookingData.teamCards.map((card, index) => `${index + 1}. ${card}`).join('\n');
+        textContent += `بطاقات اللاعبين:\n`;
+        bookingData.teamCards.forEach((card, index) => {
+          textContent += `${index + 1}. ${card}\n`;
+        });
       } else {
-        playersInfo = 'لا توجد بطاقات لاعبين.';
+        textContent += `بطاقات اللاعبين: لا توجد بطاقات لاعبين.\n`;
       }
-      doc.text('بطاقات اللاعبين:', 20, 80);
-      doc.text(playersInfo, 20, 90);
 
-      doc.text(`تاريخ الحجز: ${bookingData.date || 'غير متوفر'}`, 20, 120);
-      doc.text(`وقت الحجز: ${bookingData.time || 'غير متوفر'}`, 20, 130);
-      doc.text(`الملعب: ${bookingData.field || 'غير متوفر'}`, 20, 140);
-      doc.text(`المركز: ${bookingData.position || 'غير متوفر'}`, 20, 150);
+      textContent += `تاريخ الحجز: ${bookingData.date || 'غير متوفر'}\n`;
+      textContent += `وقت الحجز: ${bookingData.time || 'غير متوفر'}\n`;
+      textContent += `الملعب: ${bookingData.field || 'غير متوفر'}\n`;
+      textContent += `المركز: ${bookingData.position || 'غير متوفر'}\n`;
 
-      doc.save('تفاصيل الحجز.pdf');
+      const blob = new Blob([textContent], { type: 'text/plain' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'تفاصيل الحجز.txt';
+      a.click();
+      URL.revokeObjectURL(url);
     }
 
     function closeMenu() {
@@ -412,4 +406,3 @@
   </script>
 </body>
 </html>
-
