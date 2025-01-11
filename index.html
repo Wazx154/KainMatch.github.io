@@ -373,36 +373,43 @@
       const doc = new jsPDF();
 
       // تحميل الخط العربي
-      doc.addFont('https://fonts.googleapis.com/css2?family=Amiri&display=swap', 'Amiri', 'normal');
-      doc.setFont('Amiri');
+      doc.addFont('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap', 'Cairo', 'normal');
+      doc.setFont('Cairo');
 
-      doc.setFontSize(18);
-      doc.text("تفاصيل الحجز", 10, 10);
+      doc.setFontSize(16);
+      doc.text('تفاصيل الحجز', 20, 20);
+
       doc.setFontSize(12);
-      doc.text(`الاسم: ${bookingData.name || 'غير متوفر'}`, 10, 20);
-      doc.text(`العمر: ${bookingData.age || 'غير متوفر'}`, 10, 30);
-      doc.text(`رقم البطاقة: ${bookingData.idCard || 'غير متوفر'}`, 10, 40);
-      doc.text(`الحالة: ${bookingData.teamStatus || 'غير متوفر'}`, 10, 50);
-      doc.text(`عدد الأشخاص في الفريق: ${bookingData.teamSize || 'N/A'}`, 10, 60);
-      doc.text(`بطاقات اللاعبين: ${bookingData.teamCards ? bookingData.teamCards.join(', ') : 'غير متوفر'}`, 10, 70);
-      doc.text(`تاريخ الحجز: ${bookingData.date || 'غير متوفر'}`, 10, 80);
-      doc.text(`وقت الحجز: ${bookingData.time || 'غير متوفر'}`, 10, 90);
-      doc.text(`الملعب: ${bookingData.field || 'غير متوفر'}`, 10, 100);
-      doc.text(`المركز: ${bookingData.position || 'غير متوفر'}`, 10, 110);
+      doc.text(`الاسم: ${bookingData.name || 'غير متوفر'}`, 20, 30);
+      doc.text(`العمر: ${bookingData.age || 'غير متوفر'}`, 20, 40);
+      doc.text(`رقم البطاقة: ${bookingData.idCard || 'غير متوفر'}`, 20, 50);
+      doc.text(`الحالة: ${bookingData.teamStatus || 'غير متوفر'}`, 20, 60);
+      doc.text(`عدد الأشخاص في الفريق: ${bookingData.teamSize || 'N/A'}`, 20, 70);
+
+      let playersInfo = '';
+      if (bookingData.teamCards && bookingData.teamCards.length > 0) {
+        playersInfo = bookingData.teamCards.map((card, index) => `${index + 1}. ${card}`).join('\n');
+      } else {
+        playersInfo = 'لا توجد بطاقات لاعبين.';
+      }
+      doc.text('بطاقات اللاعبين:', 20, 80);
+      doc.text(playersInfo, 20, 90);
+
+      doc.text(`تاريخ الحجز: ${bookingData.date || 'غير متوفر'}`, 20, 120);
+      doc.text(`وقت الحجز: ${bookingData.time || 'غير متوفر'}`, 20, 130);
+      doc.text(`الملعب: ${bookingData.field || 'غير متوفر'}`, 20, 140);
+      doc.text(`المركز: ${bookingData.position || 'غير متوفر'}`, 20, 150);
 
       doc.save('تفاصيل الحجز.pdf');
     }
 
-    window.onload = function() {
-      const bookingData = JSON.parse(localStorage.getItem('bookingData')) || {};
-      const bookingInfo = document.getElementById("bookingInfo");
+    function closeMenu() {
+      toggleMenu();
+    }
 
-      if (bookingData && Object.keys(bookingData).length > 0) {
-        displayBookingInfo();
-      } else {
-        bookingInfo.innerHTML = "لا توجد معلومات حجوزات.";
-      }
-    };
+    // تحميل معلومات الحجز عند تحميل الصفحة
+    document.addEventListener('DOMContentLoaded', displayBookingInfo);
   </script>
 </body>
 </html>
+
