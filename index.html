@@ -6,7 +6,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>تطبيق حجز ملعب</title>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <style>
     /* الأساسيات */
     * {
@@ -353,15 +352,6 @@
       startCountdown(newDate);
     }
 
-    function downloadTableAsPDF() {
-      const { jsPDF } = window.jspdf;
-      const doc = new jsPDF();
-
-      const table = document.querySelector("#bookingInfo table");
-      doc.autoTable({ html: table });
-      doc.save("حجوزاتي.pdf");
-    }
-
     window.onload = function () {
       const bookingData = JSON.parse(localStorage.getItem('bookingData')) || {};
       const bookingInfo = document.getElementById("bookingInfo");
@@ -384,7 +374,6 @@
             <tr><th>الملعب</th><td>${bookingData.field || 'غير متوفر'}</td></tr>
             <tr><th>المركز</th><td>${bookingData.position || 'غير متوفر'}</td></tr>
           </table>
-          <button onclick="downloadTableAsPDF()" style="margin-top: 20px; padding: 10px 20px; background-color: #4CAF50; color: white; border: none; border-radius: 5px; cursor: pointer;">تنزيل الجدول كملف PDF</button>
         `;
 
         updateCountdown(bookingData.date + "T" + bookingData.time);
