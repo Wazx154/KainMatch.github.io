@@ -1,13 +1,11 @@
 <!DOCTYPE html>
-<html lang="ar">
-
+<html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>تطبيق حجز ملعب</title>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
   <style>
-    /* الأساسيات */
     * {
       margin: 0;
       padding: 0;
@@ -16,7 +14,6 @@
 
     body {
       font-family: 'Cairo', sans-serif;
-      direction: rtl;
       background: linear-gradient(to bottom, #4CAF50, #f0f0f5);
       color: #333;
     }
@@ -41,7 +38,7 @@
     .logo {
       width: 160px;
       height: 100px;
-      background-image: url('1000067588.png'); /* استبدل الرابط هنا بصورة الشعار */
+      background-image: url('1000067588.png');
       background-size: cover;
       background-position: center;
       border-radius: 50%;
@@ -88,8 +85,7 @@
       font-size: 16px;
     }
 
-    th,
-    td {
+    th, td {
       padding: 10px;
       border: 1px solid #ddd;
       text-align: right;
@@ -108,20 +104,32 @@
 
     .floating-button {
       position: fixed;
-      bottom: 20px;
-      right: 40px;
+      bottom: 30px;
+      right: 30px;
       width: 180px;
       height: 60px;
       background-color: #4CAF50;
       color: white;
       border: none;
-      border-radius: 25px;
+      border-radius: 30px;
       font-size: 18px;
       font-weight: bold;
       text-align: center;
-      line-height: 50px;
-      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+      line-height: 60px;
+      box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
       cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      animation: pulse 1.5s infinite;
+    }
+
+    .floating-button:hover {
+      background-color: #45a049;
+      transform: scale(1.05);
+      box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.3);
     }
 
     .menu {
@@ -151,10 +159,6 @@
       text-align: center;
     }
 
-    .menu a:hover {
-      background-color: rgba(255, 255, 255, 0.2);
-    }
-
     .menu-btn {
       position: fixed;
       top: 20px;
@@ -170,37 +174,6 @@
       text-align: center;
       cursor: pointer;
       box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-    }
-
-    .info-box {
-      padding: 20px;
-      background-color: #fff;
-      border-radius: 10px;
-      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-      margin-top: 20px;
-      text-align: center;
-      transition: transform 0.3s ease-in-out;
-      max-width: 90%;
-      margin: 50px auto;
-      background: rgba(255, 255, 255, 0.9);
-    }
-
-    .info-box h3 {
-      color: #4CAF50;
-      font-size: 22px;
-      margin-bottom: 15px;
-      font-weight: 600;
-    }
-
-    .info-box p {
-      font-size: 18px;
-      color: #666;
-      line-height: 1.5;
-      margin-bottom: 15px;
-    }
-
-    .info-box.active {
-      transform: scale(1.05);
     }
 
     .toast {
@@ -237,13 +210,12 @@
       }
 
       .floating-button {
-        width: 100px;
-        font-size: 14px;
+        width: 140px;
+        font-size: 16px;
       }
     }
   </style>
 </head>
-
 <body>
   <header>تطبيق كين ماتش</header>
   <div class="logo"></div>
@@ -253,25 +225,28 @@
     <p style="font-size: 18px; color: #666;">نحن هنا لتوفير أفضل تجربة لك في حجز الملاعب الرياضية في أي وقت وبسهولة.</p>
 
     <div class="card" onclick="toggleBookingInfo()">
-      <h2>حجوزاتي</h2>
+      <h2>حجوزاتي <span class="icon">📅</span></h2>
       <div id="bookingInfo" style="display: none;"></div>
     </div>
     <div class="card">
-      <h2>إشعارات</h2>
+      <h2>إشعارات <span class="icon">🔔</span></h2>
       <p>تفقد التنبيهات الجديدة حول مواعيد الحجز والتحديثات.</p>
     </div>
     <div class="card" onclick="redirectToSportsBooking()">
-      <h2>شراء الملابس الرياضية</h2>
+      <h2>شراء الملابس الرياضية <span class="icon">👕</span></h2>
       <p>اضغط هنا لشراء الملابس الرياضية المناسبة لمبارياتك القادمة.</p>
     </div>
   </div>
 
-  <button class="floating-button" onclick="redirectToBooking()">احجز ملعبك الآن</button>
+  <button class="floating-button" onclick="redirectToBooking()">
+    <span class="icon">⚽</span>
+    احجز ملعبك الآن
+  </button>
   <button class="menu-btn" onclick="toggleMenu()">&#9776;</button>
 
   <div class="menu" id="menu">
-    <a href="#" onclick="showPersonalInfo(); closeMenu()">إدخال المعلومات الشخصية</a>
-    <a href="#" onclick="showInfo(); closeMenu()">معلومات التطبيق</a>
+    <a href="#" onclick="showPersonalInfo(); closeMenu()">إدخال المعلومات الشخصية <span class="icon">📝</span></a>
+    <a href="#" onclick="showInfo(); closeMenu()">معلومات التطبيق <span class="icon">ℹ️</span></a>
   </div>
 
   <div id="toast" class="toast">
@@ -316,6 +291,43 @@
     function toggleBookingInfo() {
       const bookingInfo = document.getElementById("bookingInfo");
       bookingInfo.style.display = bookingInfo.style.display === "none" ? "block" : "none";
+
+      if (bookingInfo.style.display === "block") {
+        displayBookingInfo();
+      }
+    }
+
+    function displayBookingInfo() {
+      const bookingData = JSON.parse(localStorage.getItem('bookingData')) || {};
+      const bookingInfo = document.getElementById("bookingInfo");
+
+      if (bookingData && Object.keys(bookingData).length > 0) {
+        let playersInfo = bookingData.teamCards && bookingData.teamCards.length > 0
+          ? bookingData.teamCards.map((card, index) => `${index + 1}. ${card}`).join('\n')
+          : 'لا توجد بطاقات لاعبين.';
+
+        bookingInfo.innerHTML = `
+          <table>
+            <tr><th>الاسم</th><td>${bookingData.name || 'غير متوفر'}</td></tr>
+            <tr><th>العمر</th><td>${bookingData.age || 'غير متوفر'}</td></tr>
+            <tr><th>رقم البطاقة</th><td>${bookingData.idCard || 'غير متوفر'}</td></tr>
+            <tr><th>الحالة</th><td>${bookingData.teamStatus || 'غير متوفر'}</td></tr>
+            <tr><th>عدد الأشخاص في الفريق</th><td>${bookingData.teamSize || 'N/A'}</td></tr>
+            <tr><th>بطاقات اللاعبين</th><td><ul>${playersInfo}</ul></td></tr>
+            <tr><th>تاريخ الحجز</th><td>${bookingData.date || 'غير متوفر'}</td></tr>
+            <tr><th>وقت الحجز</th><td>${bookingData.time || 'غير متوفر'}</td></tr>
+            <tr><th>الملعب</th><td>${bookingData.field || 'غير متوفر'}</td></tr>
+            <tr><th>المركز</th><td>${bookingData.position || 'غير متوفر'}</td></tr>
+          </table>
+          <button id="downloadButton" style="margin-top: 20px; padding: 10px 20px; background-color: #4CAF50; color: white; border: none; border-radius: 5px; cursor: pointer;" onclick="downloadBooking()">تنزيل الحجز (ملف نصي)</button>
+        `;
+
+        if (bookingData.date && bookingData.time) {
+          updateCountdown(bookingData.date + "T" + bookingData.time);
+        }
+      } else {
+        bookingInfo.innerHTML = "لا توجد معلومات حجوزات.";
+      }
     }
 
     function showInfo() {
@@ -336,7 +348,8 @@
 
         if (distance < 0) {
           clearInterval(countdownInterval);
-          document.getElementById("countdown").innerHTML = "انتهى الوقت!";
+          document.getElementById("countdown").innerHTML = "انتهى وقت الحجز!";
+          document.getElementById("bookingInfo").innerHTML = "لا يوجد حجز.";
         } else {
           const days = Math.floor(distance / (1000 * 60 * 60 * 24));
           const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
@@ -352,35 +365,44 @@
       startCountdown(newDate);
     }
 
-    window.onload = function () {
+    function downloadBooking() {
       const bookingData = JSON.parse(localStorage.getItem('bookingData')) || {};
-      const bookingInfo = document.getElementById("bookingInfo");
+      let textContent = `تفاصيل الحجز\n\n`;
+      textContent += `الاسم: ${bookingData.name || 'غير متوفر'}\n`;
+      textContent += `العمر: ${bookingData.age || 'غير متوفر'}\n`;
+      textContent += `رقم البطاقة: ${bookingData.idCard || 'غير متوفر'}\n`;
+      textContent += `الحالة: ${bookingData.teamStatus || 'غير متوفر'}\n`;
+      textContent += `عدد الأشخاص في الفريق: ${bookingData.teamSize || 'N/A'}\n`;
 
-      if (bookingData) {
-        let playersInfo = bookingData.players && bookingData.players.length > 0 ?
-          `<tr><th style="padding: 8px; border: 1px solid #ddd; text-align: right;">بطاقات اللاعبين</th><td style="padding: 8px; border: 1px solid #ddd;"><ul>${bookingData.players.map((player, index) => `<li>${index + 1}. ${player}</li>`).join('')}</ul></td></tr>` :
-          `<tr><th style="padding: 8px; border: 1px solid #ddd; text-align: right;">بطاقات اللاعبين</th><td style="padding: 8px; border: 1px solid #ddd;">غير متوفرة</td></tr>`;
-
-        bookingInfo.innerHTML = `
-          <table>
-            <tr><th>الاسم</th><td>${bookingData.name || 'غير متوفر'}</td></tr>
-            <tr><th>العمر</th><td>${bookingData.age || 'غير متوفر'}</td></tr>
-            <tr><th>رقم البطاقة</th><td>${bookingData.idCard || 'غير متوفر'}</td></tr>
-            <tr><th>الحالة</th><td>${bookingData.teamStatus || 'غير متوفر'}</td></tr>
-            <tr><th>عدد الأشخاص في الفريق</th><td>${bookingData.teamSize || 'N/A'}</td></tr>
-            ${playersInfo}
-            <tr><th>تاريخ الحجز</th><td>${bookingData.date || 'غير متوفر'}</td></tr>
-            <tr><th>وقت الحجز</th><td>${bookingData.time || 'غير متوفر'}</td></tr>
-            <tr><th>الملعب</th><td>${bookingData.field || 'غير متوفر'}</td></tr>
-            <tr><th>المركز</th><td>${bookingData.position || 'غير متوفر'}</td></tr>
-          </table>
-        `;
-
-        updateCountdown(bookingData.date + "T" + bookingData.time);
+      if (bookingData.teamCards && bookingData.teamCards.length > 0) {
+        textContent += `بطاقات اللاعبين:\n`;
+        bookingData.teamCards.forEach((card, index) => {
+          textContent += `${index + 1}. ${card}\n`;
+        });
       } else {
-        bookingInfo.innerHTML = "لا توجد معلومات حجوزات.";
+        textContent += `بطاقات اللاعبين: لا توجد بطاقات لاعبين.\n`;
       }
+
+      textContent += `تاريخ الحجز: ${bookingData.date || 'غير متوفر'}\n`;
+      textContent += `وقت الحجز: ${bookingData.time || 'غير متوفر'}\n`;
+      textContent += `الملعب: ${bookingData.field || 'غير متوفر'}\n`;
+      textContent += `المركز: ${bookingData.position || 'غير متوفر'}\n`;
+
+      const blob = new Blob([textContent], { type: 'text/plain' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'تفاصيل الحجز.txt';
+      a.click();
+      URL.revokeObjectURL(url);
     }
+
+    function closeMenu() {
+      toggleMenu();
+    }
+
+    // تحميل معلومات الحجز عند تحميل الصفحة
+    document.addEventListener('DOMContentLoaded', displayBookingInfo);
   </script>
 </body>
 </html>
