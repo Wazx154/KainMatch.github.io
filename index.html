@@ -283,6 +283,25 @@ h1 {
       .icon {
         margin-left: 5px;
     }
+
+    .download-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .download-button:hover {
+      background-color: #45a049;
+    }
   </style>
 </head>
 <body>
@@ -366,103 +385,128 @@ h1 {
     }
 
     function displayBookingInfo() {
-          const bookingData = JSON.parse(localStorage.getItem('bookingData')) || {};
-          const bookingInfo = document.getElementById("bookingInfo");
-          
-          if (bookingData && Object.keys(bookingData).length > 0) {
-              let playersList = '';
+      const bookingData = JSON.parse(localStorage.getItem('bookingData')) || {};
+      const bookingInfo = document.getElementById("bookingInfo");
+      let playersList = '';
+
+      if (bookingData && Object.keys(bookingData).length > 0) {
               if (bookingData.teamCards && bookingData.teamCards.length > 0) {
-                  playersList = `<div class="player-cards-list"><ul>${bookingData.teamCards.map((card, index) => `<li>${index + 1}. ${card}</li>`).join('')}</ul></div>`;
+                playersList = `<div class="player-cards-list"><ul>${bookingData.teamCards.map((card, index) => `<li>${index + 1}. ${card}</li>`).join('')}</ul></div>`;
               } else {
-                  playersList = '<p>لا توجد بطاقات لاعبين.</p>';
+                playersList = '<p>لا توجد بطاقات لاعبين.</p>';
               }
 
-            bookingInfo.innerHTML = `
-              <table>
-                  <tr><th>الاسم</th><td>${bookingData.name || 'غير متوفر'}</td></tr>
-                  <tr><th>العمر</th><td>${bookingData.age || 'غير متوفر'}</td></tr>
-                  <tr><th>رقم البطاقة</th><td>${bookingData.idCard || 'غير متوفر'}</td></tr>
-                  <tr><th>الحالة</th><td>${bookingData.teamStatus || 'غير متوفر'}</td></tr>
-                  <tr><th>عدد الأشخاص في الفريق</th><td>${bookingData.teamSize || 'N/A'}</td></tr>
-                  <tr><th>بطاقات اللاعبين</th><td>${playersList}</td></tr>
-                  <tr><th>تاريخ الحجز</th><td>${bookingData.date || 'غير متوفر'}</td></tr>
-                  <tr><th>وقت الحجز</th><td>${bookingData.time || 'غير متوفر'}</td></tr>
-                  <tr><th>الملعب</th><td>${bookingData.field || 'غير متوفر'}</td></tr>
-                  <tr><th>المركز</th><td>${bookingData.position || 'غير متوفر'}</td></tr>
-                </table>
-                <button id="downloadButton" style="margin-top: 20px; padding: 10px 20px; background-color: #4CAF50; color: white; border: none; border-radius: 5px; cursor: pointer;" onclick="downloadBooking()">تنزيل الحجز </button>
-              `;
+          bookingInfo.innerHTML = `
+          <table>
+              <tr><th>الاسم</th><td>${bookingData.name || 'غير متوفر'}</td></tr>
+              <tr><th>العمر</th><td>${bookingData.age || 'غير متوفر'}</td></tr>
+              <tr><th>رقم البطاقة</th><td>${bookingData.idCard || 'غير متوفر'}</td></tr>
+              <tr><th>الحالة</th><td>${bookingData.teamStatus || 'غير متوفر'}</td></tr>
+              <tr><th>عدد الأشخاص في الفريق</th><td>${bookingData.teamSize || 'N/A'}</td></tr>
+              <tr><th>بطاقات اللاعبين</th><td>${playersList}</td></tr>
+              <tr><th>تاريخ الحجز</th><td>${bookingData.date || 'غير متوفر'}</td></tr>
+              <tr><th>وقت الحجز</th><td>${bookingData.time || 'غير متوفر'}</td></tr>
+              <tr><th>الملعب</th><td>${bookingData.field || 'غير متوفر'}</td></tr>
+              <tr><th>المركز</th><td>${bookingData.position || 'غير متوفر'}</td></tr>
+            </table>
+            <button class="download-button" onclick="downloadBooking()">
+              <span class="icon">⬇️</span> تنزيل الحجز
+            </button>
+          `;
 
-              if (bookingData.date && bookingData.time) {
-                  updateCountdown(bookingData.date + "T" + bookingData.time);
-              }
-          } else {
-              bookingInfo.innerHTML = "لا توجد معلومات حجوزات.";
+          if (bookingData.date && bookingData.time) {
+              updateCountdown(bookingData.date + "T" + bookingData.time);
           }
-      }
+        } else {
+            bookingInfo.innerHTML = "لا توجد معلومات حجوزات.";
+        }
+    }
+
     function showInfo() {
       const toast = document.getElementById('toast');
       toast.classList.add('show');
       setTimeout(() => toast.classList.remove('show'), 2000);
     }
 
-    let countdownInterval;
+     let countdownInterval;
 
-    function startCountdown(date) {
-      clearInterval(countdownInterval);
-      const countDownDate = new Date(date).getTime();
-      
-      countdownInterval = setInterval(function () {
-        const now = new Date().getTime();
-        const distance = countDownDate - now;
-
-        if (distance < 0) {
+      function startCountdown(date) {
           clearInterval(countdownInterval);
-          document.getElementById("countdown").innerHTML = "انتهى وقت الحجز!";
-          document.getElementById("bookingInfo").innerHTML = "لا يوجد حجز.";
-        } else {
-          const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-          const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-          const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-          const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+          const countDownDate = new Date(date).getTime();
 
-          document.getElementById("countdown").innerHTML = `${days} يوم ${hours} ساعة ${minutes} دقيقة ${seconds} ثانية`;
-        }
-      }, 1000);
-    }
+          countdownInterval = setInterval(function () {
+              const now = new Date().getTime();
+              const distance = countDownDate - now;
 
-    function updateCountdown(newDate) {
-      startCountdown(newDate);
-    }
+              if (distance < 0) {
+                  clearInterval(countdownInterval);
+                  document.getElementById("countdown").innerHTML = "انتهى وقت الحجز!";
+                  document.getElementById("bookingInfo").innerHTML = "لا يوجد حجز.";
+                  return;
+              } else {
+                  const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                  const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                  const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                  const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                  document.getElementById("countdown").innerHTML = `${days} يوم ${hours} ساعة ${minutes} دقيقة ${seconds} ثانية`;
+              }
+          }, 1000);
+      }
+
+      function updateCountdown(newDate) {
+          startCountdown(newDate);
+      }
+
 
     function downloadBooking() {
       const bookingData = JSON.parse(localStorage.getItem('bookingData')) || {};
-      let textContent = `تفاصيل الحجز\n\n`;
-      textContent += `الاسم: ${bookingData.name || 'غير متوفر'}\n`;
-      textContent += `العمر: ${bookingData.age || 'غير متوفر'}\n`;
-      textContent += `رقم البطاقة: ${bookingData.idCard || 'غير متوفر'}\n`;
-      textContent += `الحالة: ${bookingData.teamStatus || 'غير متوفر'}\n`;
-      textContent += `عدد الأشخاص في الفريق: ${bookingData.teamSize || 'N/A'}\n`;
+      let tableRows = '';
+        
+       tableRows += `<tr><th>الاسم</th><td>${bookingData.name || 'غير متوفر'}</td></tr>`;
+       tableRows += `<tr><th>العمر</th><td>${bookingData.age || 'غير متوفر'}</td></tr>`;
+       tableRows += `<tr><th>رقم البطاقة</th><td>${bookingData.idCard || 'غير متوفر'}</td></tr>`;
+       tableRows += `<tr><th>الحالة</th><td>${bookingData.teamStatus || 'غير متوفر'}</td></tr>`;
+       tableRows += `<tr><th>عدد الأشخاص في الفريق</th><td>${bookingData.teamSize || 'N/A'}</td></tr>`;
+            
+        if (bookingData.teamCards && bookingData.teamCards.length > 0) {
+            let playerListItems = bookingData.teamCards.map((card, index) => `<li>${index + 1}. ${card}</li>`).join('');
+            tableRows += `<tr><th>بطاقات اللاعبين</th><td><ul style="list-style-type: none; padding: 0;">${playerListItems}</ul></td></tr>`;
+        } else {
+            tableRows += `<tr><th>بطاقات اللاعبين</th><td>لا توجد بطاقات لاعبين.</td></tr>`;
+        }
+            
+       tableRows += `<tr><th>تاريخ الحجز</th><td>${bookingData.date || 'غير متوفر'}</td></tr>`;
+       tableRows += `<tr><th>وقت الحجز</th><td>${bookingData.time || 'غير متوفر'}</td></tr>`;
+       tableRows += `<tr><th>الملعب</th><td>${bookingData.field || 'غير متوفر'}</td></tr>`;
+       tableRows += `<tr><th>المركز</th><td>${bookingData.position || 'غير متوفر'}</td></tr>`;
 
-      if (bookingData.teamCards && bookingData.teamCards.length > 0) {
-        textContent += `بطاقات اللاعبين:\n`;
-        bookingData.teamCards.forEach((card, index) => {
-          textContent += `${index + 1}. ${card}\n`;
-        });
-      } else {
-        textContent += `بطاقات اللاعبين: لا توجد بطاقات لاعبين.\n`;
-      }
+      const htmlContent = `
+          <html lang="ar" dir="rtl">
+            <head>
+              <meta charset="UTF-8">
+              <title>تفاصيل الحجز</title>
+              <style>
+                  body { font-family: 'Cairo', sans-serif; }
+                  table { width: 100%; border-collapse: collapse; }
+                  th, td { padding: 8px; border: 1px solid #ddd; text-align: right; }
+                  th { background-color: #4CAF50; color: white; }
+              </style>
+            </head>
+            <body>
+              <h2>تفاصيل الحجز</h2>
+              <table>
+                ${tableRows}
+              </table>
+            </body>
+          </html>
+        `;
 
-      textContent += `تاريخ الحجز: ${bookingData.date || 'غير متوفر'}\n`;
-      textContent += `وقت الحجز: ${bookingData.time || 'غير متوفر'}\n`;
-      textContent += `الملعب: ${bookingData.field || 'غير متوفر'}\n`;
-      textContent += `المركز: ${bookingData.position || 'غير متوفر'}\n`;
-
-      const blob = new Blob([textContent], { type: 'text/plain' });
+      const blob = new Blob([htmlContent], { type: 'text/html' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = 'تفاصيل الحجز.txt';
+      a.download = 'تفاصيل الحجز.html';
       a.click();
       URL.revokeObjectURL(url);
     }
