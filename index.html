@@ -6,6 +6,7 @@
   <title>تطبيق حجز ملعب</title>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
   <style>
+    /* Reset & General Styles */
     * {
       margin: 0;
       padding: 0;
@@ -16,8 +17,12 @@
       font-family: 'Cairo', sans-serif;
       background: linear-gradient(to bottom, #4CAF50, #f0f0f5);
       color: #333;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
     }
 
+    /* Header Styles */
     header {
       background-color: #4CAF50;
       color: white;
@@ -27,16 +32,9 @@
       font-weight: bold;
     }
 
-    h1 {
-      font-size: 36px;
-      text-align: center;
-      margin: 15px 0;
-      color: #4CAF50;
-      font-weight: 600;
-    }
-
+    /* Logo Styles */
     .logo {
-      width: 160px;
+      width: 100px;
       height: 100px;
       background-image: url('1000067588.png');
       background-size: cover;
@@ -45,17 +43,34 @@
       margin: 10px auto;
     }
 
+    /* Main Section Styles */
     .section {
       padding: 20px;
       text-align: center;
+      flex: 1; /* Allow section to take remaining space */
     }
 
+    .section h1 {
+      font-size: 30px;
+      text-align: center;
+      margin: 20px 0;
+      color: #4CAF50;
+      font-weight: 600;
+    }
+
+    .section p {
+      font-size: 18px;
+      color: #666;
+      margin-bottom: 20px;
+    }
+
+    /* Card Styles */
     .card {
       background-color: #fff;
-      margin: 10px auto;
+      margin: 15px auto;
       padding: 20px;
-      width: 80%;
-      max-width: 400px;
+      width: 90%;
+      max-width: 450px;
       border-radius: 10px;
       box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
       text-align: center;
@@ -68,7 +83,7 @@
     }
 
     .card h2 {
-      font-size: 20px;
+      font-size: 22px;
       color: #4CAF50;
       margin-bottom: 10px;
     }
@@ -78,6 +93,7 @@
       color: #555;
     }
 
+    /* Table Styles */
     table {
       width: 100%;
       border-collapse: collapse;
@@ -102,6 +118,7 @@
       background-color: #f9f9f9;
     }
 
+    /* Floating Button Styles */
     .floating-button {
       position: fixed;
       bottom: 30px;
@@ -132,6 +149,7 @@
       box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.3);
     }
 
+    /* Menu Styles */
     .menu {
       position: fixed;
       top: 0;
@@ -159,6 +177,7 @@
       text-align: center;
     }
 
+    /* Menu Button Styles */
     .menu-btn {
       position: fixed;
       top: 20px;
@@ -176,6 +195,7 @@
       box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
     }
 
+    /* Toast Styles */
     .toast {
       position: fixed;
       top: 50%;
@@ -199,9 +219,29 @@
       visibility: visible;
     }
 
+    /* Countdown Styles */
+    #countdown {
+        text-align: center;
+        font-size: 20px;
+        margin: 15px 0;
+    }
+      /* Responsive Styles */
+      @media (max-width: 768px) {
+        .logo {
+            width: 80px;
+            height: 80px;
+        }
+        .section h1 {
+        font-size: 28px;
+        }
+        .section p {
+        font-size: 16px;
+        }
+
+      }
     @media (max-width: 600px) {
       .card {
-        width: 90%;
+        width: 95%;
         font-size: 14px;
       }
 
@@ -214,6 +254,28 @@
         font-size: 16px;
       }
     }
+
+    /* Player Cards List Styles */
+    .player-cards-list {
+      margin-top: 10px;
+      text-align: right;
+      font-size: 16px;
+    }
+
+    .player-cards-list ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    .player-cards-list li {
+      margin-bottom: 5px;
+      background-color: #f0f0f0;
+      padding: 8px;
+      border-radius: 5px;
+    }
+      .icon {
+        margin-left: 5px;
+    }
   </style>
 </head>
 <body>
@@ -222,7 +284,7 @@
 
   <div class="section">
     <h1>مرحبًا بك في تطبيق حجز الملاعب!</h1>
-    <p style="font-size: 18px; color: #666;">نحن هنا لتوفير أفضل تجربة لك في حجز الملاعب الرياضية في أي وقت وبسهولة.</p>
+    <p>نحن هنا لتوفير أفضل تجربة لك في حجز الملاعب الرياضية في أي وقت وبسهولة.</p>
 
     <div class="card" onclick="toggleBookingInfo()">
       <h2>حجوزاتي <span class="icon">📅</span></h2>
@@ -238,11 +300,11 @@
     </div>
   </div>
 
-  <button class="floating-button" onclick="redirectToBooking()">
+    <button class="floating-button" onclick="redirectToBooking()">
     <span class="icon">⚽</span>
     احجز ملعبك الآن
   </button>
-  <button class="menu-btn" onclick="toggleMenu()">&#9776;</button>
+    <button class="menu-btn" onclick="toggleMenu()">☰</button>
 
   <div class="menu" id="menu">
     <a href="#" onclick="showPersonalInfo(); closeMenu()">إدخال المعلومات الشخصية <span class="icon">📝</span></a>
@@ -253,10 +315,9 @@
     تطبيق حجز الملاعب - الإصدار 1.0<br>
     يوفر لك هذا التطبيق تجربة حجز الملاعب الرياضية بكل سهولة!
   </div>
-
   <div id="countdown" style="text-align: center; font-size: 20px;"></div>
 
-  <script>
+    <script>
     function toggleMenu() {
       const menu = document.getElementById('menu');
       menu.style.transform = menu.style.transform === 'translateX(0px)' ? 'translateX(-100%)' : 'translateX(0)';
@@ -298,38 +359,40 @@
     }
 
     function displayBookingInfo() {
-      const bookingData = JSON.parse(localStorage.getItem('bookingData')) || {};
-      const bookingInfo = document.getElementById("bookingInfo");
+          const bookingData = JSON.parse(localStorage.getItem('bookingData')) || {};
+          const bookingInfo = document.getElementById("bookingInfo");
+          
+          if (bookingData && Object.keys(bookingData).length > 0) {
+              let playersList = '';
+              if (bookingData.teamCards && bookingData.teamCards.length > 0) {
+                  playersList = `<div class="player-cards-list"><ul>${bookingData.teamCards.map((card, index) => `<li>${index + 1}. ${card}</li>`).join('')}</ul></div>`;
+              } else {
+                  playersList = '<p>لا توجد بطاقات لاعبين.</p>';
+              }
 
-      if (bookingData && Object.keys(bookingData).length > 0) {
-        let playersInfo = bookingData.teamCards && bookingData.teamCards.length > 0
-          ? bookingData.teamCards.map((card, index) => `${index + 1}. ${card}`).join('\n')
-          : 'لا توجد بطاقات لاعبين.';
+            bookingInfo.innerHTML = `
+              <table>
+                  <tr><th>الاسم</th><td>${bookingData.name || 'غير متوفر'}</td></tr>
+                  <tr><th>العمر</th><td>${bookingData.age || 'غير متوفر'}</td></tr>
+                  <tr><th>رقم البطاقة</th><td>${bookingData.idCard || 'غير متوفر'}</td></tr>
+                  <tr><th>الحالة</th><td>${bookingData.teamStatus || 'غير متوفر'}</td></tr>
+                  <tr><th>عدد الأشخاص في الفريق</th><td>${bookingData.teamSize || 'N/A'}</td></tr>
+                  <tr><th>بطاقات اللاعبين</th><td>${playersList}</td></tr>
+                  <tr><th>تاريخ الحجز</th><td>${bookingData.date || 'غير متوفر'}</td></tr>
+                  <tr><th>وقت الحجز</th><td>${bookingData.time || 'غير متوفر'}</td></tr>
+                  <tr><th>الملعب</th><td>${bookingData.field || 'غير متوفر'}</td></tr>
+                  <tr><th>المركز</th><td>${bookingData.position || 'غير متوفر'}</td></tr>
+                </table>
+                <button id="downloadButton" style="margin-top: 20px; padding: 10px 20px; background-color: #4CAF50; color: white; border: none; border-radius: 5px; cursor: pointer;" onclick="downloadBooking()">تنزيل الحجز </button>
+              `;
 
-        bookingInfo.innerHTML = `
-          <table>
-            <tr><th>الاسم</th><td>${bookingData.name || 'غير متوفر'}</td></tr>
-            <tr><th>العمر</th><td>${bookingData.age || 'غير متوفر'}</td></tr>
-            <tr><th>رقم البطاقة</th><td>${bookingData.idCard || 'غير متوفر'}</td></tr>
-            <tr><th>الحالة</th><td>${bookingData.teamStatus || 'غير متوفر'}</td></tr>
-            <tr><th>عدد الأشخاص في الفريق</th><td>${bookingData.teamSize || 'N/A'}</td></tr>
-            <tr><th>بطاقات اللاعبين</th><td><ul>${playersInfo}</ul></td></tr>
-            <tr><th>تاريخ الحجز</th><td>${bookingData.date || 'غير متوفر'}</td></tr>
-            <tr><th>وقت الحجز</th><td>${bookingData.time || 'غير متوفر'}</td></tr>
-            <tr><th>الملعب</th><td>${bookingData.field || 'غير متوفر'}</td></tr>
-            <tr><th>المركز</th><td>${bookingData.position || 'غير متوفر'}</td></tr>
-          </table>
-          <button id="downloadButton" style="margin-top: 20px; padding: 10px 20px; background-color: #4CAF50; color: white; border: none; border-radius: 5px; cursor: pointer;" onclick="downloadBooking()">تنزيل الحجز </button>
-        `;
-
-        if (bookingData.date && bookingData.time) {
-          updateCountdown(bookingData.date + "T" + bookingData.time);
-        }
-      } else {
-        bookingInfo.innerHTML = "لا توجد معلومات حجوزات.";
+              if (bookingData.date && bookingData.time) {
+                  updateCountdown(bookingData.date + "T" + bookingData.time);
+              }
+          } else {
+              bookingInfo.innerHTML = "لا توجد معلومات حجوزات.";
+          }
       }
-    }
-
     function showInfo() {
       const toast = document.getElementById('toast');
       toast.classList.add('show');
