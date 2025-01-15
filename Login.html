@@ -156,7 +156,7 @@
     <!-- حاوية تسجيل الدخول أسفل الشعار -->
     <div class="login-container">
         <h2>تسجيل الدخول</h2>
-        <form class="login-form" action="/index.html">
+        <form class="login-form" id="loginForm">
             <div class="form-group">
                 <label for="username">اسم المستخدم</label>
                 <input type="text" id="username" name="username" placeholder="أدخل اسم المستخدم" required>
@@ -174,5 +174,27 @@
             © 2024 تطبيق كين ماتش. جميع الحقوق محفوظة.
         </div>
     </div>
+
+    <script>
+        // إضافة حدث عند إرسال النموذج
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // منع إرسال النموذج تلقائيًا
+
+            // الحصول على قيم اسم المستخدم وكلمة المرور
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            // التحقق من اسم المستخدم وكلمة المرور (هذا مثال بسيط، يجب استبداله بالتحقق الفعلي)
+            if (username === "user" && password === "pass") {
+                // تخزين حالة تسجيل الدخول في localStorage
+                localStorage.setItem('loggedIn', true);
+
+                // إعادة التوجيه إلى الصفحة الرئيسية
+                window.location.href = "index.html";
+            } else {
+                alert("اسم المستخدم أو كلمة المرور غير صحيحة!");
+            }
+        });
+    </script>
 </body>
 </html>
