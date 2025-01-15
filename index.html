@@ -32,7 +32,7 @@
       font-weight: bold;
     }
 
-h1 {
+    h1 {
       font-size: 36px;
       text-align: center;
       margin: 15px 0;
@@ -333,7 +333,6 @@ h1 {
     <button class="menu-btn" onclick="toggleMenu()">☰</button>
 
   <div class="menu" id="menu">
-    <a href="#" onclick="showPersonalInfo(); closeMenu()">إدخال المعلومات الشخصية <span class="icon">📝</span></a>
     <a href="#" onclick="showInfo(); closeMenu()">معلومات التطبيق <span class="icon">ℹ️</span></a>
   </div>
 
@@ -369,10 +368,6 @@ h1 {
 
     function redirectToSportsBooking() {
       window.location.href = "/réservation.html";
-    }
-
-    function showPersonalInfo() {
-      window.location.href = "/profile.html";
     }
 
     function toggleBookingInfo() {
