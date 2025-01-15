@@ -119,6 +119,12 @@
             border-color: #81c784;
             box-shadow: 0 0 8px rgba(129, 199, 132, 0.6);
         }
+        /* تنسيق نص الإدخال */
+        input::placeholder {
+            color: #888; /* لون نص الإدخال */
+            opacity: 1; /* تأكد من أن النص مرئي */
+            font-style: italic; /* نمط مائل للنص */
+        }
         .button {
             padding: 15px 20px;
             background-color: #388e3c;
@@ -212,8 +218,9 @@
                 <input type="text" id="name" name="name" required placeholder="الاسم الكامل">
             </div>
             <div class="form-field">
+                <label for="dob">تاريخ الميلاد:</label>
                 <i class="fas fa-calendar-alt"></i>
-                <input type="date" id="dob" name="dob" required>
+                <input type="date" id="dob" name="dob" required placeholder="تاريخ الميلاد (يوم/شهر/سنة)">
             </div>
             <div class="form-field">
                 <i class="fas fa-heart"></i>
