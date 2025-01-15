@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>تسجيل الدخول - تطبيق حجز الملاعب</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script> <!-- مكتبة لفك تشفير JWT -->
+    <script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js" defer></script>
     <style>
         /* تهيئة وتنسيقات عامة */
         * {
@@ -34,12 +34,14 @@
             border-radius: 50%;
             overflow: hidden;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            border: none; /* إزالة الحدود */
         }
 
         .logo img {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            border: none; /* إزالة الحدود من الصورة */
         }
 
         /* تنسيقات حاوية تسجيل الدخول */
