@@ -305,6 +305,13 @@
   </style>
 </head>
 <body>
+  <script>
+    // التحقق من حالة تسجيل الدخول
+    if (!localStorage.getItem('loggedIn')) {
+      window.location.href = "Login.html"; // إعادة التوجيه إلى صفحة تسجيل الدخول إذا لم يكن المستخدم مسجل الدخول
+    }
+  </script>
+
   <header>تطبيق كين ماتش</header>
   <div class="logo"></div>
 
