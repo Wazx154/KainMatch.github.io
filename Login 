@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تسجيل الدخول - تطبيق حجز الملاعب</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* تهيئة وتنسيقات عامة */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: linear-gradient(to bottom, #4CAF50, #f0f0f5);
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            text-align: center;
+        }
+
+        /* تنسيقات الشعار */
+        .logo {
+            margin-top: 20px; /* هامش أعلى للشعار */
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            overflow: hidden;
+        }
+
+        .logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* تنسيقات حاوية تسجيل الدخول */
+        .login-container {
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            width: 90%;
+            max-width: 400px;
+            margin-top: 20px; /* هامش أعلى للحاوية */
+        }
+
+        .login-container h2 {
+            font-size: 30px;
+            color: #4CAF50;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        /* تنسيقات النموذج */
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            font-size: 18px;
+            margin-bottom: 5px;
+            color: #333;
+            text-align: right;
+        }
+
+        .form-group input {
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            text-align: right;
+            width: 100%;
+            direction: rtl;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #4CAF50;
+            box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
+        }
+
+        .login-button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: background-color 0.3s ease;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .login-button:hover {
+            background-color: #45a049;
+        }
+
+        .signup-link {
+            margin-top: 20px;
+            font-size: 16px;
+            color: #555;
+        }
+
+        .signup-link a {
+            color: #4CAF50;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .signup-link a:hover {
+            text-decoration: underline;
+        }
+
+        /* تنسيقات الحقوق */
+        .copyright {
+            margin-top: 30px;
+            font-size: 14px;
+            color: #888;
+        }
+
+        /* تنسيقات الاستجابة */
+        @media (max-width: 600px) {
+            .login-container {
+                padding: 30px;
+            }
+            .login-container h2 {
+                font-size: 28px;
+            }
+            .form-group input {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- الشعار في الأعلى -->
+    <div class="logo">
+        <img src="/1000067588.png" alt="شعار التطبيق">
+    </div>
+
+    <!-- حاوية تسجيل الدخول أسفل الشعار -->
+    <div class="login-container">
+        <h2>تسجيل الدخول</h2>
+        <form class="login-form" action="/index.html">
+            <div class="form-group">
+                <label for="username">اسم المستخدم</label>
+                <input type="text" id="username" name="username" placeholder="أدخل اسم المستخدم" required>
+            </div>
+            <div class="form-group">
+                <label for="password">كلمة المرور</label>
+                <input type="password" id="password" name="password" placeholder="أدخل كلمة المرور" required>
+            </div>
+            <button type="submit" class="login-button">تسجيل الدخول</button>
+            <div class="signup-link">
+                ليس لديك حساب؟ <a href="/profile.html">إنشاء حساب</a>
+            </div>
+        </form>
+        <div class="copyright">
+            © 2024 تطبيق كين ماتش. جميع الحقوق محفوظة.
+        </div>
+    </div>
+</body>
+</html>
