@@ -336,18 +336,10 @@
         const body = document.body;
         const logoImage = document.getElementById('logoImage');
 
-        // تحقق من التفضيل المحفوظ
-        const savedTheme = localStorage.getItem('theme');
-        if (savedTheme === 'dark') {
-            body.classList.add('dark-mode');
-            logoImage.src = "/1000069661.png"; // تغيير الشعار للوضع الليلي
-        }
-
         // تبديل الوضع
         themeToggle.addEventListener('click', () => {
             body.classList.toggle('dark-mode');
             const isDarkMode = body.classList.contains('dark-mode');
-            localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
             logoImage.src = isDarkMode ? "/1000069661.png" : "/1000067588.png"; // تغيير الشعار
         });
 
