@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>تسجيل الدخول - تطبيق حجز الملاعب</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js" defer></script>
     <style>
         /* تهيئة وتنسيقات عامة */
         * {
@@ -13,7 +12,6 @@
             padding: 0;
             box-sizing: border-box;
         }
-
         body {
             font-family: 'Cairo', sans-serif;
             background: linear-gradient(to bottom, #4CAF50, #f0f0f5);
@@ -21,37 +19,47 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
             min-height: 100vh;
             text-align: center;
+            overflow: hidden; /* لمنع التمرير أثناء تحرك الشعار */
         }
 
         /* تنسيقات الشعار */
         .logo {
-            margin-bottom: 20px;
-            width: 120px;
-            height: auto; /* ارتفاع تلقائي حسب الصورة */
+            margin-top: 20px; /* هامش أعلى للشعار */
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            overflow: hidden;
+            position: absolute; /* لجعل الشعار يتحرك بشكل مستقل */
+            top: 50%; /* بداية الشعار في منتصف الصفحة */
+            left: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0; /* الشعار مخفي في البداية */
+            animation: fadeIn 2s ease-in-out forwards, moveUp 2s ease-in-out 2s forwards, returnToTop 1s ease-in-out 4s forwards;
         }
 
         .logo img {
             width: 100%;
-            height: auto; /* ارتفاع تلقائي حسب الصورة */
-            border: none; /* إزالة الحدود من الصورة */
+            height: 100%;
+            object-fit: cover;
         }
 
         /* تنسيقات حاوية تسجيل الدخول */
         .login-container {
             background-color: #fff;
-            padding: 30px;
+            padding: 40px;
             border-radius: 15px;
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
             width: 90%;
             max-width: 400px;
-            text-align: center;
+            margin-top: 200px; /* هامش أعلى للحاوية */
+            opacity: 0; /* الحاوية مخفية في البداية */
+            animation: fadeIn 1s ease-in-out 5s forwards; /* تظهر بعد تحرك الشعار */
         }
 
         .login-container h2 {
-            font-size: 28px;
+            font-size: 30px;
             color: #4CAF50;
             margin-bottom: 20px;
             font-weight: bold;
@@ -61,30 +69,31 @@
         .login-form {
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            align-items: center;
         }
 
         .form-group {
+            margin-bottom: 15px;
             width: 100%;
-            text-align: right;
+            display: flex;
+            flex-direction: column;
         }
 
         .form-group label {
-            font-size: 16px;
-            color: #333;
+            font-size: 18px;
             margin-bottom: 5px;
-            display: block;
+            color: #333;
+            text-align: right;
         }
 
         .form-group input {
-            width: 100%;
             padding: 12px;
             border: 1px solid #ddd;
             border-radius: 8px;
             font-size: 16px;
             text-align: right;
+            width: 100%;
             direction: rtl;
-            transition: border-color 0.3s ease;
         }
 
         .form-group input:focus {
@@ -97,12 +106,13 @@
             background-color: #4CAF50;
             color: white;
             border: none;
-            padding: 12px;
-            border-radius: 8px;
-            font-size: 16px;
+            padding: 15px;
+            border-radius: 10px;
             cursor: pointer;
+            font-size: 18px;
             transition: background-color 0.3s ease;
             width: 100%;
+            margin-top: 20px;
         }
 
         .login-button:hover {
@@ -110,8 +120,8 @@
         }
 
         .signup-link {
-            margin-top: 15px;
-            font-size: 14px;
+            margin-top: 20px;
+            font-size: 16px;
             color: #555;
         }
 
@@ -125,32 +135,11 @@
             text-decoration: underline;
         }
 
-        /* تنسيقات زر تسجيل الدخول باستخدام جوجل */
-        .google-signin-button {
-            background-color: #fff;
-            color: #333;
-            border: 1px solid #ddd;
-            padding: 12px;
-            border-radius: 8px;
-            font-size: 16px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            width: 100%;
-            margin-top: 15px;
-            transition: background-color 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .google-signin-button:hover {
-            background-color: #f8f8f8;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
-
-        .google-signin-button img {
-            width: 20px;
-            height: 20px;
+        /* تنسيقات الحقوق */
+        .copyright {
+            margin-top: 30px;
+            font-size: 14px;
+            color: #888;
         }
 
         /* تنسيقات رسالة الخطأ */
@@ -162,36 +151,78 @@
             margin-top: 10px;
             font-size: 14px;
             text-align: center;
-            display: none;
+            display: none; /* مخفية بشكل افتراضي */
         }
 
         .error-message.show {
-            display: block;
-        }
-
-        /* تنسيقات الحقوق */
-        .copyright {
-            margin-top: 20px;
-            font-size: 12px;
-            color: #888;
+            display: block; /* تظهر عند وجود خطأ */
         }
 
         /* تنسيقات الاستجابة */
         @media (max-width: 600px) {
             .login-container {
-                padding: 20px;
+                padding: 30px;
             }
-
             .login-container h2 {
-                font-size: 24px;
+                font-size: 28px;
             }
-
             .form-group input {
                 font-size: 14px;
             }
+        }
 
-            .google-signin-button {
-                font-size: 14px;
+        /* تنسيقات زر تسجيل الدخول باستخدام جوجل */
+        .google-signin-button {
+            background-color: #4285F4;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            margin-top: 20px;
+            transition: background-color 0.3s ease;
+        }
+
+        .google-signin-button:hover {
+            background-color: #357ABD;
+        }
+
+        .google-signin-button img {
+            width: 20px;
+            height: 20px;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes moveUp {
+            from {
+                top: 50%;
+            }
+            to {
+                top: 20px; /* الشعار يتحرك إلى الأعلى */
+            }
+        }
+
+        @keyframes returnToTop {
+            from {
+                top: 20px; /* الشعار في الأعلى */
+            }
+            to {
+                top: 20px; /* الشعار يبقى في الأعلى */
             }
         }
     </style>
@@ -202,7 +233,7 @@
         <img src="/1000067588.png" alt="شعار التطبيق">
     </div>
 
-    <!-- حاوية تسجيل الدخول -->
+    <!-- حاوية تسجيل الدخول أسفل الشعار -->
     <div class="login-container">
         <h2>تسجيل الدخول</h2>
         <form class="login-form" id="loginForm">
@@ -225,10 +256,10 @@
         </form>
 
         <!-- زر تسجيل الدخول باستخدام جوجل -->
-        <div id="googleSignInButton" class="google-signin-button">
+        <button id="googleSignInButton" class="google-signin-button">
             <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="Google Logo">
             تسجيل الدخول باستخدام جوجل
-        </div>
+        </button>
 
         <div class="copyright">
             © 2024 تطبيق كين ماتش. جميع الحقوق محفوظة.
@@ -240,36 +271,53 @@
 
     <script>
         // إضافة حدث عند إرسال النموذج
-        document.getElementById('loginForm').addEventListener('submit', function (event) {
-            event.preventDefault();
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // منع إرسال النموذج تلقائيًا
 
+            // الحصول على قيم البريد الإلكتروني وكلمة المرور
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
+
+            // استرجاع البيانات المخزنة في localStorage
             const userData = JSON.parse(localStorage.getItem('userData'));
 
+            // التحقق من البريد الإلكتروني وكلمة المرور
             if (userData && userData.email === email && userData.password === password) {
+                // تخزين حالة تسجيل الدخول في localStorage
                 localStorage.setItem('loggedIn', true);
+
+                // إعادة التوجيه إلى الصفحة الرئيسية
                 window.location.href = "index.html";
             } else {
-                document.getElementById('errorMessage').classList.add('show');
+                // عرض رسالة الخطأ
+                const errorMessage = document.getElementById('errorMessage');
+                errorMessage.classList.add('show');
             }
         });
 
         // تهيئة تسجيل الدخول باستخدام جوجل
         function handleCredentialResponse(response) {
             if (response.credential) {
-                const payload = jwt_decode(response.credential); // فك تشفير JWT
+                // فك تشفير بيانات المستخدم من JWT
+                const payload = JSON.parse(atob(response.credential.split('.')[1]));
+
+                // تخزين بيانات المستخدم في localStorage
                 const userData = {
                     name: payload.name,
                     email: payload.email,
                     picture: payload.picture
                 };
                 localStorage.setItem('userData', JSON.stringify(userData));
+
+                // تخزين حالة تسجيل الدخول في localStorage
                 localStorage.setItem('loggedIn', true);
+
+                // إعادة التوجيه إلى الصفحة الرئيسية
                 window.location.href = "index.html";
             }
         }
 
+        // تهيئة زر تسجيل الدخول باستخدام جوجل
         window.onload = function () {
             google.accounts.id.initialize({
                 client_id: '674743145268-cnflb7morj1am52k64g5coqk0hfbroro.apps.googleusercontent.com', // استبدل بمعرف العميل الخاص بك
@@ -278,7 +326,7 @@
 
             google.accounts.id.renderButton(
                 document.getElementById('googleSignInButton'),
-                { theme: 'outline', size: 'large', width: '100%' }
+                { theme: 'outline', size: 'large' } // تخصيص مظهر الزر
             );
         };
     </script>
