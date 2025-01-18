@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>تسجيل الدخول - تطبيق حجز الملاعب</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <!-- إضافة Font Awesome للأيقونات -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         /* تهيئة وتنسيقات عامة */
         * {
@@ -21,28 +23,37 @@
             align-items: center;
             min-height: 100vh;
             text-align: center;
-            overflow: hidden; /* لمنع التمرير أثناء تحرك الشعار */
+            overflow: hidden;
+            transition: background 0.5s ease, color 0.5s ease;
+        }
+
+        /* الوضع الليلي */
+        body.dark-mode {
+            background: linear-gradient(to bottom, #1e1e1e, #121212);
+            color: #ffffff;
         }
 
         /* تنسيقات الشعار */
         .logo {
-            margin-top: 20px; /* هامش أعلى للشعار */
+            margin-top: 20px;
             width: 150px;
             height: 150px;
             border-radius: 50%;
             overflow: hidden;
-            position: absolute; /* لجعل الشعار يتحرك بشكل مستقل */
-            top: 50%; /* بداية الشعار في منتصف الصفحة */
+            position: absolute;
+            top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            opacity: 0; /* الشعار مخفي في البداية */
-            animation: fadeIn 2s ease-in-out forwards, moveUp 2s ease-in-out 2s forwards, returnToTop 1s ease-in-out 4s forwards;
+            opacity: 0;
+            animation: fadeIn 2s ease-in-out forwards, moveUp 2s ease-in-out 2s forwards;
+            transition: opacity 0.5s ease;
         }
 
         .logo img {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            transition: opacity 0.5s ease;
         }
 
         /* تنسيقات حاوية تسجيل الدخول */
@@ -53,9 +64,16 @@
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
             width: 90%;
             max-width: 400px;
-            margin-top: 200px; /* هامش أعلى للحاوية */
-            opacity: 0; /* الحاوية مخفية في البداية */
-            animation: fadeIn 1s ease-in-out 5s forwards; /* تظهر بعد تحرك الشعار */
+            margin-top: 200px;
+            opacity: 0;
+            animation: fadeIn 1s ease-in-out 5s forwards;
+            transition: background-color 0.5s ease, box-shadow 0.5s ease;
+        }
+
+        body.dark-mode .login-container {
+            background-color: #2c2c2c;
+            color: #ffffff;
+            box-shadow: 0 8px 20px rgba(255, 255, 255, 0.1);
         }
 
         .login-container h2 {
@@ -63,6 +81,11 @@
             color: #4CAF50;
             margin-bottom: 20px;
             font-weight: bold;
+            transition: color 0.5s ease;
+        }
+
+        body.dark-mode .login-container h2 {
+            color: #6fbf73;
         }
 
         /* تنسيقات النموذج */
@@ -82,7 +105,7 @@
         .form-group label {
             font-size: 18px;
             margin-bottom: 5px;
-            color: #333;
+            color: inherit;
             text-align: right;
         }
 
@@ -94,6 +117,14 @@
             text-align: right;
             width: 100%;
             direction: rtl;
+            background-color: #f9f9f9;
+            transition: border-color 0.5s ease, background-color 0.5s ease;
+        }
+
+        body.dark-mode .form-group input {
+            background-color: #3a3a3a;
+            border-color: #555;
+            color: #ffffff;
         }
 
         .form-group input:focus {
@@ -110,19 +141,20 @@
             border-radius: 10px;
             cursor: pointer;
             font-size: 18px;
-            transition: background-color 0.3s ease;
+            transition: background-color 0.5s ease, transform 0.2s ease;
             width: 100%;
             margin-top: 20px;
         }
 
         .login-button:hover {
             background-color: #45a049;
+            transform: scale(1.05);
         }
 
         .signup-link {
             margin-top: 20px;
             font-size: 16px;
-            color: #555;
+            color: inherit;
         }
 
         .signup-link a {
@@ -151,24 +183,16 @@
             margin-top: 10px;
             font-size: 14px;
             text-align: center;
-            display: none; /* مخفية بشكل افتراضي */
+            display: none;
+        }
+
+        body.dark-mode .error-message {
+            background-color: #4a1c1c;
+            color: #ff6b6b;
         }
 
         .error-message.show {
-            display: block; /* تظهر عند وجود خطأ */
-        }
-
-        /* تنسيقات الاستجابة */
-        @media (max-width: 600px) {
-            .login-container {
-                padding: 30px;
-            }
-            .login-container h2 {
-                font-size: 28px;
-            }
-            .form-group input {
-                font-size: 14px;
-            }
+            display: block;
         }
 
         /* تنسيقات زر تسجيل الدخول باستخدام جوجل */
@@ -186,7 +210,7 @@
             gap: 10px;
             width: 100%;
             margin-top: 20px;
-            transition: background-color 0.3s ease;
+            transition: background-color 0.5s ease;
         }
 
         .google-signin-button:hover {
@@ -200,37 +224,71 @@
 
         /* Animations */
         @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
         @keyframes moveUp {
-            from {
-                top: 50%;
-            }
-            to {
-                top: 20px; /* الشعار يتحرك إلى الأعلى */
-            }
+            from { top: 50%; }
+            to { top: 20px; }
         }
 
-        @keyframes returnToTop {
-            from {
-                top: 20px; /* الشعار في الأعلى */
-            }
-            to {
-                top: 20px; /* الشعار يبقى في الأعلى */
-            }
+        /* زر تبديل الوضع */
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            font-size: 24px;
+            color: #FFD700; /* لون الشمس */
+            opacity: 0; /* مخفي في البداية */
+            transition: opacity 0.5s ease, color 0.5s ease;
+        }
+
+        body.dark-mode .theme-toggle {
+            color: #FFFFFF; /* لون القمر */
+        }
+
+        .theme-toggle i {
+            transition: transform 0.5s ease, opacity 0.5s ease;
+        }
+
+        .theme-toggle .fa-sun {
+            opacity: 1;
+            transform: rotate(0deg);
+        }
+
+        .theme-toggle .fa-moon {
+            opacity: 0;
+            transform: rotate(-90deg);
+            position: absolute;
+            top: 0;
+            right: 0;
+        }
+
+        body.dark-mode .theme-toggle .fa-sun {
+            opacity: 0;
+            transform: rotate(90deg);
+        }
+
+        body.dark-mode .theme-toggle .fa-moon {
+            opacity: 1;
+            transform: rotate(0deg);
         }
     </style>
 </head>
 <body>
+    <!-- زر تبديل الوضع -->
+    <button class="theme-toggle" id="themeToggle">
+        <i class="fas fa-sun"></i> <!-- أيقونة الشمس -->
+        <i class="fas fa-moon"></i> <!-- أيقونة القمر -->
+    </button>
+
     <!-- الشعار في الأعلى -->
     <div class="logo">
-        <img src="/1000067588.png" alt="شعار التطبيق">
+        <img id="logoImage" src="/1000067588.png" alt="شعار التطبيق">
     </div>
 
     <!-- حاوية تسجيل الدخول أسفل الشعار -->
@@ -243,7 +301,10 @@
             </div>
             <div class="form-group">
                 <label for="password">كلمة المرور</label>
-                <input type="password" id="password" name="password" placeholder="أدخل كلمة المرور" required>
+                <div style="position: relative;">
+                    <input type="password" id="password" name="password" placeholder="أدخل كلمة المرور" required>
+                    <span id="togglePassword" style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); cursor: pointer;">👁️</span>
+                </div>
             </div>
             <!-- رسالة الخطأ -->
             <div id="errorMessage" class="error-message">
@@ -270,26 +331,52 @@
     <script src="https://accounts.google.com/gsi/client" async defer></script>
 
     <script>
+        // إدارة الوضع الليلي
+        const themeToggle = document.getElementById('themeToggle');
+        const body = document.body;
+        const logoImage = document.getElementById('logoImage');
+
+        // تحقق من التفضيل المحفوظ
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark') {
+            body.classList.add('dark-mode');
+            logoImage.src = "/1000069661.png"; // تغيير الشعار للوضع الليلي
+        }
+
+        // تبديل الوضع
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+            const isDarkMode = body.classList.contains('dark-mode');
+            localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
+            logoImage.src = isDarkMode ? "/1000069661.png" : "/1000067588.png"; // تغيير الشعار
+        });
+
+        // إظهار زر التبديل بعد انتهاء حركة الشعار
+        setTimeout(() => {
+            themeToggle.style.opacity = '1'; // إظهار زر التبديل
+        }, 4000); // بعد 4 ثواني (وقت انتهاء حركة الشعار)
+
+        // إظهار/إخفاء كلمة المرور
+        document.getElementById('togglePassword').addEventListener('click', function() {
+            const passwordInput = document.getElementById('password');
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+            } else {
+                passwordInput.type = 'password';
+            }
+        });
+
         // إضافة حدث عند إرسال النموذج
         document.getElementById('loginForm').addEventListener('submit', function(event) {
-            event.preventDefault(); // منع إرسال النموذج تلقائيًا
-
-            // الحصول على قيم البريد الإلكتروني وكلمة المرور
+            event.preventDefault();
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
-
-            // استرجاع البيانات المخزنة في localStorage
             const userData = JSON.parse(localStorage.getItem('userData'));
 
-            // التحقق من البريد الإلكتروني وكلمة المرور
             if (userData && userData.email === email && userData.password === password) {
-                // تخزين حالة تسجيل الدخول في localStorage
                 localStorage.setItem('loggedIn', true);
-
-                // إعادة التوجيه إلى الصفحة الرئيسية
                 window.location.href = "index.html";
             } else {
-                // عرض رسالة الخطأ
                 const errorMessage = document.getElementById('errorMessage');
                 errorMessage.classList.add('show');
             }
@@ -298,35 +385,27 @@
         // تهيئة تسجيل الدخول باستخدام جوجل
         function handleCredentialResponse(response) {
             if (response.credential) {
-                // فك تشفير بيانات المستخدم من JWT
                 const payload = JSON.parse(atob(response.credential.split('.')[1]));
-
-                // تخزين بيانات المستخدم في localStorage
                 const userData = {
                     name: payload.name,
                     email: payload.email,
                     picture: payload.picture
                 };
                 localStorage.setItem('userData', JSON.stringify(userData));
-
-                // تخزين حالة تسجيل الدخول في localStorage
                 localStorage.setItem('loggedIn', true);
-
-                // إعادة التوجيه إلى الصفحة الرئيسية
                 window.location.href = "index.html";
             }
         }
 
-        // تهيئة زر تسجيل الدخول باستخدام جوجل
         window.onload = function () {
             google.accounts.id.initialize({
-                client_id: '674743145268-cnflb7morj1am52k64g5coqk0hfbroro.apps.googleusercontent.com', // استبدل بمعرف العميل الخاص بك
+                client_id: '674743145268-cnflb7morj1am52k64g5coqk0hfbroro.apps.googleusercontent.com',
                 callback: handleCredentialResponse
             });
 
             google.accounts.id.renderButton(
                 document.getElementById('googleSignInButton'),
-                { theme: 'outline', size: 'large' } // تخصيص مظهر الزر
+                { theme: 'outline', size: 'large' }
             );
         };
     </script>
