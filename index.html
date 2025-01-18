@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>تطبيق حجز ملعب</title>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+  <!-- إضافة Font Awesome للأيقونات -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <style>
     /* Reset & General Styles */
     * {
@@ -20,6 +22,60 @@
       display: flex;
       flex-direction: column;
       min-height: 100vh;
+      transition: background 0.5s ease, color 0.5s ease;
+    }
+
+    /* الوضع الليلي */
+    body.dark-mode {
+      background: linear-gradient(to bottom, #1e1e1e, #121212);
+      color: #ffffff;
+    }
+
+    body.dark-mode header {
+      background-color: #2c2c2c;
+    }
+
+    body.dark-mode .card {
+      background-color: #2c2c2c;
+      color: #ffffff;
+      box-shadow: 0px 4px 10px rgba(255, 255, 255, 0.1);
+    }
+
+    body.dark-mode .card p {
+      color: #ddd;
+    }
+
+    body.dark-mode table th {
+      background-color: #2c2c2c;
+    }
+
+    body.dark-mode table td {
+      background-color: #3a3a3a;
+      color: #ffffff;
+    }
+
+    body.dark-mode .floating-button {
+      background-color: #2c2c2c;
+    }
+
+    body.dark-mode .menu {
+      background-color: #2c2c2c;
+    }
+
+    body.dark-mode .menu a {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    body.dark-mode .toast {
+      background-color: #2c2c2c;
+    }
+
+    body.dark-mode .download-button {
+      background-color: #2c2c2c;
+    }
+
+    body.dark-mode .download-button:hover {
+      background-color: #3a3a3a;
     }
 
     /* Header Styles */
@@ -30,6 +86,7 @@
       text-align: center;
       font-size: 24px;
       font-weight: bold;
+      transition: background-color 0.5s ease;
     }
 
     h1 {
@@ -81,7 +138,7 @@
       border-radius: 10px;
       box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
       text-align: center;
-      transition: transform 0.3s ease;
+      transition: transform 0.3s ease, background-color 0.5s ease, color 0.5s ease;
       cursor: pointer;
     }
 
@@ -98,6 +155,7 @@
     .card p {
       font-size: 16px;
       color: #555;
+      transition: color 0.5s ease;
     }
 
     /* Table Styles */
@@ -113,6 +171,7 @@
       border: 1px solid #ddd;
       text-align: right;
       color: #333;
+      transition: background-color 0.5s ease, color 0.5s ease;
     }
 
     th {
@@ -232,20 +291,66 @@
         font-size: 20px;
         margin: 15px 0;
     }
-      /* Responsive Styles */
-      @media (max-width: 768px) {
-        .logo {
-            width: 80px;
-            height: 80px;
-        }
-        .section h1 {
-        font-size: 28px;
-        }
-        .section p {
-        font-size: 16px;
-        }
 
+    /* زر تبديل الوضع */
+    .theme-toggle {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      font-size: 24px;
+      color: #FFD700; /* لون الشمس */
+      opacity: 1; /* مرئي دائمًا */
+      transition: opacity 0.5s ease, color 0.5s ease;
+    }
+
+    body.dark-mode .theme-toggle {
+      color: #FFFFFF; /* لون القمر */
+    }
+
+    .theme-toggle i {
+      transition: transform 0.5s ease, opacity 0.5s ease;
+    }
+
+    .theme-toggle .fa-sun {
+      opacity: 1;
+      transform: rotate(0deg);
+    }
+
+    .theme-toggle .fa-moon {
+      opacity: 0;
+      transform: rotate(-90deg);
+      position: absolute;
+      top: 0;
+      right: 0;
+    }
+
+    body.dark-mode .theme-toggle .fa-sun {
+      opacity: 0;
+      transform: rotate(90deg);
+    }
+
+    body.dark-mode .theme-toggle .fa-moon {
+      opacity: 1;
+      transform: rotate(0deg);
+    }
+
+    /* Responsive Styles */
+    @media (max-width: 768px) {
+      .logo {
+          width: 80px;
+          height: 80px;
       }
+      .section h1 {
+      font-size: 28px;
+      }
+      .section p {
+      font-size: 16px;
+      }
+    }
+
     @media (max-width: 600px) {
       .card {
         width: 95%;
@@ -280,8 +385,9 @@
       padding: 8px;
       border-radius: 5px;
     }
-      .icon {
-        margin-left: 5px;
+
+    .icon {
+      margin-left: 5px;
     }
 
     .download-button {
@@ -306,11 +412,15 @@
 </head>
 <body>
   <script>
-    // التحقق من حالة تسجيل الدخول
-    if (!localStorage.getItem('loggedIn')) {
-      window.location.href = "Login.html"; // إعادة التوجيه إلى صفحة تسجيل الدخول إذا لم يكن المستخدم مسجل الدخول
+
     }
   </script>
+
+  <!-- زر تبديل الوضع -->
+  <button class="theme-toggle" id="themeToggle">
+    <i class="fas fa-sun"></i> <!-- أيقونة الشمس -->
+    <i class="fas fa-moon"></i> <!-- أيقونة القمر -->
+  </button>
 
   <header>تطبيق كين ماتش</header>
   <div class="logo"></div>
@@ -333,11 +443,11 @@
     </div>
   </div>
 
-    <button class="floating-button" onclick="redirectToBooking()">
+  <button class="floating-button" onclick="redirectToBooking()">
     <span class="icon">⚽</span>
     احجز ملعبك الآن
   </button>
-    <button class="menu-btn" onclick="toggleMenu()">☰</button>
+  <button class="menu-btn" onclick="toggleMenu()">☰</button>
 
   <div class="menu" id="menu">
     <a href="#" onclick="showInfo(); closeMenu()">معلومات التطبيق <span class="icon">ℹ️</span></a>
@@ -349,7 +459,25 @@
   </div>
   <div id="countdown" style="text-align: center; font-size: 20px;"></div>
 
-    <script>
+  <script>
+    // إدارة الوضع الليلي
+    const themeToggle = document.getElementById('themeToggle');
+    const body = document.body;
+
+    // تحقق من التفضيل المحفوظ
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'dark') {
+      body.classList.add('dark-mode');
+    }
+
+    // تبديل الوضع
+    themeToggle.addEventListener('click', () => {
+      body.classList.toggle('dark-mode');
+      const isDarkMode = body.classList.contains('dark-mode');
+      localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
+    });
+
+    // باقي الدوال والوظائف
     function toggleMenu() {
       const menu = document.getElementById('menu');
       menu.style.transform = menu.style.transform === 'translateX(0px)' ? 'translateX(-100%)' : 'translateX(0)';
@@ -392,36 +520,36 @@
       let playersList = '';
 
       if (bookingData && Object.keys(bookingData).length > 0) {
-              if (bookingData.teamCards && bookingData.teamCards.length > 0) {
-                playersList = `<div class="player-cards-list"><ul>${bookingData.teamCards.map((card, index) => `<li>${index + 1}. ${card}</li>`).join('')}</ul></div>`;
-              } else {
-                playersList = '<p>لا توجد بطاقات لاعبين.</p>';
-              }
-
-          bookingInfo.innerHTML = `
-          <table>
-              <tr><th>الاسم</th><td>${bookingData.name || 'غير متوفر'}</td></tr>
-              <tr><th>العمر</th><td>${bookingData.age || 'غير متوفر'}</td></tr>
-              <tr><th>رقم البطاقة</th><td>${bookingData.idCard || 'غير متوفر'}</td></tr>
-              <tr><th>الحالة</th><td>${bookingData.teamStatus || 'غير متوفر'}</td></tr>
-              <tr><th>عدد الأشخاص في الفريق</th><td>${bookingData.teamSize || 'N/A'}</td></tr>
-              <tr><th>بطاقات اللاعبين</th><td>${playersList}</td></tr>
-              <tr><th>تاريخ الحجز</th><td>${bookingData.date || 'غير متوفر'}</td></tr>
-              <tr><th>وقت الحجز</th><td>${bookingData.time || 'غير متوفر'}</td></tr>
-              <tr><th>الملعب</th><td>${bookingData.field || 'غير متوفر'}</td></tr>
-              <tr><th>المركز</th><td>${bookingData.position || 'غير متوفر'}</td></tr>
-            </table>
-            <button class="download-button" onclick="downloadBooking()">
-              <span class="icon">⬇️</span> تنزيل الحجز
-            </button>
-          `;
-
-          if (bookingData.date && bookingData.time) {
-              updateCountdown(bookingData.date + "T" + bookingData.time);
-          }
+        if (bookingData.teamCards && bookingData.teamCards.length > 0) {
+          playersList = `<div class="player-cards-list"><ul>${bookingData.teamCards.map((card, index) => `<li>${index + 1}. ${card}</li>`).join('')}</ul></div>`;
         } else {
-            bookingInfo.innerHTML = "لا توجد معلومات حجوزات.";
+          playersList = '<p>لا توجد بطاقات لاعبين.</p>';
         }
+
+        bookingInfo.innerHTML = `
+          <table>
+            <tr><th>الاسم</th><td>${bookingData.name || 'غير متوفر'}</td></tr>
+            <tr><th>العمر</th><td>${bookingData.age || 'غير متوفر'}</td></tr>
+            <tr><th>رقم البطاقة</th><td>${bookingData.idCard || 'غير متوفر'}</td></tr>
+            <tr><th>الحالة</th><td>${bookingData.teamStatus || 'غير متوفر'}</td></tr>
+            <tr><th>عدد الأشخاص في الفريق</th><td>${bookingData.teamSize || 'N/A'}</td></tr>
+            <tr><th>بطاقات اللاعبين</th><td>${playersList}</td></tr>
+            <tr><th>تاريخ الحجز</th><td>${bookingData.date || 'غير متوفر'}</td></tr>
+            <tr><th>وقت الحجز</th><td>${bookingData.time || 'غير متوفر'}</td></tr>
+            <tr><th>الملعب</th><td>${bookingData.field || 'غير متوفر'}</td></tr>
+            <tr><th>المركز</th><td>${bookingData.position || 'غير متوفر'}</td></tr>
+          </table>
+          <button class="download-button" onclick="downloadBooking()">
+            <span class="icon">⬇️</span> تنزيل الحجز
+          </button>
+        `;
+
+        if (bookingData.date && bookingData.time) {
+          updateCountdown(bookingData.date + "T" + bookingData.time);
+        }
+      } else {
+        bookingInfo.innerHTML = "لا توجد معلومات حجوزات.";
+      }
     }
 
     function showInfo() {
@@ -430,79 +558,78 @@
       setTimeout(() => toast.classList.remove('show'), 2000);
     }
 
-     let countdownInterval;
+    let countdownInterval;
 
-      function startCountdown(date) {
+    function startCountdown(date) {
+      clearInterval(countdownInterval);
+      const countDownDate = new Date(date).getTime();
+
+      countdownInterval = setInterval(function () {
+        const now = new Date().getTime();
+        const distance = countDownDate - now;
+
+        if (distance < 0) {
           clearInterval(countdownInterval);
-          const countDownDate = new Date(date).getTime();
+          document.getElementById("countdown").innerHTML = "انتهى وقت الحجز!";
+          document.getElementById("bookingInfo").innerHTML = "لا يوجد حجز.";
+          return;
+        } else {
+          const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+          const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+          const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+          const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-          countdownInterval = setInterval(function () {
-              const now = new Date().getTime();
-              const distance = countDownDate - now;
+          document.getElementById("countdown").innerHTML = `${days} يوم ${hours} ساعة ${minutes} دقيقة ${seconds} ثانية`;
+        }
+      }, 1000);
+    }
 
-              if (distance < 0) {
-                  clearInterval(countdownInterval);
-                  document.getElementById("countdown").innerHTML = "انتهى وقت الحجز!";
-                  document.getElementById("bookingInfo").innerHTML = "لا يوجد حجز.";
-                  return;
-              } else {
-                  const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-                  const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                  const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-                  const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-                  document.getElementById("countdown").innerHTML = `${days} يوم ${hours} ساعة ${minutes} دقيقة ${seconds} ثانية`;
-              }
-          }, 1000);
-      }
-
-      function updateCountdown(newDate) {
-          startCountdown(newDate);
-      }
-
+    function updateCountdown(newDate) {
+      startCountdown(newDate);
+    }
 
     function downloadBooking() {
       const bookingData = JSON.parse(localStorage.getItem('bookingData')) || {};
       let tableRows = '';
-        
-       tableRows += `<tr><th>الاسم</th><td>${bookingData.name || 'غير متوفر'}</td></tr>`;
-       tableRows += `<tr><th>العمر</th><td>${bookingData.age || 'غير متوفر'}</td></tr>`;
-       tableRows += `<tr><th>رقم البطاقة</th><td>${bookingData.idCard || 'غير متوفر'}</td></tr>`;
-       tableRows += `<tr><th>الحالة</th><td>${bookingData.teamStatus || 'غير متوفر'}</td></tr>`;
-       tableRows += `<tr><th>عدد الأشخاص في الفريق</th><td>${bookingData.teamSize || 'N/A'}</td></tr>`;
-            
-        if (bookingData.teamCards && bookingData.teamCards.length > 0) {
-            let playerListItems = bookingData.teamCards.map((card, index) => `<li>${index + 1}. ${card}</li>`).join('');
-            tableRows += `<tr><th>بطاقات اللاعبين</th><td><ul style="list-style-type: none; padding: 0;">${playerListItems}</ul></td></tr>`;
-        } else {
-            tableRows += `<tr><th>بطاقات اللاعبين</th><td>لا توجد بطاقات لاعبين.</td></tr>`;
-        }
-            
-       tableRows += `<tr><th>تاريخ الحجز</th><td>${bookingData.date || 'غير متوفر'}</td></tr>`;
-       tableRows += `<tr><th>وقت الحجز</th><td>${bookingData.time || 'غير متوفر'}</td></tr>`;
-       tableRows += `<tr><th>الملعب</th><td>${bookingData.field || 'غير متوفر'}</td></tr>`;
-       tableRows += `<tr><th>المركز</th><td>${bookingData.position || 'غير متوفر'}</td></tr>`;
+
+      tableRows += `<tr><th>الاسم</th><td>${bookingData.name || 'غير متوفر'}</td></tr>`;
+      tableRows += `<tr><th>العمر</th><td>${bookingData.age || 'غير متوفر'}</td></tr>`;
+      tableRows += `<tr><th>رقم البطاقة</th><td>${bookingData.idCard || 'غير متوفر'}</td></tr>`;
+      tableRows += `<tr><th>الحالة</th><td>${bookingData.teamStatus || 'غير متوفر'}</td></tr>`;
+      tableRows += `<tr><th>عدد الأشخاص في الفريق</th><td>${bookingData.teamSize || 'N/A'}</td></tr>`;
+
+      if (bookingData.teamCards && bookingData.teamCards.length > 0) {
+        let playerListItems = bookingData.teamCards.map((card, index) => `<li>${index + 1}. ${card}</li>`).join('');
+        tableRows += `<tr><th>بطاقات اللاعبين</th><td><ul style="list-style-type: none; padding: 0;">${playerListItems}</ul></td></tr>`;
+      } else {
+        tableRows += `<tr><th>بطاقات اللاعبين</th><td>لا توجد بطاقات لاعبين.</td></tr>`;
+      }
+
+      tableRows += `<tr><th>تاريخ الحجز</th><td>${bookingData.date || 'غير متوفر'}</td></tr>`;
+      tableRows += `<tr><th>وقت الحجز</th><td>${bookingData.time || 'غير متوفر'}</td></tr>`;
+      tableRows += `<tr><th>الملعب</th><td>${bookingData.field || 'غير متوفر'}</td></tr>`;
+      tableRows += `<tr><th>المركز</th><td>${bookingData.position || 'غير متوفر'}</td></tr>`;
 
       const htmlContent = `
-          <html lang="ar" dir="rtl">
-            <head>
-              <meta charset="UTF-8">
-              <title>تفاصيل الحجز</title>
-              <style>
-                  body { font-family: 'Cairo', sans-serif; }
-                  table { width: 100%; border-collapse: collapse; }
-                  th, td { padding: 8px; border: 1px solid #ddd; text-align: right; }
-                  th { background-color: #4CAF50; color: white; }
-              </style>
-            </head>
-            <body>
-              <h2>تفاصيل الحجز</h2>
-              <table>
-                ${tableRows}
-              </table>
-            </body>
-          </html>
-        `;
+        <html lang="ar" dir="rtl">
+          <head>
+            <meta charset="UTF-8">
+            <title>تفاصيل الحجز</title>
+            <style>
+              body { font-family: 'Cairo', sans-serif; }
+              table { width: 100%; border-collapse: collapse; }
+              th, td { padding: 8px; border: 1px solid #ddd; text-align: right; }
+              th { background-color: #4CAF50; color: white; }
+            </style>
+          </head>
+          <body>
+            <h2>تفاصيل الحجز</h2>
+            <table>
+              ${tableRows}
+            </table>
+          </body>
+        </html>
+      `;
 
       const blob = new Blob([htmlContent], { type: 'text/html' });
       const url = URL.createObjectURL(blob);
