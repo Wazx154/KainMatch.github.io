@@ -412,7 +412,9 @@
 </head>
 <body>
   <script>
-
+    // التحقق من حالة تسجيل الدخول
+    if (!localStorage.getItem('loggedIn')) {
+      window.location.href = "Login.html"; // إعادة التوجيه إلى صفحة تسجيل الدخول إذا لم يكن المستخدم مسجل الدخول
     }
   </script>
 
