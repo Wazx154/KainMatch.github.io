@@ -97,7 +97,7 @@
       font-weight: 600;
     }
 
-.logo {
+    .logo {
       width: 100px;
       height: 100px;
       margin: 0 auto;
@@ -387,9 +387,15 @@
 
     .player-cards-list li {
       margin-bottom: 5px;
-      background-color: #f0f0f0;
       padding: 8px;
       border-radius: 5px;
+      background-color: #f0f0f0;
+      color: #333; /* لون النص في الوضع العادي */
+    }
+
+    body.dark-mode .player-cards-list li {
+      background-color: #3a3a3a;
+      color: #ffffff; /* لون النص في الوضع الليلي */
     }
 
     .icon {
