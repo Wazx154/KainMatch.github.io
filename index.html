@@ -97,14 +97,20 @@
       font-weight: 600;
     }
 
-    .logo {
-      width: 160px;
+.logo {
+      width: 100px;
       height: 100px;
-      background-image: url('1000067588.png');
-      background-size: cover;
-      background-position: center;
-      border-radius: 50%;
-      margin: 10px auto;
+      margin: 0 auto;
+      display: block;
+      transition: opacity 0.5s ease;
+    }
+
+    body.dark-mode .logo {
+      content: url('/1000069661.png');
+    }
+
+    body:not(.dark-mode) .logo {
+      content: url('/1000067588.png');
     }
 
     /* Main Section Styles */
