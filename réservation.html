@@ -6,6 +6,7 @@
     <title>شراء الملابس الرياضية</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
+        /* أنماط عامة */
         * {
             margin: 0;
             padding: 0;
@@ -16,13 +17,65 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #f4f4f4;
             color: #333;
-            line-height: 1.6;
             direction: rtl;
-            padding: 0;
-            margin: 0;
+            transition: background 0.5s ease, color 0.5s ease;
         }
 
-        /* تنسيق الإشعار العلوي */
+        /* الوضع الليلي */
+        body.dark-mode {
+            background-color: #1e1e1e;
+            color: #ffffff;
+        }
+
+        body.dark-mode .notification {
+            background-color: #ff5722;
+            color: white;
+        }
+
+        body.dark-mode header {
+            background: linear-gradient(to right, #004d40, #00796b);
+        }
+
+        body.dark-mode .product-card {
+            background-color: #2c2c2c;
+            color: #ffffff;
+            box-shadow: 0 6px 18px rgba(255, 255, 255, 0.1);
+        }
+
+        body.dark-mode .product-card p {
+            color: #ddd;
+        }
+
+        body.dark-mode .cart {
+            background-color: #2c2c2c;
+            color: #ffffff;
+        }
+
+        body.dark-mode .cart-items li {
+            background-color: #3a3a3a;
+        }
+
+        body.dark-mode .cart-footer p {
+            color: #ffffff;
+        }
+
+        body.dark-mode .confirmation-box,
+        body.dark-mode .payment-box {
+            background-color: #2c2c2c;
+            color: #ffffff;
+        }
+
+        body.dark-mode .confirmation-box h3,
+        body.dark-mode .payment-box h3 {
+            color: #ffffff;
+        }
+
+        body.dark-mode .confirmation-box p,
+        body.dark-mode .payment-box p {
+            color: #ddd;
+        }
+
+        /* إشعار عالٍ */
         .notification {
             background-color: #ff5722;
             color: white;
@@ -38,6 +91,7 @@
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
 
+        /* رأس الصفحة */
         header {
             background: linear-gradient(to right, #00796b, #004d40);
             color: white;
@@ -64,6 +118,7 @@
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
         }
 
+        /* عرض المنتجات */
         .products {
             display: flex;
             justify-content: space-between;
@@ -106,13 +161,11 @@
         .product-card h3 {
             font-size: 24px;
             margin-bottom: 10px;
-            color: #333;
         }
 
         .product-card p {
             font-size: 18px;
             margin-bottom: 15px;
-            color: #666;
         }
 
         .product-card select {
@@ -143,74 +196,192 @@
             transform: scale(1.05);
         }
 
+        /* زر سلة الشراء العائم */
+        .cart-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+        }
+
+        .cart-btn:hover {
+            background-color: #45a049;
+        }
+
+        .cart-btn .cart-count {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: #ff5722;
+            color: white;
+            border-radius: 50%;
+            padding: 5px;
+            font-size: 12px;
+        }
+
+        /* واجهة سلة الشراء */
+        .cart-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: flex-end;
+            z-index: 1000;
+        }
+
+        .cart-overlay.active {
+            display: flex;
+        }
+
         .cart {
             background-color: white;
-            padding: 30px;
-            margin: 40px auto;
-            max-width: 800px;
-            text-align: center;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            border-radius: 15px;
-            display: none;
+            width: 50%; /* عرض السلة نصف الصفحة */
+            height: 100%;
+            padding: 20px;
+            box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+            overflow-y: auto;
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+        }
+
+        .cart-overlay.active .cart {
+            transform: translateX(0);
         }
 
         .cart h2 {
-            font-size: 26px;
-            margin-bottom: 15px;
-            color: #00796b;
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #004d40;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
-        .cart p {
-            font-size: 18px;
-            color: #666;
-            margin-bottom: 25px;
-        }
-
-        .cart button {
-            padding: 12px 25px;
-            background-color: #4CAF50;
+        .cart h2 .close-btn {
+            background-color: #ff4d4d;
             color: white;
-            font-size: 18px;
             border: none;
-            border-radius: 10px;
+            padding: 5px 10px;
+            border-radius: 5px;
             cursor: pointer;
-            transition: background-color 0.3s ease;
+            font-size: 16px;
         }
 
-        .cart button:hover {
-            background-color: #45a049;
+        .cart h2 .close-btn:hover {
+            background-color: #ff1a1a;
         }
 
         .cart-items {
             list-style: none;
             padding: 0;
-            text-align: left;
         }
 
         .cart-items li {
-            margin: 12px 0;
-            font-size: 16px;
             display: flex;
-            justify-content: space-between;
             align-items: center;
+            margin-bottom: 15px;
             padding: 10px;
             background-color: #f9f9f9;
             border-radius: 8px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
 
-        .cart-items button {
-            background-color: #ff4d4d;
-            color: white;
-            padding: 6px 12px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 14px;
+        .cart-items img {
+            width: 50px;
+            height: 50px;
+            margin-right: 10px;
+            border-radius: 8px;
         }
 
-        .cart-items button:hover {
+        .cart-items .item-details {
+            flex: 1;
+        }
+
+        .cart-items .item-details h3 {
+            font-size: 16px;
+            margin: 0;
+            color: #333;
+        }
+
+        .cart-items .item-details p {
+            font-size: 14px;
+            margin: 5px 0;
+            color: #777;
+        }
+
+        .cart-items .quantity-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .cart-items .quantity-controls button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .cart-items .quantity-controls button:hover {
+            background-color: #45a049;
+        }
+
+        .cart-items .remove-item {
+            background-color: #ff4d4d;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .cart-items .remove-item:hover {
             background-color: #ff1a1a;
+        }
+
+        .cart-footer {
+            margin-top: 20px;
+            border-top: 1px solid #ddd;
+            padding-top: 20px;
+        }
+
+        .cart-footer p {
+            font-size: 18px;
+            font-weight: bold;
+            color: #004d40;
+        }
+
+        .checkout-btn {
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+
+        .checkout-btn:hover {
+            background-color: #45a049;
         }
 
         @media screen and (max-width: 768px) {
@@ -221,6 +392,10 @@
             .product-card {
                 width: 90%;
                 margin-bottom: 20px;
+            }
+
+            .cart {
+                width: 80%; /* عرض السلة أكبر على الشاشات الصغيرة */
             }
         }
 
@@ -233,11 +408,136 @@
                 width: 100%;
                 margin-bottom: 20px;
             }
+
+            .cart {
+                width: 100%; /* عرض السلة كامل الشاشة على الهواتف */
+            }
+        }
+
+        /* رسالة تأكيد الحذف */
+        .confirmation-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1001;
+        }
+
+        .confirmation-modal.active {
+            display: flex;
+        }
+
+        .confirmation-box {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        .confirmation-box h3 {
+            font-size: 20px;
+            margin-bottom: 15px;
+            color: #004d40;
+        }
+
+        .confirmation-box p {
+            font-size: 16px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .confirmation-box .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .confirmation-box .buttons button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .confirmation-box .buttons .confirm-btn {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .confirmation-box .buttons .confirm-btn:hover {
+            background-color: #45a049;
+        }
+
+        .confirmation-box .buttons .cancel-btn {
+            background-color: #ff4d4d;
+            color: white;
+        }
+
+        .confirmation-box .buttons .cancel-btn:hover {
+            background-color: #ff1a1a;
+        }
+
+        /* رسالة تأكيد الدفع */
+        .payment-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1001;
+        }
+
+        .payment-modal.active {
+            display: flex;
+        }
+
+        .payment-box {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        .payment-box h3 {
+            font-size: 24px;
+            margin-bottom: 15px;
+            color: #004d40;
+        }
+
+        .payment-box p {
+            font-size: 18px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .payment-box .ok-btn {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .payment-box .ok-btn:hover {
+            background-color: #45a049;
         }
     </style>
 </head>
 <body>
-
     <!-- إشعار عالٍ -->
     <div class="notification">
         <p>عروض خاصة على الملابس الرياضية! لا تفوتها!</p>
@@ -246,7 +546,7 @@
     <!-- رأس الصفحة -->
     <header>
         <div class="logo">
-            <img src="/1000067588.png" alt="شعار الموقع">
+            <img id="logoImage" src="/1000067588.png" alt="شعار الموقع">
             شراء ملابس الرياضية
         </div>
     </header>
@@ -263,7 +563,7 @@
                 <option value="medium">M (متوسط)</option>
                 <option value="large">L (كبير)</option>
             </select>
-            <button class="add-to-cart">
+            <button class="add-to-cart" data-name="لباس رياضي كامل للعب" data-price="20" data-image="IMG-20241127-WA0006.jpg">
                 <i class="fa fa-shopping-cart"></i> إضافة إلى السلة
             </button>
         </div>
@@ -282,76 +582,194 @@
                 <option value="43">EU 43 (مقاس 43)</option>
                 <option value="44">EU 44 (مقاس 44)</option>
             </select>
-            <button class="add-to-cart">
+            <button class="add-to-cart" data-name="حذاء رياضي" data-price="30" data-image="IMG-20241127-WA0007.jpg">
                 <i class="fa fa-shopping-cart"></i> إضافة إلى السلة
             </button>
         </div>
     </section>
 
-    <!-- سلة المشتريات -->
-    <div class="cart" id="cart">
-        <h2>سلة المشتريات</h2>
-        <p>ليس لديك أي منتجات في السلة.</p>
-        <ul class="cart-items" id="cart-items">
-        </ul>
-        <button id="checkout-button">إتمام الدفع</button>
+    <!-- زر سلة الشراء العائم -->
+    <button class="cart-btn" onclick="toggleCart()">
+        <i class="fa fa-shopping-cart"></i>
+        <span class="cart-count" id="cart-count">0</span>
+    </button>
+
+    <!-- واجهة سلة الشراء -->
+    <div class="cart-overlay" id="cart-overlay" onclick="closeCart(event)">
+        <div class="cart">
+            <h2>
+                سلة المشتريات
+                <button class="close-btn" onclick="toggleCart()">✖ إغلاق</button>
+            </h2>
+            <ul class="cart-items" id="cart-items">
+                <!-- العناصر ستظهر هنا -->
+            </ul>
+            <div class="cart-footer">
+                <p>الإجمالي: <span id="cart-total">0</span> درهم</p>
+                <button class="checkout-btn" onclick="checkout()">إتمام الدفع</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- رسالة تأكيد الحذف -->
+    <div class="confirmation-modal" id="confirmation-modal">
+        <div class="confirmation-box">
+            <h3>تأكيد الحذف</h3>
+            <p>هل أنت متأكد من حذف هذا العنصر؟</p>
+            <div class="buttons">
+                <button class="confirm-btn" onclick="confirmDelete()">نعم</button>
+                <button class="cancel-btn" onclick="cancelDelete()">لا</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- رسالة تأكيد الدفع -->
+    <div class="payment-modal" id="payment-modal">
+        <div class="payment-box">
+            <h3>تم الدفع بنجاح!</h3>
+            <p>شكرًا لشرائك. الإجمالي: <span id="payment-total">0</span> درهم</p>
+            <button class="ok-btn" onclick="closePaymentModal()">موافق</button>
+        </div>
     </div>
 
     <script>
+        // بيانات السلة
         let cart = [];
+        let deleteIndex = null;
 
+        // تحميل الوضع المختار من localStorage
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark') {
+            document.body.classList.add('dark-mode');
+        }
+
+        // عرض/إخفاء سلة الشراء
+        function toggleCart() {
+            const cartOverlay = document.getElementById('cart-overlay');
+            cartOverlay.classList.toggle('active');
+        }
+
+        // إغلاق السلة عند النقر خارجها
+        function closeCart(event) {
+            if (event.target === document.getElementById('cart-overlay')) {
+                toggleCart();
+            }
+        }
+
+        // تحديث واجهة السلة
         function updateCart() {
             const cartItems = document.getElementById('cart-items');
-            cartItems.innerHTML = '';  // تفريغ السلة من المحتويات السابقة
-            let total = 0;  // متغير لتخزين إجمالي السعر
-            cart.forEach(item => {
+            const cartCount = document.getElementById('cart-count');
+            const cartTotal = document.getElementById('cart-total');
+
+            cartItems.innerHTML = '';
+            let total = 0;
+
+            cart.forEach((item, index) => {
                 const li = document.createElement('li');
                 li.innerHTML = `
-                    ${item.name} - ${item.size} - ${item.price} درهم
-                    <button onclick="removeFromCart('${item.id}')">حذف</button>
+                    <img src="${item.image}" alt="${item.name}">
+                    <div class="item-details">
+                        <h3>${item.name}</h3>
+                        <p>${item.price} درهم</p>
+                    </div>
+                    <div class="quantity-controls">
+                        <button onclick="updateQuantity(${index}, -1)">-</button>
+                        <span>${item.quantity}</span>
+                        <button onclick="updateQuantity(${index}, 1)">+</button>
+                    </div>
+                    <button class="remove-item" onclick="showConfirmationModal(${index})">✖</button>
                 `;
-                cartItems.appendChild(li);  
-                total += parseFloat(item.price);  
+                cartItems.appendChild(li);
+                total += item.price * item.quantity;
             });
 
-            const cartDiv = document.getElementById('cart');
-            const cartEmptyMessage = document.querySelector('.cart p');
-            if (cart.length > 0) {
-                cartDiv.style.display = 'block';  
-                cartEmptyMessage.textContent = 'إجمالي السلة: ' + total.toFixed(2) + ' درهم';
-            } else {
-                cartDiv.style.display = 'none';  
-            }
+            cartCount.textContent = cart.length;
+            cartTotal.textContent = total.toFixed(2);
         }
 
-        function addToCart(name, size, price) {
-            const id = `${name}-${size}`;  
-            const existingItem = cart.find(item => item.id === id);
+        // إضافة عنصر إلى السلة
+        function addToCart(name, price, image) {
+            const existingItem = cart.find(item => item.name === name);
+
             if (existingItem) {
-                existingItem.quantity += 1;  
+                existingItem.quantity += 1;
             } else {
-                cart.push({ id, name, size, price, quantity: 1 });
+                cart.push({ name, price, image, quantity: 1 });
             }
-            updateCart();  
+
+            updateCart();
         }
 
-        function removeFromCart(id) {
-            cart = cart.filter(item => item.id !== id);
-            updateCart();  
+        // تحديث الكمية
+        function updateQuantity(index, change) {
+            cart[index].quantity += change;
+
+            if (cart[index].quantity < 1) {
+                cart.splice(index, 1);
+            }
+
+            updateCart();
         }
 
+        // عرض رسالة تأكيد الحذف
+        function showConfirmationModal(index) {
+            deleteIndex = index;
+            const confirmationModal = document.getElementById('confirmation-modal');
+            confirmationModal.classList.add('active');
+        }
+
+        // تأكيد الحذف
+        function confirmDelete() {
+            if (deleteIndex !== null) {
+                cart.splice(deleteIndex, 1);
+                updateCart();
+                closeConfirmationModal();
+            }
+        }
+
+        // إلغاء الحذف
+        function cancelDelete() {
+            closeConfirmationModal();
+        }
+
+        // إغلاق رسالة تأكيد الحذف
+        function closeConfirmationModal() {
+            const confirmationModal = document.getElementById('confirmation-modal');
+            confirmationModal.classList.remove('active');
+            deleteIndex = null;
+        }
+
+        // إتمام الدفع
+        function checkout() {
+            if (cart.length === 0) {
+                alert('السلة فارغة!');
+                return;
+            }
+
+            const paymentModal = document.getElementById('payment-modal');
+            const paymentTotal = document.getElementById('payment-total');
+            paymentTotal.textContent = document.getElementById('cart-total').textContent;
+            paymentModal.classList.add('active');
+        }
+
+        // إغلاق رسالة تأكيد الدفع
+        function closePaymentModal() {
+            const paymentModal = document.getElementById('payment-modal');
+            paymentModal.classList.remove('active');
+            cart = [];
+            updateCart();
+            toggleCart();
+        }
+
+        // إضافة عناصر إلى السلة عند النقر على الزر
         document.querySelectorAll('.add-to-cart').forEach(button => {
             button.addEventListener('click', (e) => {
-                const card = e.target.closest('.product-card');
-                const name = card.querySelector('h3').textContent;
-                const size = card.querySelector('select').value;
-                const price = card.querySelector('p').textContent.split(' ')[1]; 
-                addToCart(name, size, price);  
+                const name = e.target.getAttribute('data-name');
+                const price = parseFloat(e.target.getAttribute('data-price'));
+                const image = e.target.getAttribute('data-image');
+                addToCart(name, price, image);
             });
-        });
-
-        document.getElementById('checkout-button').addEventListener('click', () => {
-            alert('إتمام الدفع...');
         });
     </script>
 </body>
