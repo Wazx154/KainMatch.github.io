@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>شراء الملابس الرياضية</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         /* أنماط عامة */
         * {
@@ -14,7 +15,7 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Poppins', sans-serif;
             background-color: #f4f4f4;
             color: #333;
             direction: rtl;
@@ -539,15 +540,15 @@
 </head>
 <body>
     <!-- إشعار عالٍ -->
-    <div class="notification">
-        <p>عروض خاصة على الملابس الرياضية! لا تفوتها!</p>
+    <div class="notification" id="notification">
+        <p id="notificationText">عروض خاصة على الملابس الرياضية! لا تفوتها!</p>
     </div>
 
     <!-- رأس الصفحة -->
     <header>
         <div class="logo">
             <img id="logoImage" src="/1000067588.png" alt="شعار الموقع">
-            شراء ملابس الرياضية
+            <span id="headerText">شراء ملابس الرياضية</span>
         </div>
     </header>
 
@@ -555,24 +556,24 @@
     <section class="products">
         <div class="product-card">
             <img src="IMG-20241127-WA0006.jpg" alt="لباس كامل للعب">
-            <h3>لباس رياضي كامل للعب</h3>
-            <p>سعر: 20 درهم</p>
-            <label for="size1">القياس (تيشرت + شورت):</label>
+            <h3 id="product1Name">لباس رياضي كامل للعب</h3>
+            <p id="product1Price">سعر: 20 درهم</p>
+            <label for="size1" id="sizeLabel1">القياس (تيشرت + شورت):</label>
             <select id="size1">
                 <option value="small">S (صغير)</option>
                 <option value="medium">M (متوسط)</option>
                 <option value="large">L (كبير)</option>
             </select>
             <button class="add-to-cart" data-name="لباس رياضي كامل للعب" data-price="20" data-image="IMG-20241127-WA0006.jpg">
-                <i class="fa fa-shopping-cart"></i> إضافة إلى السلة
+                <i class="fa fa-shopping-cart"></i> <span id="addToCartText1">إضافة إلى السلة</span>
             </button>
         </div>
 
         <div class="product-card">
             <img src="IMG-20241127-WA0007.jpg" alt="حذاء رياضي">
-            <h3>حذاء رياضي</h3>
-            <p>سعر: 30 درهم</p>
-            <label for="size2">القياس (بالحجم الدولي):</label>
+            <h3 id="product2Name">حذاء رياضي</h3>
+            <p id="product2Price">سعر: 30 درهم</p>
+            <label for="size2" id="sizeLabel2">القياس (بالحجم الدولي):</label>
             <select id="size2">
                 <option value="38">EU 38 (مقاس 38)</option>
                 <option value="39">EU 39 (مقاس 39)</option>
@@ -583,7 +584,7 @@
                 <option value="44">EU 44 (مقاس 44)</option>
             </select>
             <button class="add-to-cart" data-name="حذاء رياضي" data-price="30" data-image="IMG-20241127-WA0007.jpg">
-                <i class="fa fa-shopping-cart"></i> إضافة إلى السلة
+                <i class="fa fa-shopping-cart"></i> <span id="addToCartText2">إضافة إلى السلة</span>
             </button>
         </div>
     </section>
@@ -598,15 +599,15 @@
     <div class="cart-overlay" id="cart-overlay" onclick="closeCart(event)">
         <div class="cart">
             <h2>
-                سلة المشتريات
-                <button class="close-btn" onclick="toggleCart()">✖ إغلاق</button>
+                <span id="cartTitle">سلة المشتريات</span>
+                <button class="close-btn" onclick="toggleCart()">✖ <span id="closeCartText">إغلاق</span></button>
             </h2>
             <ul class="cart-items" id="cart-items">
                 <!-- العناصر ستظهر هنا -->
             </ul>
             <div class="cart-footer">
-                <p>الإجمالي: <span id="cart-total">0</span> درهم</p>
-                <button class="checkout-btn" onclick="checkout()">إتمام الدفع</button>
+                <p id="cartTotalText">الإجمالي: <span id="cart-total">0</span> درهم</p>
+                <button class="checkout-btn" onclick="checkout()"><span id="checkoutText">إتمام الدفع</span></button>
             </div>
         </div>
     </div>
@@ -614,11 +615,11 @@
     <!-- رسالة تأكيد الحذف -->
     <div class="confirmation-modal" id="confirmation-modal">
         <div class="confirmation-box">
-            <h3>تأكيد الحذف</h3>
-            <p>هل أنت متأكد من حذف هذا العنصر؟</p>
+            <h3 id="confirmDeleteTitle">تأكيد الحذف</h3>
+            <p id="confirmDeleteMessage">هل أنت متأكد من حذف هذا العنصر؟</p>
             <div class="buttons">
-                <button class="confirm-btn" onclick="confirmDelete()">نعم</button>
-                <button class="cancel-btn" onclick="cancelDelete()">لا</button>
+                <button class="confirm-btn" onclick="confirmDelete()"><span id="confirmDeleteYes">نعم</span></button>
+                <button class="cancel-btn" onclick="cancelDelete()"><span id="confirmDeleteNo">لا</span></button>
             </div>
         </div>
     </div>
@@ -626,9 +627,9 @@
     <!-- رسالة تأكيد الدفع -->
     <div class="payment-modal" id="payment-modal">
         <div class="payment-box">
-            <h3>تم الدفع بنجاح!</h3>
-            <p>شكرًا لشرائك. الإجمالي: <span id="payment-total">0</span> درهم</p>
-            <button class="ok-btn" onclick="closePaymentModal()">موافق</button>
+            <h3 id="paymentSuccessTitle">تم الدفع بنجاح!</h3>
+            <p id="paymentSuccessMessage">شكرًا لشرائك. الإجمالي: <span id="payment-total">0</span> درهم</p>
+            <button class="ok-btn" onclick="closePaymentModal()"><span id="paymentOkText">موافق</span></button>
         </div>
     </div>
 
@@ -643,20 +644,124 @@
             document.body.classList.add('dark-mode');
         }
 
-        // عرض/إخفاء سلة الشراء
+        // تحميل اللغة المختارة من localStorage
+        const savedLanguage = localStorage.getItem('language') || 'ar';
+
+        // نصوص متعددة اللغات
+        const texts = {
+            ar: {
+                notification: "عروض خاصة على الملابس الرياضية! لا تفوتها!",
+                header: "شراء ملابس الرياضية",
+                product1Name: "لباس رياضي كامل للعب",
+                product1Price: "سعر: 20 درهم",
+                sizeLabel1: "القياس (تيشرت + شورت):",
+                addToCartText1: "إضافة إلى السلة",
+                product2Name: "حذاء رياضي",
+                product2Price: "سعر: 30 درهم",
+                sizeLabel2: "القياس (بالحجم الدولي):",
+                addToCartText2: "إضافة إلى السلة",
+                cartTitle: "سلة المشتريات",
+                closeCartText: "إغلاق",
+                cartTotalText: "الإجمالي:",
+                checkoutText: "إتمام الدفع",
+                confirmDeleteTitle: "تأكيد الحذف",
+                confirmDeleteMessage: "هل أنت متأكد من حذف هذا العنصر؟",
+                confirmDeleteYes: "نعم",
+                confirmDeleteNo: "لا",
+                paymentSuccessTitle: "تم الدفع بنجاح!",
+                paymentSuccessMessage: "شكرًا لشرائك. الإجمالي:",
+                paymentOkText: "موافق",
+            },
+            en: {
+                notification: "Special offers on sports gear! Don't miss out!",
+                header: "Buy Sports Gear",
+                product1Name: "Full Sports Outfit",
+                product1Price: "Price: 20 AED",
+                sizeLabel1: "Size (T-shirt + Shorts):",
+                addToCartText1: "Add to Cart",
+                product2Name: "Sports Shoes",
+                product2Price: "Price: 30 AED",
+                sizeLabel2: "Size (International):",
+                addToCartText2: "Add to Cart",
+                cartTitle: "Shopping Cart",
+                closeCartText: "Close",
+                cartTotalText: "Total:",
+                checkoutText: "Checkout",
+                confirmDeleteTitle: "Confirm Delete",
+                confirmDeleteMessage: "Are you sure you want to delete this item?",
+                confirmDeleteYes: "Yes",
+                confirmDeleteNo: "No",
+                paymentSuccessTitle: "Payment Successful!",
+                paymentSuccessMessage: "Thank you for your purchase. Total:",
+                paymentOkText: "OK",
+            },
+            fr: {
+                notification: "Offres spéciales sur les équipements sportifs! Ne les manquez pas!",
+                header: "Acheter des Équipements Sportifs",
+                product1Name: "Tenue Sportive Complète",
+                product1Price: "Prix: 20 AED",
+                sizeLabel1: "Taille (T-shirt + Short):",
+                addToCartText1: "Ajouter au Panier",
+                product2Name: "Chaussures de Sport",
+                product2Price: "Prix: 30 AED",
+                sizeLabel2: "Taille (Internationale):",
+                addToCartText2: "Ajouter au Panier",
+                cartTitle: "Panier d'Achat",
+                closeCartText: "Fermer",
+                cartTotalText: "Total:",
+                checkoutText: "Payer",
+                confirmDeleteTitle: "Confirmer la Suppression",
+                confirmDeleteMessage: "Êtes-vous sûr de vouloir supprimer cet article?",
+                confirmDeleteYes: "Oui",
+                confirmDeleteNo: "Non",
+                paymentSuccessTitle: "Paiement Réussi!",
+                paymentSuccessMessage: "Merci pour votre achat. Total:",
+                paymentOkText: "OK",
+            },
+        };
+
+        // تحديث النصوص بناءً على اللغة
+        function updateTexts(language) {
+            document.getElementById("notificationText").textContent = texts[language].notification;
+            document.getElementById("headerText").textContent = texts[language].header;
+            document.getElementById("product1Name").textContent = texts[language].product1Name;
+            document.getElementById("product1Price").textContent = texts[language].product1Price;
+            document.getElementById("sizeLabel1").textContent = texts[language].sizeLabel1;
+            document.getElementById("addToCartText1").textContent = texts[language].addToCartText1;
+            document.getElementById("product2Name").textContent = texts[language].product2Name;
+            document.getElementById("product2Price").textContent = texts[language].product2Price;
+            document.getElementById("sizeLabel2").textContent = texts[language].sizeLabel2;
+            document.getElementById("addToCartText2").textContent = texts[language].addToCartText2;
+            document.getElementById("cartTitle").textContent = texts[language].cartTitle;
+            document.getElementById("closeCartText").textContent = texts[language].closeCartText;
+            document.getElementById("cartTotalText").textContent = texts[language].cartTotalText;
+            document.getElementById("checkoutText").textContent = texts[language].checkoutText;
+            document.getElementById("confirmDeleteTitle").textContent = texts[language].confirmDeleteTitle;
+            document.getElementById("confirmDeleteMessage").textContent = texts[language].confirmDeleteMessage;
+            document.getElementById("confirmDeleteYes").textContent = texts[language].confirmDeleteYes;
+            document.getElementById("confirmDeleteNo").textContent = texts[language].confirmDeleteNo;
+            document.getElementById("paymentSuccessTitle").textContent = texts[language].paymentSuccessTitle;
+            document.getElementById("paymentSuccessMessage").textContent = texts[language].paymentSuccessMessage;
+            document.getElementById("paymentOkText").textContent = texts[language].paymentOkText;
+        }
+
+        // تحميل اللغة عند تحميل الصفحة
+        document.addEventListener('DOMContentLoaded', () => {
+            updateTexts(savedLanguage);
+        });
+
+        // باقي الدوال والوظائف
         function toggleCart() {
             const cartOverlay = document.getElementById('cart-overlay');
             cartOverlay.classList.toggle('active');
         }
 
-        // إغلاق السلة عند النقر خارجها
         function closeCart(event) {
             if (event.target === document.getElementById('cart-overlay')) {
                 toggleCart();
             }
         }
 
-        // تحديث واجهة السلة
         function updateCart() {
             const cartItems = document.getElementById('cart-items');
             const cartCount = document.getElementById('cart-count');
@@ -688,7 +793,6 @@
             cartTotal.textContent = total.toFixed(2);
         }
 
-        // إضافة عنصر إلى السلة
         function addToCart(name, price, image) {
             const existingItem = cart.find(item => item.name === name);
 
@@ -701,7 +805,6 @@
             updateCart();
         }
 
-        // تحديث الكمية
         function updateQuantity(index, change) {
             cart[index].quantity += change;
 
@@ -712,14 +815,12 @@
             updateCart();
         }
 
-        // عرض رسالة تأكيد الحذف
         function showConfirmationModal(index) {
             deleteIndex = index;
             const confirmationModal = document.getElementById('confirmation-modal');
             confirmationModal.classList.add('active');
         }
 
-        // تأكيد الحذف
         function confirmDelete() {
             if (deleteIndex !== null) {
                 cart.splice(deleteIndex, 1);
@@ -728,19 +829,16 @@
             }
         }
 
-        // إلغاء الحذف
         function cancelDelete() {
             closeConfirmationModal();
         }
 
-        // إغلاق رسالة تأكيد الحذف
         function closeConfirmationModal() {
             const confirmationModal = document.getElementById('confirmation-modal');
             confirmationModal.classList.remove('active');
             deleteIndex = null;
         }
 
-        // إتمام الدفع
         function checkout() {
             if (cart.length === 0) {
                 alert('السلة فارغة!');
@@ -753,7 +851,6 @@
             paymentModal.classList.add('active');
         }
 
-        // إغلاق رسالة تأكيد الدفع
         function closePaymentModal() {
             const paymentModal = document.getElementById('payment-modal');
             paymentModal.classList.remove('active');
