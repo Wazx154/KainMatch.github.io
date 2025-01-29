@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>تطبيق حجز ملعب</title>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
-  <!-- إضافة Font Awesome للأيقونات -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <style>
     /* Reset & General Styles */
@@ -16,7 +15,7 @@
     }
 
     body {
-      font-family: 'Cairo', sans-serif;
+      font-family: 'Cairo', sans-serif, "Segoe UI Emoji", "Apple Color Emoji", "Noto Color Emoji";
       background: linear-gradient(to bottom, #4CAF50, #f0f0f5);
       color: #333;
       display: flex;
@@ -117,7 +116,7 @@
     .section {
       padding: 20px;
       text-align: center;
-      flex: 1; /* Allow section to take remaining space */
+      flex: 1;
     }
 
     .section h1 {
@@ -195,8 +194,6 @@
       position: fixed;
       bottom: 30px;
       right: 30px;
-      width: 180px;
-      height: 60px;
       background-color: #4CAF50;
       color: white;
       border: none;
@@ -212,13 +209,27 @@
       align-items: center;
       justify-content: center;
       gap: 10px;
-      animation: pulse 1.5s infinite;
+      white-space: nowrap;
+      padding: 0 25px;
+      width: auto;
+      height: 60px;
+      animation: jump 2s infinite;
     }
 
     .floating-button:hover {
       background-color: #45a049;
       transform: scale(1.05);
       box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    /* تأثير القفز */
+    @keyframes jump {
+      0%, 100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-10px);
+      }
     }
 
     /* Menu Styles */
@@ -307,13 +318,13 @@
       border: none;
       cursor: pointer;
       font-size: 24px;
-      color: #FFD700; /* لون الشمس */
-      opacity: 1; /* مرئي دائمًا */
+      color: #FFD700;
+      opacity: 1;
       transition: opacity 0.5s ease, color 0.5s ease;
     }
 
     body.dark-mode .theme-toggle {
-      color: #FFFFFF; /* لون القمر */
+      color: #FFFFFF;
     }
 
     .theme-toggle i {
@@ -343,6 +354,32 @@
       transform: rotate(0deg);
     }
 
+    /* زر تغيير اللغة */
+    .language-toggle {
+      position: fixed;
+      top: 20px;
+      right: 80px;
+      background: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 20px;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+      transition: background 0.3s ease, transform 0.3s ease;
+    }
+
+    .language-toggle:hover {
+      background: #45a049;
+      transform: scale(1.05);
+    }
+
+    body.dark-mode .language-toggle {
+      background: #2c2c2c;
+      color: #ffffff;
+    }
+
     /* Responsive Styles */
     @media (max-width: 768px) {
       .logo {
@@ -368,108 +405,72 @@
       }
 
       .floating-button {
-        width: 140px;
         font-size: 16px;
+        padding: 0 15px;
+        height: 50px;
+        line-height: 50px;
       }
-    }
 
-    /* Player Cards List Styles */
-    .player-cards-list {
-      margin-top: 10px;
-      text-align: right;
-      font-size: 16px;
-    }
-
-    .player-cards-list ul {
-      list-style-type: none;
-      padding: 0;
-    }
-
-    .player-cards-list li {
-      margin-bottom: 5px;
-      padding: 8px;
-      border-radius: 5px;
-      background-color: #f0f0f0;
-      color: #333; /* لون النص في الوضع العادي */
-    }
-
-    body.dark-mode .player-cards-list li {
-      background-color: #3a3a3a;
-      color: #ffffff; /* لون النص في الوضع الليلي */
-    }
-
-    .icon {
-      margin-left: 5px;
-    }
-
-    .download-button {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      margin-top: 20px;
-      padding: 10px 20px;
-      background-color: #4CAF50;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-    }
-
-    .download-button:hover {
-      background-color: #45a049;
+      .language-toggle {
+        right: 20px;
+        top: 80px;
+      }
     }
   </style>
 </head>
 <body>
   <script>
-    // التحقق من حالة تسجيل الدخول
     if (!localStorage.getItem('loggedIn')) {
-      window.location.href = "Login.html"; // إعادة التوجيه إلى صفحة تسجيل الدخول إذا لم يكن المستخدم مسجل الدخول
+      window.location.href = "Login.html";
     }
   </script>
 
   <!-- زر تبديل الوضع -->
   <button class="theme-toggle" id="themeToggle">
-    <i class="fas fa-sun"></i> <!-- أيقونة الشمس -->
-    <i class="fas fa-moon"></i> <!-- أيقونة القمر -->
+    <i class="fas fa-sun"></i>
+    <i class="fas fa-moon"></i>
   </button>
 
-  <header>تطبيق كين ماتش</header>
+  <!-- زر تغيير اللغة -->
+  <button class="language-toggle" id="languageToggle">
+    <span id="languageText">English</span>
+  </button>
+
+  <header id="headerText">تطبيق كين ماتش</header>
   <div class="logo"></div>
 
   <div class="section">
-    <h1>مرحبًا بك في تطبيق حجز الملاعب!</h1>
-    <p>نحن هنا لتوفير أفضل تجربة لك في حجز الملاعب الرياضية في أي وقت وبسهولة.</p>
+    <h1 id="welcomeText">مرحبًا بك في تطبيق حجز الملاعب! ⚽</h1>
+    <p id="descriptionText">نحن هنا لتوفير أفضل تجربة لك في حجز الملاعب الرياضية في أي وقت وبسهولة. 🎉</p>
 
     <div class="card" onclick="toggleBookingInfo()">
-      <h2>حجوزاتي <span class="icon">📅</span></h2>
+      <h2 id="myBookingsText">حجوزاتي 📅</h2>
       <div id="bookingInfo" style="display: none;"></div>
     </div>
     <div class="card">
-      <h2>إشعارات <span class="icon">🔔</span></h2>
-      <p>تفقد التنبيهات الجديدة حول مواعيد الحجز والتحديثات.</p>
+      <h2 id="notificationsText">إشعارات 🔔</h2>
+      <p id="notificationsDescription">تفقد التنبيهات الجديدة حول مواعيد الحجز والتحديثات. 📢</p>
     </div>
     <div class="card" onclick="redirectToSportsBooking()">
-      <h2>شراء الملابس الرياضية <span class="icon">👕</span></h2>
-      <p>اضغط هنا لشراء الملابس الرياضية المناسبة لمبارياتك القادمة.</p>
+      <h2 id="sportsGearText">شراء الملابس الرياضية 👕</h2>
+      <p id="sportsGearDescription">اضغط هنا لشراء الملابس الرياضية المناسبة لمبارياتك القادمة. 🛒</p>
     </div>
   </div>
 
-  <button class="floating-button" onclick="redirectToBooking()">
+  <button class="floating-button" onclick="redirectToBooking()" id="bookNowButton">
     <span class="icon">⚽</span>
-    احجز ملعبك الآن
+    <span id="bookNowText">احجز ملعبك الآن</span>
   </button>
   <button class="menu-btn" onclick="toggleMenu()">☰</button>
 
   <div class="menu" id="menu">
-    <a href="#" onclick="showInfo(); closeMenu()">معلومات التطبيق <span class="icon">ℹ️</span></a>
+    <a href="#" onclick="showInfo(); closeMenu()">
+      <span id="appInfoText">معلومات التطبيق ℹ️</span>
+    </a>
   </div>
 
   <div id="toast" class="toast">
-    تطبيق حجز الملاعب - الإصدار 1.0<br>
-    يوفر لك هذا التطبيق تجربة حجز الملاعب الرياضية بكل سهولة!
+    <span id="toastText">تطبيق حجز الملاعب - الإصدار 1.0<br>يوفر لك هذا التطبيق تجربة حجز الملاعب الرياضية بكل سهولة! 🎉</span>
   </div>
   <div id="countdown" style="text-align: center; font-size: 20px;"></div>
 
@@ -489,6 +490,158 @@
       body.classList.toggle('dark-mode');
       const isDarkMode = body.classList.contains('dark-mode');
       localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
+    });
+
+    // إدارة تغيير اللغة
+    const languageToggle = document.getElementById('languageToggle');
+    const languageText = document.getElementById('languageText');
+    const bookNowButton = document.getElementById('bookNowButton');
+    const texts = {
+      ar: {
+        header: "تطبيق كين ماتش",
+        welcome: "مرحبًا بك في تطبيق حجز الملاعب! ⚽",
+        description: "نحن هنا لتوفير أفضل تجربة لك في حجز الملاعب الرياضية في أي وقت وبسهولة. 🎉",
+        myBookings: "حجوزاتي 📅",
+        notifications: "إشعارات 🔔",
+        notificationsDescription: "تفقد التنبيهات الجديدة حول مواعيد الحجز والتحديثات. 📢",
+        sportsGear: "شراء الملابس الرياضية 👕",
+        sportsGearDescription: "اضغط هنا لشراء الملابس الرياضية المناسبة لمبارياتك القادمة. 🛒",
+        bookNow: "احجز ملعبك الآن",
+        appInfo: "معلومات التطبيق ℹ️",
+        toast: "تطبيق حجز الملاعب - الإصدار 1.0<br>يوفر لك هذا التطبيق تجربة حجز الملاعب الرياضية بكل سهولة! 🎉",
+        countdown: "الوقت المتبقي حتى الحجز:",
+        bookingDetails: {
+          name: "الاسم",
+          age: "العمر",
+          idCard: "رقم البطاقة",
+          teamStatus: "الحالة",
+          teamSize: "عدد الأشخاص في الفريق",
+          teamCards: "بطاقات اللاعبين",
+          date: "تاريخ الحجز",
+          time: "وقت الحجز",
+          field: "الملعب",
+          position: "المركز",
+          noBookings: "لا توجد معلومات حجوزات.",
+          noCards: "لا توجد بطاقات لاعبين.",
+          download: "تنزيل الحجز"
+        }
+      },
+      en: {
+        header: "Kain Match App",
+        welcome: "Welcome to the Stadium Booking App! ⚽",
+        description: "We are here to provide you with the best experience in booking sports stadiums anytime, easily. 🎉",
+        myBookings: "My Bookings 📅",
+        notifications: "Notifications 🔔",
+        notificationsDescription: "Check new alerts about booking times and updates. 📢",
+        sportsGear: "Buy Sports Gear 👕",
+        sportsGearDescription: "Click here to buy the right sports gear for your upcoming matches. 🛒",
+        bookNow: "Book Your Stadium Now",
+        appInfo: "App Information ℹ️",
+        toast: "Stadium Booking App - Version 1.0<br>This app provides you with an easy stadium booking experience! 🎉",
+        countdown: "Time remaining until booking:",
+        bookingDetails: {
+          name: "Name",
+          age: "Age",
+          idCard: "ID Card",
+          teamStatus: "Status",
+          teamSize: "Team Size",
+          teamCards: "Player Cards",
+          date: "Booking Date",
+          time: "Booking Time",
+          field: "Field",
+          position: "Position",
+          noBookings: "No booking information available.",
+          noCards: "No player cards available.",
+          download: "Download Booking"
+        }
+      },
+      fr: {
+        header: "Application Kain Match",
+        welcome: "Bienvenue dans l'application de réservation de stades! ⚽",
+        description: "Nous sommes ici pour vous offrir la meilleure expérience de réservation de stades sportifs à tout moment, facilement. 🎉",
+        myBookings: "Mes Réservations 📅",
+        notifications: "Notifications 🔔",
+        notificationsDescription: "Vérifiez les nouvelles alertes concernant les heures de réservation et les mises à jour. 📢",
+        sportsGear: "Acheter des Équipements Sportifs 👕",
+        sportsGearDescription: "Cliquez ici pour acheter les équipements sportifs adaptés à vos prochains matchs. 🛒",
+        bookNow: "Réservez Votre Stade Maintenant",
+        appInfo: "Informations sur l'Application ℹ️",
+        toast: "Application de Réservation de Stades - Version 1.0<br>Cette application vous offre une expérience de réservation de stades facile! 🎉",
+        countdown: "Temps restant jusqu'à la réservation:",
+        bookingDetails: {
+          name: "Nom",
+          age: "Âge",
+          idCard: "Carte d'identité",
+          teamStatus: "Statut",
+          teamSize: "Taille de l'équipe",
+          teamCards: "Cartes des joueurs",
+          date: "Date de réservation",
+          time: "Heure de réservation",
+          field: "Terrain",
+          position: "Position",
+          noBookings: "Aucune information de réservation disponible.",
+          noCards: "Aucune carte de joueur disponible.",
+          download: "Télécharger la Réservation"
+        }
+      }
+    };
+
+    let currentLanguage = localStorage.getItem('language') || 'ar'; // اللغة الافتراضية
+
+    // تحديث النصوص بناءً على اللغة
+    function updateTexts(language) {
+      document.getElementById("headerText").textContent = texts[language].header;
+      document.getElementById("welcomeText").textContent = texts[language].welcome;
+      document.getElementById("descriptionText").textContent = texts[language].description;
+      document.getElementById("myBookingsText").textContent = texts[language].myBookings;
+      document.getElementById("notificationsText").textContent = texts[language].notifications;
+      document.getElementById("notificationsDescription").textContent = texts[language].notificationsDescription;
+      document.getElementById("sportsGearText").textContent = texts[language].sportsGear;
+      document.getElementById("sportsGearDescription").textContent = texts[language].sportsGearDescription;
+      document.getElementById("bookNowText").textContent = texts[language].bookNow;
+      document.getElementById("appInfoText").textContent = texts[language].appInfo;
+      document.getElementById("toastText").innerHTML = texts[language].toast;
+
+      // تحديث حجم الزر بناءً على طول النص
+      const bookNowText = document.getElementById("bookNowText").textContent;
+      const textLength = bookNowText.length;
+      const buttonPadding = Math.min(10 + textLength * 1.5, 30); // زيادة padding بناءً على طول النص
+      bookNowButton.style.padding = `0 ${buttonPadding}px`;
+
+      // تحديث معلومات الحجز
+      displayBookingInfo();
+    }
+
+    // تحديث نص زر تغيير اللغة
+    function updateLanguageButtonText(language) {
+      if (language === "ar") {
+        languageText.textContent = "English";
+      } else if (language === "en") {
+        languageText.textContent = "Français";
+      } else if (language === "fr") {
+        languageText.textContent = "العربية";
+      }
+    }
+
+    // تغيير اللغة
+    languageToggle.addEventListener('click', () => {
+      if (currentLanguage === "ar") {
+        currentLanguage = "en";
+      } else if (currentLanguage === "en") {
+        currentLanguage = "fr";
+      } else {
+        currentLanguage = "ar";
+      }
+      updateTexts(currentLanguage);
+      updateLanguageButtonText(currentLanguage);
+      localStorage.setItem('language', currentLanguage); // حفظ اللغة المحددة
+    });
+
+    // تحميل اللغة المحفوظة عند تحميل الصفحة
+    document.addEventListener('DOMContentLoaded', () => {
+      updateTexts(currentLanguage);
+      updateLanguageButtonText(currentLanguage);
+      displayBookingInfo();
     });
 
     // باقي الدوال والوظائف
@@ -537,24 +690,24 @@
         if (bookingData.teamCards && bookingData.teamCards.length > 0) {
           playersList = `<div class="player-cards-list"><ul>${bookingData.teamCards.map((card, index) => `<li>${index + 1}. ${card}</li>`).join('')}</ul></div>`;
         } else {
-          playersList = '<p>لا توجد بطاقات لاعبين.</p>';
+          playersList = `<p>${texts[currentLanguage].bookingDetails.noCards}</p>`;
         }
 
         bookingInfo.innerHTML = `
           <table>
-            <tr><th>الاسم</th><td>${bookingData.name || 'غير متوفر'}</td></tr>
-            <tr><th>العمر</th><td>${bookingData.age || 'غير متوفر'}</td></tr>
-            <tr><th>رقم البطاقة</th><td>${bookingData.idCard || 'غير متوفر'}</td></tr>
-            <tr><th>الحالة</th><td>${bookingData.teamStatus || 'غير متوفر'}</td></tr>
-            <tr><th>عدد الأشخاص في الفريق</th><td>${bookingData.teamSize || 'N/A'}</td></tr>
-            <tr><th>بطاقات اللاعبين</th><td>${playersList}</td></tr>
-            <tr><th>تاريخ الحجز</th><td>${bookingData.date || 'غير متوفر'}</td></tr>
-            <tr><th>وقت الحجز</th><td>${bookingData.time || 'غير متوفر'}</td></tr>
-            <tr><th>الملعب</th><td>${bookingData.field || 'غير متوفر'}</td></tr>
-            <tr><th>المركز</th><td>${bookingData.position || 'غير متوفر'}</td></tr>
+            <tr><th>${texts[currentLanguage].bookingDetails.name}</th><td>${bookingData.name || texts[currentLanguage].bookingDetails.noBookings}</td></tr>
+            <tr><th>${texts[currentLanguage].bookingDetails.age}</th><td>${bookingData.age || texts[currentLanguage].bookingDetails.noBookings}</td></tr>
+            <tr><th>${texts[currentLanguage].bookingDetails.idCard}</th><td>${bookingData.idCard || texts[currentLanguage].bookingDetails.noBookings}</td></tr>
+            <tr><th>${texts[currentLanguage].bookingDetails.teamStatus}</th><td>${bookingData.teamStatus || texts[currentLanguage].bookingDetails.noBookings}</td></tr>
+            <tr><th>${texts[currentLanguage].bookingDetails.teamSize}</th><td>${bookingData.teamSize || 'N/A'}</td></tr>
+            <tr><th>${texts[currentLanguage].bookingDetails.teamCards}</th><td>${playersList}</td></tr>
+            <tr><th>${texts[currentLanguage].bookingDetails.date}</th><td>${bookingData.date || texts[currentLanguage].bookingDetails.noBookings}</td></tr>
+            <tr><th>${texts[currentLanguage].bookingDetails.time}</th><td>${bookingData.time || texts[currentLanguage].bookingDetails.noBookings}</td></tr>
+            <tr><th>${texts[currentLanguage].bookingDetails.field}</th><td>${bookingData.field || texts[currentLanguage].bookingDetails.noBookings}</td></tr>
+            <tr><th>${texts[currentLanguage].bookingDetails.position}</th><td>${bookingData.position || texts[currentLanguage].bookingDetails.noBookings}</td></tr>
           </table>
           <button class="download-button" onclick="downloadBooking()">
-            <span class="icon">⬇️</span> تنزيل الحجز
+            <span class="icon">⬇️</span> ${texts[currentLanguage].bookingDetails.download}
           </button>
         `;
 
@@ -562,7 +715,7 @@
           updateCountdown(bookingData.date + "T" + bookingData.time);
         }
       } else {
-        bookingInfo.innerHTML = "لا توجد معلومات حجوزات.";
+        bookingInfo.innerHTML = texts[currentLanguage].bookingDetails.noBookings;
       }
     }
 
@@ -584,8 +737,8 @@
 
         if (distance < 0) {
           clearInterval(countdownInterval);
-          document.getElementById("countdown").innerHTML = "انتهى وقت الحجز!";
-          document.getElementById("bookingInfo").innerHTML = "لا يوجد حجز.";
+          document.getElementById("countdown").innerHTML = texts[currentLanguage].countdown + " " + texts[currentLanguage].bookingDetails.noBookings;
+          document.getElementById("bookingInfo").innerHTML = texts[currentLanguage].bookingDetails.noBookings;
           return;
         } else {
           const days = Math.floor(distance / (1000 * 60 * 60 * 24));
@@ -593,7 +746,7 @@
           const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
           const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-          document.getElementById("countdown").innerHTML = `${days} يوم ${hours} ساعة ${minutes} دقيقة ${seconds} ثانية`;
+          document.getElementById("countdown").innerHTML = texts[currentLanguage].countdown + " " + `${days} يوم ${hours} ساعة ${minutes} دقيقة ${seconds} ثانية`;
         }
       }, 1000);
     }
@@ -606,38 +759,38 @@
       const bookingData = JSON.parse(localStorage.getItem('bookingData')) || {};
       let tableRows = '';
 
-      tableRows += `<tr><th>الاسم</th><td>${bookingData.name || 'غير متوفر'}</td></tr>`;
-      tableRows += `<tr><th>العمر</th><td>${bookingData.age || 'غير متوفر'}</td></tr>`;
-      tableRows += `<tr><th>رقم البطاقة</th><td>${bookingData.idCard || 'غير متوفر'}</td></tr>`;
-      tableRows += `<tr><th>الحالة</th><td>${bookingData.teamStatus || 'غير متوفر'}</td></tr>`;
-      tableRows += `<tr><th>عدد الأشخاص في الفريق</th><td>${bookingData.teamSize || 'N/A'}</td></tr>`;
+      tableRows += `<tr><th>${texts[currentLanguage].bookingDetails.name}</th><td>${bookingData.name || texts[currentLanguage].bookingDetails.noBookings}</td></tr>`;
+      tableRows += `<tr><th>${texts[currentLanguage].bookingDetails.age}</th><td>${bookingData.age || texts[currentLanguage].bookingDetails.noBookings}</td></tr>`;
+      tableRows += `<tr><th>${texts[currentLanguage].bookingDetails.idCard}</th><td>${bookingData.idCard || texts[currentLanguage].bookingDetails.noBookings}</td></tr>`;
+      tableRows += `<tr><th>${texts[currentLanguage].bookingDetails.teamStatus}</th><td>${bookingData.teamStatus || texts[currentLanguage].bookingDetails.noBookings}</td></tr>`;
+      tableRows += `<tr><th>${texts[currentLanguage].bookingDetails.teamSize}</th><td>${bookingData.teamSize || 'N/A'}</td></tr>`;
 
       if (bookingData.teamCards && bookingData.teamCards.length > 0) {
         let playerListItems = bookingData.teamCards.map((card, index) => `<li>${index + 1}. ${card}</li>`).join('');
-        tableRows += `<tr><th>بطاقات اللاعبين</th><td><ul style="list-style-type: none; padding: 0;">${playerListItems}</ul></td></tr>`;
+        tableRows += `<tr><th>${texts[currentLanguage].bookingDetails.teamCards}</th><td><ul style="list-style-type: none; padding: 0;">${playerListItems}</ul></td></tr>`;
       } else {
-        tableRows += `<tr><th>بطاقات اللاعبين</th><td>لا توجد بطاقات لاعبين.</td></tr>`;
+        tableRows += `<tr><th>${texts[currentLanguage].bookingDetails.teamCards}</th><td>${texts[currentLanguage].bookingDetails.noCards}</td></tr>`;
       }
 
-      tableRows += `<tr><th>تاريخ الحجز</th><td>${bookingData.date || 'غير متوفر'}</td></tr>`;
-      tableRows += `<tr><th>وقت الحجز</th><td>${bookingData.time || 'غير متوفر'}</td></tr>`;
-      tableRows += `<tr><th>الملعب</th><td>${bookingData.field || 'غير متوفر'}</td></tr>`;
-      tableRows += `<tr><th>المركز</th><td>${bookingData.position || 'غير متوفر'}</td></tr>`;
+      tableRows += `<tr><th>${texts[currentLanguage].bookingDetails.date}</th><td>${bookingData.date || texts[currentLanguage].bookingDetails.noBookings}</td></tr>`;
+      tableRows += `<tr><th>${texts[currentLanguage].bookingDetails.time}</th><td>${bookingData.time || texts[currentLanguage].bookingDetails.noBookings}</td></tr>`;
+      tableRows += `<tr><th>${texts[currentLanguage].bookingDetails.field}</th><td>${bookingData.field || texts[currentLanguage].bookingDetails.noBookings}</td></tr>`;
+      tableRows += `<tr><th>${texts[currentLanguage].bookingDetails.position}</th><td>${bookingData.position || texts[currentLanguage].bookingDetails.noBookings}</td></tr>`;
 
       const htmlContent = `
-        <html lang="ar" dir="rtl">
+        <html lang="${currentLanguage}" dir="${currentLanguage === 'ar' ? 'rtl' : 'ltr'}">
           <head>
             <meta charset="UTF-8">
-            <title>تفاصيل الحجز</title>
+            <title>${texts[currentLanguage].bookingDetails.download}</title>
             <style>
               body { font-family: 'Cairo', sans-serif; }
               table { width: 100%; border-collapse: collapse; }
-              th, td { padding: 8px; border: 1px solid #ddd; text-align: right; }
+              th, td { padding: 8px; border: 1px solid #ddd; text-align: ${currentLanguage === 'ar' ? 'right' : 'left'}; }
               th { background-color: #4CAF50; color: white; }
             </style>
           </head>
           <body>
-            <h2>تفاصيل الحجز</h2>
+            <h2>${texts[currentLanguage].bookingDetails.download}</h2>
             <table>
               ${tableRows}
             </table>
@@ -649,7 +802,7 @@
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = 'تفاصيل الحجز.html';
+      a.download = `${texts[currentLanguage].bookingDetails.download}.html`;
       a.click();
       URL.revokeObjectURL(url);
     }
@@ -657,9 +810,6 @@
     function closeMenu() {
       toggleMenu();
     }
-
-    // تحميل معلومات الحجز عند تحميل الصفحة
-    document.addEventListener('DOMContentLoaded', displayBookingInfo);
   </script>
 </body>
 </html>
