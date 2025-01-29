@@ -182,70 +182,70 @@
 
   <div class="container">
     <img src="1000069661.png" alt="شعار" class="logo">
-    <h1>حجز ملعب كرة القدم</h1>
+    <h1 id="pageTitle">حجز ملعب كرة القدم</h1>
     <form id="bookingForm">
       <div class="input-group">
         <div>
-          <label for="name">الاسم والنسب:</label>
+          <label for="name" id="nameLabel">الاسم والنسب:</label>
           <input type="text" id="name" placeholder="أدخل الاسم والنسب" required>
         </div>
         <div>
-          <label for="age">العمر:</label>
+          <label for="age" id="ageLabel">العمر:</label>
           <input type="number" id="age" placeholder="أدخل عمرك" min="18" max="70" required onblur="checkAge()">
         </div>
       </div>
 
       <div id="idCardField" style="display: none;">
-        <label for="idCard">رقم البطاقة الوطنية / بطاقة الإقامة:</label>
+        <label for="idCard" id="idCardLabel">رقم البطاقة الوطنية / بطاقة الإقامة:</label>
         <input type="text" id="idCard" placeholder="أدخل رقم البطاقة" required>
       </div>
 
       <div class="input-group">
         <div>
-          <label for="date">تاريخ الحجز:</label>
+          <label for="date" id="dateLabel">تاريخ الحجز:</label>
           <input type="date" id="date" required>
         </div>
         <div>
-          <label for="time">وقت الحجز:</label>
+          <label for="time" id="timeLabel">وقت الحجز:</label>
           <input type="time" id="time" required>
         </div>
       </div>
 
-      <label for="teamStatus">هل الحجز وحدك أم مع فريق؟</label>
+      <label for="teamStatus" id="teamStatusLabel">هل الحجز وحدك أم مع فريق؟</label>
       <select id="teamStatus" onchange="toggleTeamSizeField()" required>
-        <option value="وحده">وحده</option>
-        <option value="مع فريق">مع فريق</option>
+        <option value="وحده" id="aloneOption">وحده</option>
+        <option value="مع فريق" id="teamOption">مع فريق</option>
       </select>
 
       <div id="teamSizeField" style="display: none;">
-        <label for="teamSize">عدد الأشخاص في الفريق (بين 2 و 12):</label>
+        <label for="teamSize" id="teamSizeLabel">عدد الأشخاص في الفريق (بين 2 و 12):</label>
         <input type="number" id="teamSize" placeholder="أدخل عدد الأشخاص" min="2" max="12" oninput="showTeamCardsField()">
       </div>
 
       <div id="teamCardsField" style="display: none;">
-        <label>أدخل أرقام بطاقات اللاعبين الذين سوف يحضرون:</label>
+        <label id="teamCardsLabel">أدخل أرقام بطاقات اللاعبين الذين سوف يحضرون:</label>
         <div class="team-cards-group">
           <!-- حقول رقم بطاقة اللاعبين -->
         </div>
       </div>
 
-      <label for="field">اختر الملعب:</label>
+      <label for="field" id="fieldLabel">اختر الملعب:</label>
       <select id="field" required>
-        <option value="ملعب حي السلام">ملعب حي السلام</option>
-        <option value="ملعب قاعة المغطات">ملعب قاعة المغطات</option>
-        <option value="ملعب حي النهضة">ملعب حي النهضة</option>
-        <option value="ملعب حي الغفران">ملعب حي الغفران</option>
+        <option value="ملعب حي السلام" id="field1">ملعب حي السلام</option>
+        <option value="ملعب قاعة المغطات" id="field2">ملعب قاعة المغطات</option>
+        <option value="ملعب حي النهضة" id="field3">ملعب حي النهضة</option>
+        <option value="ملعب حي الغفران" id="field4">ملعب حي الغفران</option>
       </select>
 
-      <label for="position">المركز الذي يلعب فيه:</label>
+      <label for="position" id="positionLabel">المركز الذي يلعب فيه:</label>
       <select id="position" required>
-        <option value="حارس مرمى">حارس مرمى</option>
-        <option value="مدافع">مدافع</option>
-        <option value="وسط">وسط</option>
-        <option value="مهاجم">مهاجم</option>
+        <option value="حارس مرمى" id="goalkeeperOption">حارس مرمى</option>
+        <option value="مدافع" id="defenderOption">مدافع</option>
+        <option value="وسط" id="midfielderOption">وسط</option>
+        <option value="مهاجم" id="strikerOption">مهاجم</option>
       </select>
 
-      <button type="button" onclick="bookField()">حجز الملعب</button>
+      <button type="button" onclick="bookField()" id="bookButton">حجز الملعب</button>
     </form>
     <div id="message"></div>
   </div>
@@ -272,6 +272,117 @@
       body.classList.toggle('dark-mode');
       const isDarkMode = body.classList.contains('dark-mode');
       localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
+    });
+
+    // كائن النصوص متعدد اللغات
+    const texts = {
+      ar: {
+        pageTitle: "حجز ملعب كرة القدم",
+        nameLabel: "الاسم والنسب:",
+        ageLabel: "العمر:",
+        idCardLabel: "رقم البطاقة الوطنية / بطاقة الإقامة:",
+        dateLabel: "تاريخ الحجز:",
+        timeLabel: "وقت الحجز:",
+        teamStatusLabel: "هل الحجز وحدك أم مع فريق؟",
+        aloneOption: "وحده",
+        teamOption: "مع فريق",
+        teamSizeLabel: "عدد الأشخاص في الفريق (بين 2 و 12):",
+        teamCardsLabel: "أدخل أرقام بطاقات اللاعبين الذين سوف يحضرون:",
+        fieldLabel: "اختر الملعب:",
+        field1: "ملعب حي السلام",
+        field2: "ملعب قاعة المغطات",
+        field3: "ملعب حي النهضة",
+        field4: "ملعب حي الغفران",
+        positionLabel: "المركز الذي يلعب فيه:",
+        goalkeeperOption: "حارس مرمى",
+        defenderOption: "مدافع",
+        midfielderOption: "وسط",
+        strikerOption: "مهاجم",
+        bookButton: "حجز الملعب",
+      },
+      en: {
+        pageTitle: "Football Pitch Booking",
+        nameLabel: "Full Name:",
+        ageLabel: "Age:",
+        idCardLabel: "National ID / Residence Card Number:",
+        dateLabel: "Booking Date:",
+        timeLabel: "Booking Time:",
+        teamStatusLabel: "Are you booking alone or with a team?",
+        aloneOption: "Alone",
+        teamOption: "With a Team",
+        teamSizeLabel: "Number of People in the Team (between 2 and 12):",
+        teamCardsLabel: "Enter the IDs of the players who will attend:",
+        fieldLabel: "Choose the Pitch:",
+        field1: "Al-Salam Pitch",
+        field2: "Al-Magattas Hall Pitch",
+        field3: "Al-Nahda Pitch",
+        field4: "Al-Ghufran Pitch",
+        positionLabel: "Playing Position:",
+        goalkeeperOption: "Goalkeeper",
+        defenderOption: "Defender",
+        midfielderOption: "Midfielder",
+        strikerOption: "Striker",
+        bookButton: "Book the Pitch",
+      },
+      fr: {
+        pageTitle: "Réservation de Terrain de Football",
+        nameLabel: "Nom et Prénom:",
+        ageLabel: "Âge:",
+        idCardLabel: "Numéro de Carte Nationale / Carte de Résidence:",
+        dateLabel: "Date de Réservation:",
+        timeLabel: "Heure de Réservation:",
+        teamStatusLabel: "Réservez-vous seul ou en équipe?",
+        aloneOption: "Seul",
+        teamOption: "En Équipe",
+        teamSizeLabel: "Nombre de Personnes dans l'Équipe (entre 2 et 12):",
+        teamCardsLabel: "Entrez les numéros de carte des joueurs qui participeront:",
+        fieldLabel: "Choisissez le Terrain:",
+        field1: "Terrain Al-Salam",
+        field2: "Terrain de la Salle Al-Magattas",
+        field3: "Terrain Al-Nahda",
+        field4: "Terrain Al-Ghufran",
+        positionLabel: "Position de Jeu:",
+        goalkeeperOption: "Gardien de But",
+        defenderOption: "Défenseur",
+        midfielderOption: "Milieu de Terrain",
+        strikerOption: "Attaquant",
+        bookButton: "Réserver le Terrain",
+      },
+    };
+
+    // تحميل اللغة المحددة من localStorage
+    const savedLanguage = localStorage.getItem('language') || 'ar';
+
+    // تحديث النصوص بناءً على اللغة
+    function updateTexts(language) {
+      const langTexts = texts[language];
+      document.getElementById("pageTitle").textContent = langTexts.pageTitle;
+      document.getElementById("nameLabel").textContent = langTexts.nameLabel;
+      document.getElementById("ageLabel").textContent = langTexts.ageLabel;
+      document.getElementById("idCardLabel").textContent = langTexts.idCardLabel;
+      document.getElementById("dateLabel").textContent = langTexts.dateLabel;
+      document.getElementById("timeLabel").textContent = langTexts.timeLabel;
+      document.getElementById("teamStatusLabel").textContent = langTexts.teamStatusLabel;
+      document.getElementById("aloneOption").textContent = langTexts.aloneOption;
+      document.getElementById("teamOption").textContent = langTexts.teamOption;
+      document.getElementById("teamSizeLabel").textContent = langTexts.teamSizeLabel;
+      document.getElementById("teamCardsLabel").textContent = langTexts.teamCardsLabel;
+      document.getElementById("fieldLabel").textContent = langTexts.fieldLabel;
+      document.getElementById("field1").textContent = langTexts.field1;
+      document.getElementById("field2").textContent = langTexts.field2;
+      document.getElementById("field3").textContent = langTexts.field3;
+      document.getElementById("field4").textContent = langTexts.field4;
+      document.getElementById("positionLabel").textContent = langTexts.positionLabel;
+      document.getElementById("goalkeeperOption").textContent = langTexts.goalkeeperOption;
+      document.getElementById("defenderOption").textContent = langTexts.defenderOption;
+      document.getElementById("midfielderOption").textContent = langTexts.midfielderOption;
+      document.getElementById("strikerOption").textContent = langTexts.strikerOption;
+      document.getElementById("bookButton").textContent = langTexts.bookButton;
+    }
+
+    // تحديث النصوص عند تحميل الصفحة
+    document.addEventListener('DOMContentLoaded', () => {
+      updateTexts(savedLanguage);
     });
 
     // باقي الدوال والوظائف
