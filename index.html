@@ -6,8 +6,11 @@
   <title>تطبيق حجز ملعب</title>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <style>
-    /* Reset & General Styles */
+    /* أنماط عامة */
     * {
       margin: 0;
       padding: 0;
@@ -419,10 +422,41 @@
   </style>
 </head>
 <body>
-  <script>
-    if (!localStorage.getItem('loggedIn')) {
-      window.location.href = "Login.html";
-    }
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+    // تكوين Firebase
+    const firebaseConfig = {
+      apiKey: "AIzaSyDgP-LijckM96Fhbxw1tcCNio2BPEiBgcg",
+      authDomain: "kainmatch-5d2f1.firebaseapp.com",
+      projectId: "kainmatch-5d2f1",
+      storageBucket: "kainmatch-5d2f1.appspot.com",
+      messagingSenderId: "528168328311",
+      appId: "1:528168328311:web:925e8ba6ed2f7ba8aefa72",
+      measurementId: "G-Y2D8WT394E"
+    };
+
+    // تهيئة Firebase
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    // تحقق من حالة المستخدم
+    onAuthStateChanged(auth, (user) => {
+      if (!user) {
+        // إذا لم يكن المستخدم مسجل الدخول، يتم توجيهه إلى صفحة تسجيل الدخول
+        window.location.href = "Login.html";
+      } else if (!user.emailVerified && !user.providerData.some(provider => provider.providerId === 'google.com')) {
+        // إذا لم يتم تأكيد البريد الإلكتروني ولم يتم تسجيل الدخول بحساب جوجل
+        Swal.fire({
+          icon: 'error',
+          title: 'خطأ',
+          text: 'يجب تأكيد البريد الإلكتروني أو تسجيل الدخول بحساب جوجل للوصول إلى التطبيق.',
+        }).then(() => {
+          window.location.href = "Login.html";
+        });
+      }
+    });
   </script>
 
   <!-- زر تبديل الوضع -->
