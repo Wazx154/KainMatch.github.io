@@ -1,16 +1,20 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>معلوماتك الشخصية - كرة القدم</title>
-    <link href="https://fonts.googleapis.com/css2?family=Amiri&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
+        /* أنماط عامة */
         body {
             font-family: 'Amiri', serif;
-            background-color: #f0f4c3;
+            background: linear-gradient(135deg, #f0f4c3, #c8e6c9);
             margin: 0;
             padding: 0;
             display: flex;
@@ -20,6 +24,7 @@
             min-height: 100vh;
             transition: background-color 0.3s;
         }
+
         nav {
             background-color: #388e3c;
             color: white;
@@ -28,6 +33,7 @@
             text-align: center;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
         }
+
         nav a {
             color: white;
             margin: 0 15px;
@@ -35,9 +41,11 @@
             font-weight: bold;
             transition: color 0.3s;
         }
+
         nav a:hover {
             color: #dce775;
         }
+
         .container {
             width: 90%;
             max-width: 600px;
@@ -50,16 +58,27 @@
             opacity: 0;
             transition: opacity 0.5s ease-in-out;
         }
+
         body.loaded .container {
             opacity: 1;
         }
+
         .logo {
             text-align: center;
             margin-bottom: 20px;
         }
+
         .logo img {
             max-width: 150px;
+            border: none;
+            box-shadow: none;
+            transition: transform 0.3s ease;
         }
+
+        .logo img:hover {
+            transform: scale(1.1);
+        }
+
         .profile-pic {
             width: 130px;
             height: 130px;
@@ -73,9 +92,11 @@
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
             transition: transform 0.3s;
         }
+
         .profile-pic:hover {
             transform: scale(1.05);
         }
+
         .profile-pic-info {
             text-align: center;
             font-size: 1rem;
@@ -83,22 +104,27 @@
             margin-top: -10px;
             margin-bottom: 20px;
         }
+
         input[type="file"] {
             display: none;
         }
+
         h1 {
             color: #1b5e20;
             font-size: 1.8rem;
             text-align: center;
             margin-bottom: 25px;
         }
+
         form {
             width: 100%;
         }
+
         .form-field {
             position: relative;
             margin-bottom: 20px;
         }
+
         .form-field i {
             position: absolute;
             left: 15px;
@@ -106,6 +132,7 @@
             transform: translateY(-50%);
             color: #388e3c;
         }
+
         .form-field input {
             width: 100%;
             padding: 12px 15px 12px 40px;
@@ -115,16 +142,18 @@
             transition: all 0.3s ease;
             box-sizing: border-box;
         }
+
         input:focus {
             border-color: #81c784;
             box-shadow: 0 0 8px rgba(129, 199, 132, 0.6);
         }
-        /* تنسيق نص الإدخال */
+
         input::placeholder {
-            color: #888; /* لون نص الإدخال */
-            opacity: 1; /* تأكد من أن النص مرئي */
-            font-style: italic; /* نمط مائل للنص */
+            color: #888;
+            opacity: 1;
+            font-style: italic;
         }
+
         .button {
             padding: 15px 20px;
             background-color: #388e3c;
@@ -137,25 +166,12 @@
             width: 100%;
             margin-top: 20px;
         }
+
         .button:hover {
             background-color: #2c6e3f;
             transform: scale(1.05);
         }
-        @media (max-width: 600px) {
-            .container {
-                padding: 20px;
-            }
-            h1 {
-                font-size: 1.5rem;
-            }
-            .profile-pic {
-                width: 100px;
-                height: 100px;
-            }
-            .button {
-                font-size: 1rem;
-            }
-        }
+
         .logout-button {
             background-color: #d32f2f;
             margin-top: 10px;
@@ -167,17 +183,21 @@
             transition: background-color 0.3s ease, transform 0.3s;
             width: 100%;
         }
+
         .logout-button:hover {
             background-color: #b71c1c;
             transform: scale(1.05);
         }
+
         .position-field {
             margin-bottom: 20px;
         }
+
         .position-label {
             font-weight: bold;
             margin-bottom: 5px;
         }
+
         .progress {
             width: 100%;
             height: 20px;
@@ -185,14 +205,62 @@
             border-radius: 10px;
             margin-top: 5px;
         }
+
         .progress-bar {
             height: 100%;
             background-color: #388e3c;
             border-radius: 10px;
             text-align: center;
             color: white;
-            line-height: 20px; /* Center text vertically */
+            line-height: 20px;
             transition: width 0.3s;
+        }
+
+        .verification-code {
+            display: none;
+            margin-top: 10px;
+        }
+
+        .verification-code input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        .verification-code input:focus {
+            border-color: #81c784;
+            box-shadow: 0 0 8px rgba(129, 199, 132, 0.6);
+        }
+
+        .send-code-button {
+            margin-top: 10px;
+            padding: 12px 20px;
+            background-color: #388e3c;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s;
+            width: 100%;
+        }
+
+        .send-code-button:hover {
+            background-color: #2c6e3f;
+            transform: scale(1.05);
+        }
+
+        .show-password {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #388e3c;
         }
     </style>
 </head>
@@ -218,7 +286,6 @@
                 <input type="text" id="name" name="name" required placeholder="الاسم الكامل">
             </div>
             <div class="form-field">
-                <label for="dob">تاريخ الميلاد:</label>
                 <i class="fas fa-calendar-alt"></i>
                 <input type="date" id="dob" name="dob" required placeholder="تاريخ الميلاد (يوم/شهر/سنة)">
             </div>
@@ -234,9 +301,12 @@
                 <i class="fas fa-envelope"></i>
                 <input type="email" id="email" name="email" required placeholder="البريد الإلكتروني">
             </div>
+            <div class="verification-code" id="verificationCodeField">
+                <input type="text" id="verificationCode" placeholder="أدخل رمز التأكيد">
+            </div>
             <div class="form-field">
                 <i class="fas fa-phone"></i>
-                <input type="tel" id="phone" name="phone" required pattern="[0-9]{10}" title="يجب أن يحتوي رقم الهاتف على 10 أرقام" placeholder="رقم الهاتف">
+                <input type="tel" id="phone" name="phone" required pattern="[0-9]{10}" title="يجب أن يحتوي رقم الهاتف على 10 أرقام" placeholder="رقم الهاتف" style="text-align: right;">
             </div>
             <div class="form-field">
                 <i class="fas fa-futbol"></i>
@@ -245,10 +315,12 @@
             <div class="form-field">
                 <i class="fas fa-lock"></i>
                 <input type="password" id="password" name="password" required placeholder="كلمة السر">
+                <span class="show-password" onclick="togglePasswordVisibility('password')"><i class="fas fa-eye"></i></span>
             </div>
             <div class="form-field">
                 <i class="fas fa-lock"></i>
                 <input type="password" id="confirmPassword" name="confirmPassword" required placeholder="تأكيد كلمة السر">
+                <span class="show-password" onclick="togglePasswordVisibility('confirmPassword')"><i class="fas fa-eye"></i></span>
             </div>
 
             <h2>مراكز اللعب</h2>
@@ -285,10 +357,32 @@
         </form>
     </div>
 
-    <script>
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword, sendEmailVerification } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+        // تكوين Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyDgP-LijckM96Fhbxw1tcCNio2BPEiBgcg",
+            authDomain: "kainmatch-5d2f1.firebaseapp.com",
+            projectId: "kainmatch-5d2f1",
+            storageBucket: "kainmatch-5d2f1.appspot.com",
+            messagingSenderId: "528168328311",
+            appId: "1:528168328311:web:925e8ba6ed2f7ba8aefa72",
+            measurementId: "G-Y2D8WT394E"
+        };
+
+        // تهيئة Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
         const form = document.getElementById('personalForm');
         const profilePicInput = document.getElementById('profilePic');
         const preview = document.getElementById('preview');
+        const emailInput = document.getElementById('email');
+        const verificationCodeField = document.getElementById('verificationCodeField');
+        const verificationCodeInput = document.getElementById('verificationCode');
 
         profilePicInput.addEventListener('change', function () {
             const file = this.files[0];
@@ -306,28 +400,13 @@
             }
         });
 
-        form.addEventListener('submit', function (e) {
+        form.addEventListener('submit', async function (e) {
             e.preventDefault();
-            if (!profilePicInput.files[0]) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'خطأ',
-                    text: 'يرجى رفع صورة شخصية.',
-                });
-                return;
-            }
+
             const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
             const confirmPassword = document.getElementById('confirmPassword').value;
-
-            if (name.trim() === "") {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'خطأ',
-                    text: 'يرجى إدخال الاسم.',
-                });
-                return;
-            }
 
             if (password !== confirmPassword) {
                 Swal.fire({
@@ -338,37 +417,61 @@
                 return;
             }
 
-            const userData = {
-                name,
-                dob: document.getElementById('dob').value,
-                team: document.getElementById('team').value,
-                location: document.getElementById('location').value,
-                email: document.getElementById('email').value,
-                phone: document.getElementById('phone').value,
-                hobbies: document.getElementById('hobbies').value,
-                password,
-                positions: {
-                    goalkeeper: document.getElementById('goalkeeper').value,
-                    defender: document.getElementById('defender').value,
-                    midfielder: document.getElementById('midfielder').value,
-                    forward: document.getElementById('forward').value,
-                }
-            };
-            localStorage.setItem('userData', JSON.stringify(userData));
+            try {
+                // تسجيل المستخدم باستخدام Firebase
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
 
-            Swal.fire({
-                icon: 'success',
-                title: 'تم الحفظ',
-                text: 'تم حفظ المعلومات بنجاح!',
-            });
-            form.reset();
-            preview.style.backgroundImage = '';
+                // إرسال بريد التأكيد
+                await sendEmailVerification(user);
+                Swal.fire({
+                    icon: 'success',
+                    title: 'تم التسجيل',
+                    text: 'تم إرسال بريد التأكيد إلى بريدك الإلكتروني. يرجى التحقق منه.',
+                });
+
+                // حفظ البيانات في localStorage
+                const userData = {
+                    name,
+                    dob: document.getElementById('dob').value,
+                    team: document.getElementById('team').value,
+                    location: document.getElementById('location').value,
+                    email,
+                    phone: document.getElementById('phone').value,
+                    hobbies: document.getElementById('hobbies').value,
+                    positions: {
+                        goalkeeper: document.getElementById('goalkeeper').value,
+                        defender: document.getElementById('defender').value,
+                        midfielder: document.getElementById('midfielder').value,
+                        forward: document.getElementById('forward').value,
+                    }
+                };
+                localStorage.setItem('userData', JSON.stringify(userData));
+
+                form.reset();
+                preview.style.backgroundImage = '';
+            } catch (error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'خطأ',
+                    text: error.message,
+                });
+            }
         });
 
         function updateProgressBar(range, progressId) {
             const progressBar = document.getElementById(progressId);
             progressBar.style.width = range.value + '%';
             progressBar.innerText = range.value + '%';
+        }
+
+        function togglePasswordVisibility(inputId) {
+            const input = document.getElementById(inputId);
+            if (input.type === 'password') {
+                input.type = 'text';
+            } else {
+                input.type = 'password';
+            }
         }
     </script>
 </body>
