@@ -5,10 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>تسجيل الدخول - تطبيق حجز الملاعب</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
-    <!-- إضافة Font Awesome للأيقونات -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        /* تهيئة وتنسيقات عامة */
         * {
             margin: 0;
             padding: 0;
@@ -26,14 +24,10 @@
             overflow: hidden;
             transition: background 0.5s ease, color 0.5s ease;
         }
-
-        /* الوضع الليلي */
         body.dark-mode {
             background: linear-gradient(to bottom, #1e1e1e, #121212);
             color: #ffffff;
         }
-
-        /* تنسيقات الشعار */
         .logo {
             margin-top: 20px;
             width: 150px;
@@ -48,15 +42,12 @@
             animation: fadeIn 2s ease-in-out forwards, moveUp 2s ease-in-out 2s forwards;
             transition: opacity 0.5s ease;
         }
-
         .logo img {
             width: 100%;
             height: 100%;
             object-fit: cover;
             transition: opacity 0.5s ease;
         }
-
-        /* تنسيقات حاوية تسجيل الدخول */
         .login-container {
             background-color: #fff;
             padding: 40px;
@@ -69,13 +60,11 @@
             animation: fadeIn 1s ease-in-out 5s forwards;
             transition: background-color 0.5s ease, box-shadow 0.5s ease;
         }
-
         body.dark-mode .login-container {
             background-color: #2c2c2c;
             color: #ffffff;
             box-shadow: 0 8px 20px rgba(255, 255, 255, 0.1);
         }
-
         .login-container h2 {
             font-size: 30px;
             color: #4CAF50;
@@ -83,32 +72,26 @@
             font-weight: bold;
             transition: color 0.5s ease;
         }
-
         body.dark-mode .login-container h2 {
             color: #6fbf73;
         }
-
-        /* تنسيقات النموذج */
         .login-form {
             display: flex;
             flex-direction: column;
             align-items: center;
         }
-
         .form-group {
             margin-bottom: 15px;
             width: 100%;
             display: flex;
             flex-direction: column;
         }
-
         .form-group label {
             font-size: 18px;
             margin-bottom: 5px;
             color: inherit;
             text-align: right;
         }
-
         .form-group input {
             padding: 12px;
             border: 1px solid #ddd;
@@ -120,19 +103,16 @@
             background-color: #f9f9f9;
             transition: border-color 0.5s ease, background-color 0.5s ease;
         }
-
         body.dark-mode .form-group input {
             background-color: #3a3a3a;
             border-color: #555;
             color: #ffffff;
         }
-
         .form-group input:focus {
             outline: none;
             border-color: #4CAF50;
             box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
         }
-
         .login-button {
             background-color: #4CAF50;
             color: white;
@@ -145,36 +125,28 @@
             width: 100%;
             margin-top: 20px;
         }
-
         .login-button:hover {
             background-color: #45a049;
             transform: scale(1.05);
         }
-
-        .signup-link {
+        .signup-link, .forgot-password {
             margin-top: 20px;
             font-size: 16px;
             color: inherit;
         }
-
-        .signup-link a {
+        .signup-link a, .forgot-password a {
             color: #4CAF50;
             text-decoration: none;
             font-weight: bold;
         }
-
-        .signup-link a:hover {
+        .signup-link a:hover, .forgot-password a:hover {
             text-decoration: underline;
         }
-
-        /* تنسيقات الحقوق */
         .copyright {
             margin-top: 30px;
             font-size: 14px;
             color: #888;
         }
-
-        /* تنسيقات رسالة الخطأ */
         .error-message {
             background-color: #ffebee;
             color: #c62828;
@@ -185,17 +157,13 @@
             text-align: center;
             display: none;
         }
-
         body.dark-mode .error-message {
             background-color: #4a1c1c;
             color: #ff6b6b;
         }
-
         .error-message.show {
             display: block;
         }
-
-        /* تنسيقات زر تسجيل الدخول باستخدام جوجل */
         .google-signin-button {
             background-color: #4285F4;
             color: white;
@@ -212,28 +180,21 @@
             margin-top: 20px;
             transition: background-color 0.5s ease;
         }
-
         .google-signin-button:hover {
             background-color: #357ABD;
         }
-
         .google-signin-button img {
             width: 20px;
             height: 20px;
         }
-
-        /* Animations */
         @keyframes fadeIn {
             from { opacity: 0; }
             to { opacity: 1; }
         }
-
         @keyframes moveUp {
             from { top: 50%; }
             to { top: 20px; }
         }
-
-        /* زر تبديل الوضع */
         .theme-toggle {
             position: fixed;
             top: 20px;
@@ -242,24 +203,20 @@
             border: none;
             cursor: pointer;
             font-size: 24px;
-            color: #FFD700; /* لون الشمس */
-            opacity: 0; /* مخفي في البداية */
+            color: #FFD700;
+            opacity: 0;
             transition: opacity 0.5s ease, color 0.5s ease;
         }
-
         body.dark-mode .theme-toggle {
-            color: #FFFFFF; /* لون القمر */
+            color: #FFFFFF;
         }
-
         .theme-toggle i {
             transition: transform 0.5s ease, opacity 0.5s ease;
         }
-
         .theme-toggle .fa-sun {
             opacity: 1;
             transform: rotate(0deg);
         }
-
         .theme-toggle .fa-moon {
             opacity: 0;
             transform: rotate(-90deg);
@@ -267,23 +224,55 @@
             top: 0;
             right: 0;
         }
-
         body.dark-mode .theme-toggle .fa-sun {
             opacity: 0;
             transform: rotate(90deg);
         }
-
         body.dark-mode .theme-toggle .fa-moon {
             opacity: 1;
             transform: rotate(0deg);
+        }
+        /* تنسيقات النافذة المنبثقة */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+            position: relative;
+        }
+        .close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 24px;
+            cursor: pointer;
+        }
+        .message {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #c62828;
         }
     </style>
 </head>
 <body>
     <!-- زر تبديل الوضع -->
     <button class="theme-toggle" id="themeToggle">
-        <i class="fas fa-sun"></i> <!-- أيقونة الشمس -->
-        <i class="fas fa-moon"></i> <!-- أيقونة القمر -->
+        <i class="fas fa-sun"></i>
+        <i class="fas fa-moon"></i>
     </button>
 
     <!-- الشعار في الأعلى -->
@@ -314,6 +303,9 @@
             <div class="signup-link">
                 ليس لديك حساب؟ <a href="/profile.html">إنشاء حساب</a>
             </div>
+            <div class="forgot-password">
+                <a href="#" id="forgotPasswordLink">نسيت كلمة المرور؟</a>
+            </div>
         </form>
 
         <!-- زر تسجيل الدخول باستخدام جوجل -->
@@ -327,26 +319,49 @@
         </div>
     </div>
 
-    <!-- مكتبة Google Identity Services -->
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <!-- نافذة منبثقة لنسيت كلمة المرور -->
+    <div id="forgotPasswordModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>نسيت كلمة المرور</h2>
+            <p>أدخل بريدك الإلكتروني لإعادة تعيين كلمة المرور:</p>
+            <input type="email" id="resetEmail" placeholder="البريد الإلكتروني">
+            <button id="sendResetEmail">إرسال</button>
+            <div id="resetMessage" class="message"></div>
+        </div>
+    </div>
 
+    <!-- مكتبة Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js"></script>
     <script>
+        // تهيئة Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyDgP-LijckM96Fhbxw1tcCNio2BPEiBgcg",
+            authDomain: "kainmatch-5d2f1.firebaseapp.com",
+            databaseURL: "https://kainmatch-5d2f1-default-rtdb.firebaseio.com",
+            projectId: "kainmatch-5d2f1",
+            storageBucket: "kainmatch-5d2f1.appspot.com",
+            messagingSenderId: "528168328311",
+            appId: "1:528168328311:web:925e8ba6ed2f7ba8aefa72",
+            measurementId: "G-Y2D8WT394E"
+        };
+        firebase.initializeApp(firebaseConfig);
+
         // إدارة الوضع الليلي
         const themeToggle = document.getElementById('themeToggle');
         const body = document.body;
         const logoImage = document.getElementById('logoImage');
 
-        // تبديل الوضع
         themeToggle.addEventListener('click', () => {
             body.classList.toggle('dark-mode');
             const isDarkMode = body.classList.contains('dark-mode');
-            logoImage.src = isDarkMode ? "/1000069661.png" : "/1000067588.png"; // تغيير الشعار
+            logoImage.src = isDarkMode ? "/1000069661.png" : "/1000067588.png";
         });
 
-        // إظهار زر التبديل بعد انتهاء حركة الشعار
         setTimeout(() => {
-            themeToggle.style.opacity = '1'; // إظهار زر التبديل
-        }, 4000); // بعد 4 ثواني (وقت انتهاء حركة الشعار)
+            themeToggle.style.opacity = '1';
+        }, 4000);
 
         // إظهار/إخفاء كلمة المرور
         document.getElementById('togglePassword').addEventListener('click', function() {
@@ -358,48 +373,70 @@
             }
         });
 
-        // إضافة حدث عند إرسال النموذج
+        // إدارة تسجيل الدخول
         document.getElementById('loginForm').addEventListener('submit', function(event) {
             event.preventDefault();
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
-            const userData = JSON.parse(localStorage.getItem('userData'));
 
-            if (userData && userData.email === email && userData.password === password) {
-                localStorage.setItem('loggedIn', true);
-                window.location.href = "index.html";
+            firebase.auth().signInWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    // تسجيل الدخول ناجح
+                    window.location.href = "index.html";
+                })
+                .catch((error) => {
+                    // عرض رسالة الخطأ
+                    const errorMessage = document.getElementById('errorMessage');
+                    errorMessage.textContent = error.message;
+                    errorMessage.classList.add('show');
+                });
+        });
+
+        // إدارة نافذة نسيت كلمة المرور
+        const forgotPasswordModal = document.getElementById('forgotPasswordModal');
+        const forgotPasswordLink = document.getElementById('forgotPasswordLink');
+        const closeModal = document.querySelector('.close');
+        const sendResetEmailButton = document.getElementById('sendResetEmail');
+
+        forgotPasswordLink.addEventListener('click', () => {
+            forgotPasswordModal.style.display = 'flex';
+        });
+
+        closeModal.addEventListener('click', () => {
+            forgotPasswordModal.style.display = 'none';
+        });
+
+        sendResetEmailButton.addEventListener('click', () => {
+            const email = document.getElementById('resetEmail').value;
+            if (email) {
+                firebase.auth().sendPasswordResetEmail(email)
+                    .then(() => {
+                        document.getElementById('resetMessage').textContent = 'تم إرسال بريد إعادة تعيين كلمة المرور إلى بريدك الإلكتروني.';
+                    })
+                    .catch((error) => {
+                        document.getElementById('resetMessage').textContent = 'حدث خطأ: ' + error.message;
+                    });
             } else {
-                const errorMessage = document.getElementById('errorMessage');
-                errorMessage.classList.add('show');
+                document.getElementById('resetMessage').textContent = 'الرجاء إدخال بريد إلكتروني صحيح.';
             }
         });
 
-        // تهيئة تسجيل الدخول باستخدام جوجل
-        function handleCredentialResponse(response) {
-            if (response.credential) {
-                const payload = JSON.parse(atob(response.credential.split('.')[1]));
-                const userData = {
-                    name: payload.name,
-                    email: payload.email,
-                    picture: payload.picture
-                };
-                localStorage.setItem('userData', JSON.stringify(userData));
-                localStorage.setItem('loggedIn', true);
-                window.location.href = "index.html";
-            }
-        }
-
-        window.onload = function () {
-            google.accounts.id.initialize({
-                client_id: '674743145268-cnflb7morj1am52k64g5coqk0hfbroro.apps.googleusercontent.com',
-                callback: handleCredentialResponse
-            });
-
-            google.accounts.id.renderButton(
-                document.getElementById('googleSignInButton'),
-                { theme: 'outline', size: 'large' }
-            );
-        };
+        // تسجيل الدخول باستخدام جوجل
+        const googleSignInButton = document.getElementById('googleSignInButton');
+        googleSignInButton.addEventListener('click', () => {
+            const provider = new firebase.auth.GoogleAuthProvider();
+            firebase.auth().signInWithPopup(provider)
+                .then((result) => {
+                    // تسجيل الدخول ناجح
+                    window.location.href = "index.html";
+                })
+                .catch((error) => {
+                    // عرض رسالة الخطأ
+                    const errorMessage = document.getElementById('errorMessage');
+                    errorMessage.textContent = error.message;
+                    errorMessage.classList.add('show');
+                });
+        });
     </script>
 </body>
 </html>
