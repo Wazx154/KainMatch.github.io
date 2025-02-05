@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>تسجيل الدخول - تطبيق حجز الملاعب</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <!-- إضافة Font Awesome للأيقونات -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         /* تهيئة وتنسيقات عامة */
@@ -221,84 +222,6 @@
             height: 20px;
         }
 
-        /* تنسيقات نافذة نسيت كلمة المرور */
-        .forgot-password-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-
-        .forgot-password-modal.show {
-            display: flex;
-        }
-
-        .forgot-password-content {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 10px;
-            width: 90%;
-            max-width: 400px;
-            text-align: center;
-            position: relative;
-        }
-
-        body.dark-mode .forgot-password-content {
-            background-color: #2c2c2c;
-            color: #ffffff;
-        }
-
-        .forgot-password-content h3 {
-            font-size: 24px;
-            margin-bottom: 20px;
-            color: #4CAF50;
-        }
-
-        .forgot-password-content input {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 20px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            font-size: 16px;
-            text-align: right;
-            direction: rtl;
-        }
-
-        .forgot-password-content button {
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: background-color 0.3s ease;
-        }
-
-        .forgot-password-content button:hover {
-            background-color: #45a049;
-        }
-
-        .close-modal {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            font-size: 24px;
-            cursor: pointer;
-            color: #888;
-        }
-
-        .close-modal:hover {
-            color: #555;
-        }
-
         /* Animations */
         @keyframes fadeIn {
             from { opacity: 0; }
@@ -399,62 +322,31 @@
             تسجيل الدخول باستخدام جوجل
         </button>
 
-        <!-- زر نسيت كلمة المرور -->
-        <div class="forgot-password-link">
-            <a href="#" id="forgotPasswordLink">نسيت كلمة المرور؟</a>
-        </div>
-
         <div class="copyright">
             © 2024 تطبيق كين ماتش. جميع الحقوق محفوظة.
         </div>
     </div>
 
-    <!-- نافذة نسيت كلمة المرور -->
-    <div class="forgot-password-modal" id="forgotPasswordModal">
-        <div class="forgot-password-content">
-            <span class="close-modal" id="closeModal">&times;</span>
-            <h3>نسيت كلمة المرور؟</h3>
-            <input type="email" id="resetEmail" placeholder="أدخل بريدك الإلكتروني">
-            <button id="sendResetEmail">إرسال رابط إعادة التعيين</button>
-        </div>
-    </div>
-
-    <!-- مكتبة Firebase -->
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
     <!-- مكتبة Google Identity Services -->
     <script src="https://accounts.google.com/gsi/client" async defer></script>
 
     <script>
-        // تهيئة Firebase
-        const firebaseConfig = {
-            apiKey: "AIzaSyDgP-LijckM96Fhbxw1tcCNio2BPEiBgcg",
-            authDomain: "kainmatch-5d2f1.firebaseapp.com",
-            databaseURL: "https://kainmatch-5d2f1-default-rtdb.firebaseio.com",
-            projectId: "kainmatch-5d2f1",
-            storageBucket: "kainmatch-5d2f1.firebasestorage.app",
-            messagingSenderId: "528168328311",
-            appId: "1:528168328311:web:925e8ba6ed2f7ba8aefa72",
-            measurementId: "G-Y2D8WT394E"
-        };
-
-        const app = firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
-
         // إدارة الوضع الليلي
         const themeToggle = document.getElementById('themeToggle');
         const body = document.body;
         const logoImage = document.getElementById('logoImage');
 
+        // تبديل الوضع
         themeToggle.addEventListener('click', () => {
             body.classList.toggle('dark-mode');
             const isDarkMode = body.classList.contains('dark-mode');
-            logoImage.src = isDarkMode ? "/1000069661.png" : "/1000067588.png";
+            logoImage.src = isDarkMode ? "/1000069661.png" : "/1000067588.png"; // تغيير الشعار
         });
 
+        // إظهار زر التبديل بعد انتهاء حركة الشعار
         setTimeout(() => {
-            themeToggle.style.opacity = '1';
-        }, 4000);
+            themeToggle.style.opacity = '1'; // إظهار زر التبديل
+        }, 4000); // بعد 4 ثواني (وقت انتهاء حركة الشعار)
 
         // إظهار/إخفاء كلمة المرور
         document.getElementById('togglePassword').addEventListener('click', function() {
@@ -466,53 +358,23 @@
             }
         });
 
-        // تسجيل الدخول باستخدام البريد الإلكتروني وكلمة المرور
+        // إضافة حدث عند إرسال النموذج
         document.getElementById('loginForm').addEventListener('submit', function(event) {
             event.preventDefault();
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
+            const userData = JSON.parse(localStorage.getItem('userData'));
 
-            auth.signInWithEmailAndPassword(email, password)
-                .then((userCredential) => {
-                    window.location.href = "index.html";
-                })
-                .catch((error) => {
-                    const errorMessage = document.getElementById('errorMessage');
-                    errorMessage.textContent = error.message;
-                    errorMessage.classList.add('show');
-                });
-        });
-
-        // فتح نافذة نسيت كلمة المرور
-        document.getElementById('forgotPasswordLink').addEventListener('click', function(event) {
-            event.preventDefault();
-            document.getElementById('forgotPasswordModal').classList.add('show');
-        });
-
-        // إغلاق نافذة نسيت كلمة المرور
-        document.getElementById('closeModal').addEventListener('click', function() {
-            document.getElementById('forgotPasswordModal').classList.remove('show');
-        });
-
-        // إرسال رابط إعادة تعيين كلمة المرور
-        document.getElementById('sendResetEmail').addEventListener('click', function() {
-            const email = document.getElementById('resetEmail').value;
-
-            if (email) {
-                auth.sendPasswordResetEmail(email)
-                    .then(() => {
-                        alert("تم إرسال بريد إلكتروني لإعادة تعيين كلمة المرور. الرجاء التحقق من بريدك الإلكتروني.");
-                        document.getElementById('forgotPasswordModal').classList.remove('show');
-                    })
-                    .catch((error) => {
-                        alert("حدث خطأ: " + error.message);
-                    });
+            if (userData && userData.email === email && userData.password === password) {
+                localStorage.setItem('loggedIn', true);
+                window.location.href = "index.html";
             } else {
-                alert("الرجاء إدخال بريد إلكتروني صحيح.");
+                const errorMessage = document.getElementById('errorMessage');
+                errorMessage.classList.add('show');
             }
         });
 
-        // تسجيل الدخول باستخدام جوجل
+        // تهيئة تسجيل الدخول باستخدام جوجل
         function handleCredentialResponse(response) {
             if (response.credential) {
                 const payload = JSON.parse(atob(response.credential.split('.')[1]));
