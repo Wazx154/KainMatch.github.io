@@ -353,8 +353,10 @@
             const passwordInput = document.getElementById('password');
             if (passwordInput.type === 'password') {
                 passwordInput.type = 'text';
+                this.textContent = '👁️'; // تغيير الأيقونة عند إظهار كلمة المرور
             } else {
                 passwordInput.type = 'password';
+                this.textContent = '👁️'; // تغيير الأيقونة عند إخفاء كلمة المرور
             }
         });
 
