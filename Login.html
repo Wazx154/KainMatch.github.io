@@ -3,203 +3,952 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تسجيل الدخول - تطبيق حجز الملاعب</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>تسجيل الدخول - كين ماتش</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg-primary: #0b1a0f;
+            --bg-card: rgba(18, 38, 22, 0.85);
+            --bg-input: rgba(12, 28, 16, 0.7);
+            --border: rgba(76, 175, 80, 0.15);
+            --border-focus: rgba(76, 175, 80, 0.5);
+            --text: #e8f5e9;
+            --text-muted: rgba(200, 230, 201, 0.45);
+            --accent: #43a047;
+            --accent-glow: rgba(67, 160, 71, 0.25);
+            --error: #ef5350;
+            --error-bg: rgba(239, 83, 80, 0.12);
+            --google-bg: rgba(255, 255, 255, 0.06);
+            --google-border: rgba(255, 255, 255, 0.1);
+            --google-text: #c8e6c9;
+        }
+
+        body.light-mode {
+            --bg-primary: #f1f8e9;
+            --bg-card: rgba(255, 255, 255, 0.92);
+            --bg-input: rgba(255, 255, 255, 0.8);
+            --border: rgba(76, 175, 80, 0.2);
+            --border-focus: rgba(76, 175, 80, 0.6);
+            --text: #1b5e20;
+            --text-muted: rgba(27, 94, 32, 0.5);
+            --accent: #2e7d32;
+            --accent-glow: rgba(46, 125, 50, 0.15);
+            --error: #c62828;
+            --error-bg: rgba(198, 40, 40, 0.08);
+            --google-bg: #ffffff;
+            --google-border: #e0e0e0;
+            --google-text: #5f6368;
+        }
+
         body {
             font-family: 'Cairo', sans-serif;
-            background: linear-gradient(to bottom, #4CAF50, #f0f0f5);
-            color: #333;
+            background: var(--bg-primary);
+            color: var(--text);
             display: flex;
             flex-direction: column;
             align-items: center;
+            justify-content: center;
             min-height: 100vh;
-            text-align: center;
             overflow-x: hidden;
-            transition: background 0.5s ease, color 0.5s ease;
-        }
-        body.dark-mode { background: linear-gradient(to bottom, #1e1e1e, #121212); color: #ffffff; }
-        
-        .logo {
-            margin-top: 20px; width: 150px; height: 150px; border-radius: 50%;
-            overflow: hidden; position: absolute; top: 50%; left: 50%;
-            transform: translate(-50%, -50%); opacity: 0;
-            animation: fadeIn 1.5s ease-in-out forwards, moveUp 1.5s ease-in-out 1.5s forwards;
-            background: #fff; /* خلفية بيضاء للشعار في حال كان شفافاً */
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        }
-        .logo img { width: 100%; height: 100%; object-fit: cover; }
-
-        .login-container {
-            background-color: #fff; padding: 40px; border-radius: 15px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); width: 90%;
-            max-width: 400px; margin-top: 200px; opacity: 0;
-            animation: fadeIn 1s ease-in-out 3s forwards;
-            transition: background-color 0.5s ease;
-        }
-        body.dark-mode .login-container { background-color: #2c2c2c; color: #ffffff; }
-        
-        .login-container h2 { font-size: 30px; color: #4CAF50; margin-bottom: 20px; }
-        .form-group { margin-bottom: 15px; width: 100%; display: flex; flex-direction: column; }
-        .form-group label { font-size: 16px; margin-bottom: 8px; text-align: right; }
-        .form-group input {
-            padding: 12px; border: 1px solid #ddd; border-radius: 8px;
-            font-size: 16px; text-align: right; width: 100%; direction: rtl;
-            outline: none; transition: border 0.3s;
-        }
-        .form-group input:focus { border-color: #4CAF50; }
-        body.dark-mode .form-group input { background-color: #3a3a3a; border-color: #555; color: #fff; }
-
-        .login-button {
-            background-color: #4CAF50; color: white; border: none; padding: 15px;
-            border-radius: 10px; cursor: pointer; font-size: 18px; width: 100%; 
-            margin-top: 10px; font-family: 'Cairo', sans-serif; font-weight: bold;
+            transition: background 0.5s, color 0.5s;
+            position: relative;
         }
 
-        .google-signin-button {
-            background-color: #ffffff; color: #333; border: 1px solid #ddd;
-            padding: 12px; border-radius: 8px; font-size: 16px; cursor: pointer;
-            display: flex; align-items: center; justify-content: center; gap: 12px;
-            width: 100%; margin-top: 15px; font-family: 'Cairo', sans-serif;
-            transition: background 0.3s;
-        }
-        .google-signin-button:hover { background-color: #f8f8f8; }
-
-        .error-message { 
-            background-color: #ffebee; color: #c62828; padding: 10px; 
-            border-radius: 5px; margin-top: 10px; display: none; font-size: 14px;
+        /* خلفية متحركة */
+        .bg-layer {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
         }
 
-        .theme-toggle { 
-            position: fixed; top: 20px; right: 20px; background: white; 
-            border: none; cursor: pointer; font-size: 20px; color: #f1c40f; 
-            opacity: 0; transition: opacity 0.5s; width: 40px; height: 40px; 
-            border-radius: 50%; box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            display: flex; align-items: center; justify-content: center;
-            z-index: 1000;
+        .bg-blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.12;
+            animation: blobFloat 18s ease-in-out infinite;
         }
 
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes moveUp { from { top: 50%; } to { top: 100px; } }
+        .bg-blob:nth-child(1) {
+            width: 500px; height: 500px;
+            background: #388e3c;
+            top: -15%; right: -10%;
+            animation-delay: 0s;
+        }
+
+        .bg-blob:nth-child(2) {
+            width: 400px; height: 400px;
+            background: #66bb6a;
+            bottom: -10%; left: -10%;
+            animation-delay: -6s;
+        }
+
+        .bg-blob:nth-child(3) {
+            width: 300px; height: 300px;
+            background: #81c784;
+            top: 40%; left: 50%;
+            animation-delay: -12s;
+        }
+
+        .light-mode .bg-blob { opacity: 0.06; }
+
+        @keyframes blobFloat {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(30px, -40px) scale(1.08); }
+            66% { transform: translate(-20px, 25px) scale(0.95); }
+        }
+
+        /* جزيئات */
+        .particles {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .dot {
+            position: absolute;
+            width: 3px; height: 3px;
+            background: rgba(76, 175, 80, 0.25);
+            border-radius: 50%;
+            animation: dotRise linear infinite;
+        }
+
+        .light-mode .dot { background: rgba(46, 125, 50, 0.15); }
+
+        @keyframes dotRise {
+            0% { transform: translateY(100vh) scale(0); opacity: 0; }
+            15% { opacity: 1; }
+            85% { opacity: 0.6; }
+            100% { transform: translateY(-10vh) scale(1.2); opacity: 0; }
+        }
+
+        /* زر الوضع */
+        .theme-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            width: 44px; height: 44px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            background: var(--bg-card);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            color: var(--accent);
+            font-size: 18px;
+            cursor: pointer;
+            z-index: 200;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.35s;
+            opacity: 0;
+            animation: fadeSlide 0.6s ease forwards 0.5s;
+        }
+
+        .theme-btn:hover {
+            transform: scale(1.08);
+            border-color: var(--border-focus);
+            box-shadow: 0 0 20px var(--accent-glow);
+        }
+
+        @keyframes fadeSlide {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* الحاوي الرئيسي */
+        .login-wrapper {
+            position: relative;
+            z-index: 1;
+            width: 92%;
+            max-width: 420px;
+            opacity: 0;
+            animation: cardIn 0.8s ease forwards 0.3s;
+        }
+
+        @keyframes cardIn {
+            from { opacity: 0; transform: translateY(40px) scale(0.97); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        /* الشعار */
+        .brand {
+            text-align: center;
+            margin-bottom: 28px;
+        }
+
+        .brand-logo {
+            width: 100px; height: 100px;
+            border-radius: 24px;
+            overflow: hidden;
+            margin: 0 auto 16px;
+            border: 3px solid var(--border);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.25), 0 0 0 6px var(--accent-glow);
+            transition: transform 0.4s, box-shadow 0.4s;
+        }
+
+        .brand-logo:hover {
+            transform: scale(1.05) rotate(-2deg);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.3), 0 0 0 10px var(--accent-glow);
+        }
+
+        .brand-logo img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .brand h1 {
+            font-size: 1.8rem;
+            font-weight: 900;
+            letter-spacing: -0.5px;
+            margin-bottom: 4px;
+        }
+
+        .brand p {
+            color: var(--text-muted);
+            font-size: 0.92rem;
+        }
+
+        /* بطاقة تسجيل الدخول */
+        .card {
+            background: var(--bg-card);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 32px 28px;
+            box-shadow: 0 12px 50px rgba(0, 0, 0, 0.3),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.04);
+            transition: background 0.5s, border 0.5s;
+        }
+
+        .card-title {
+            font-size: 1.35rem;
+            font-weight: 700;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-title i {
+            color: var(--accent);
+            font-size: 1.1rem;
+        }
+
+        /* حقول الإدخال */
+        .field {
+            margin-bottom: 18px;
+            position: relative;
+        }
+
+        .field label {
+            display: block;
+            font-size: 0.88rem;
+            font-weight: 600;
+            margin-bottom: 7px;
+            color: var(--text);
+            opacity: 0.85;
+        }
+
+        .input-wrap {
+            position: relative;
+        }
+
+        .input-wrap i.field-icon {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            pointer-events: none;
+            transition: color 0.3s;
+        }
+
+        .input-wrap input {
+            width: 100%;
+            padding: 13px 14px 13px 42px;
+            border: 1.5px solid var(--border);
+            border-radius: 12px;
+            background: var(--bg-input);
+            color: var(--text);
+            font-family: 'Cairo', sans-serif;
+            font-size: 0.95rem;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        .input-wrap input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .input-wrap input:focus {
+            border-color: var(--border-focus);
+            box-shadow: 0 0 0 3px var(--accent-glow), 0 0 20px var(--accent-glow);
+        }
+
+        .input-wrap input:focus ~ i.field-icon {
+            color: var(--accent);
+        }
+
+        .input-wrap.has-eye input { padding-left: 70px; }
+
+        .eye-btn {
+            position: absolute;
+            left: 42px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 0.95rem;
+            padding: 4px;
+            transition: color 0.3s;
+            z-index: 2;
+        }
+
+        .eye-btn:hover { color: var(--accent); }
+
+        /* رسالة الخطأ */
+        .error-box {
+            background: var(--error-bg);
+            border: 1px solid rgba(239, 83, 80, 0.2);
+            color: var(--error);
+            padding: 12px 16px;
+            border-radius: 10px;
+            font-size: 0.88rem;
+            margin-bottom: 16px;
+            display: none;
+            align-items: center;
+            gap: 8px;
+            animation: shakeX 0.4s ease;
+        }
+
+        .error-box.show { display: flex; }
+
+        @keyframes shakeX {
+            0%, 100% { transform: translateX(0); }
+            20% { transform: translateX(6px); }
+            40% { transform: translateX(-6px); }
+            60% { transform: translateX(4px); }
+            80% { transform: translateX(-4px); }
+        }
+
+        /* زر تسجيل الدخول */
+        .btn-login {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #2e7d32, #43a047);
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            font-family: 'Cairo', sans-serif;
+            font-size: 1.05rem;
+            font-weight: 700;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s;
+            box-shadow: 0 4px 18px rgba(46, 125, 50, 0.3);
+            margin-bottom: 8px;
+        }
+
+        .btn-login::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn-login:hover::before { left: 100%; }
+
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 28px rgba(46, 125, 50, 0.4);
+        }
+
+        .btn-login:active { transform: translateY(0); }
+
+        .btn-login:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        .btn-login .spin {
+            display: none;
+            width: 20px; height: 20px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: rotate 0.6s linear infinite;
+            margin: 0 auto;
+        }
+
+        .btn-login.loading .btn-text { display: none; }
+        .btn-login.loading .spin { display: inline-block; }
+
+        @keyframes rotate { to { transform: rotate(360deg); } }
+
+        /* الفاصل */
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin: 22px 0;
+            color: var(--text-muted);
+            font-size: 0.82rem;
+        }
+
+        .divider::before, .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+
+        /* زر جوجل */
+        .btn-google {
+            width: 100%;
+            padding: 13px 16px;
+            background: var(--google-bg);
+            border: 1.5px solid var(--google-border);
+            border-radius: 12px;
+            font-family: 'Cairo', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--google-text);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-google:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .light-mode .btn-google:hover {
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+            border-color: #ccc;
+        }
+
+        .btn-google:active { transform: translateY(0); }
+
+        .btn-google:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        /* شعار جوجل - SVG مباشر */
+        .google-icon {
+            width: 22px; height: 22px;
+            flex-shrink: 0;
+        }
+
+        .btn-google .google-spin {
+            display: none;
+            width: 18px; height: 18px;
+            border: 2.5px solid rgba(0,0,0,0.1);
+            border-top-color: #4285f4;
+            border-radius: 50%;
+            animation: rotate 0.6s linear infinite;
+        }
+
+        .btn-google.loading .google-text { opacity: 0; }
+        .btn-google.loading .google-icon { display: none; }
+        .btn-google.loading .google-spin { display: inline-block; }
+        .btn-google.loading { pointer-events: none; }
+
+        /* رابط إنشاء حساب */
+        .signup-link {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .signup-link a {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 700;
+            transition: opacity 0.3s;
+        }
+
+        .signup-link a:hover { opacity: 0.8; }
+
+        /* حقوق */
+        .copy {
+            text-align: center;
+            margin-top: 24px;
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            opacity: 0.7;
+        }
+
+        /* Toast */
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .toast {
+            padding: 14px 20px;
+            border-radius: 12px;
+            font-family: 'Cairo', sans-serif;
+            font-size: 0.9rem;
+            backdrop-filter: blur(16px);
+            animation: toastIn 0.4s ease forwards;
+            max-width: 340px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .toast.error {
+            background: rgba(211, 47, 47, 0.92);
+            color: #fff;
+            border: 1px solid rgba(239, 83, 80, 0.3);
+        }
+
+        .toast.success {
+            background: rgba(46, 125, 50, 0.92);
+            color: #fff;
+            border: 1px solid rgba(76, 175, 80, 0.3);
+        }
+
+        .toast.info {
+            background: rgba(33, 150, 243, 0.92);
+            color: #fff;
+            border: 1px solid rgba(66, 165, 245, 0.3);
+        }
+
+        @keyframes toastIn {
+            from { opacity: 0; transform: translateX(40px) scale(0.95); }
+            to { opacity: 1; transform: translateX(0) scale(1); }
+        }
+
+        @keyframes toastOut {
+            to { opacity: 0; transform: translateX(40px) scale(0.95); }
+        }
+
+        /* تنبيه الإعداد */
+        .setup-note {
+            background: rgba(33, 150, 243, 0.08);
+            border: 1px solid rgba(33, 150, 243, 0.15);
+            border-radius: 10px;
+            padding: 12px 16px;
+            margin-top: 16px;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            display: none;
+            text-align: right;
+            line-height: 1.6;
+        }
+
+        .setup-note.show { display: block; }
+
+        .setup-note a {
+            color: #42a5f5;
+            text-decoration: underline;
+        }
+
+        @media (max-width: 480px) {
+            .card { padding: 26px 20px; }
+            .brand h1 { font-size: 1.5rem; }
+            .brand-logo { width: 80px; height: 80px; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
     </style>
 </head>
 <body>
+    <!-- خلفية -->
+    <div class="bg-layer">
+        <div class="bg-blob"></div>
+        <div class="bg-blob"></div>
+        <div class="bg-blob"></div>
+    </div>
+    <div class="particles" id="particles"></div>
 
-    <button class="theme-toggle" id="themeToggle">
-        <i class="fas fa-sun" id="themeIcon"></i>
+    <!-- Toast -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- زر الوضع -->
+    <button class="theme-btn" id="themeBtn" aria-label="تبديل الوضع">
+        <i class="fas fa-moon"></i>
     </button>
 
-    <div class="logo">
-        <img id="logoImage" src="1000067588.png" alt="شعار التطبيق">
-    </div>
-
-    <div class="login-container">
-        <h2>تسجيل الدخول</h2>
-        <form id="loginForm">
-            <div class="form-group">
-                <label for="email">البريد الإلكتروني</label>
-                <input type="email" id="email" placeholder="example@mail.com" required>
+    <!-- المحتوى -->
+    <div class="login-wrapper">
+        <div class="brand">
+            <div class="brand-logo">
+                <img id="logoImg" src="/1000067588.png" alt="كين ماتش">
             </div>
-            <div class="form-group">
-                <label for="password">كلمة المرور</label>
-                <div style="position: relative; width: 100%;">
-                    <input type="password" id="password" placeholder="أدخل كلمة المرور" required>
-                    <span id="togglePassword" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); cursor: pointer; color: #888;">
-                        <i class="fas fa-eye"></i>
-                    </span>
+            <h1>كين ماتش</h1>
+            <p>حجز الملاعب بسهولة وسرعة</p>
+        </div>
+
+        <div class="card">
+            <div class="card-title">
+                <i class="fas fa-right-to-bracket"></i>
+                تسجيل الدخول
+            </div>
+
+            <form id="loginForm" novalidate>
+                <div class="field">
+                    <label for="email">البريد الإلكتروني</label>
+                    <div class="input-wrap">
+                        <input type="email" id="email" placeholder="example@mail.com" required autocomplete="email">
+                        <i class="fas fa-envelope field-icon"></i>
+                    </div>
                 </div>
+
+                <div class="field">
+                    <label for="password">كلمة المرور</label>
+                    <div class="input-wrap has-eye">
+                        <input type="password" id="password" placeholder="أدخل كلمة المرور" required autocomplete="current-password">
+                        <i class="fas fa-lock field-icon"></i>
+                        <button type="button" class="eye-btn" id="eyeBtn" aria-label="إظهار كلمة المرور">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="error-box" id="errorBox">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <span id="errorText"></span>
+                </div>
+
+                <button type="submit" class="btn-login" id="loginBtn">
+                    <span class="btn-text">تسجيل الدخول</span>
+                    <span class="spin"></span>
+                </button>
+            </form>
+
+            <div class="divider">أو</div>
+
+            <button type="button" class="btn-google" id="googleBtn">
+                <svg class="google-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/>
+                    <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+                    <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+                    <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+                </svg>
+                <span class="google-text">تسجيل الدخول بواسطة جوجل</span>
+                <span class="google-spin"></span>
+            </button>
+
+            <div class="setup-note" id="setupNote">
+                <i class="fas fa-info-circle"></i>
+                إذا استمرت المشكلة، تأكد من تفعيل <strong>Google Auth</strong> في
+                <a href="https://console.firebase.google.com" target="_blank" rel="noopener">Firebase Console</a>
+                وإضافة النطاق في إعدادات المصادقة.
             </div>
-            <div id="errorMessage" class="error-message"></div>
-            <button type="submit" class="login-button">دخول</button>
-        </form>
 
-        <button id="googleBtn" class="google-signin-button">
-            <img src="https://fonts.gstatic.com/s/i/productlogos/googleg/v6/24px.svg" alt="Google Logo" width="20">
-            تسجيل الدخول بواسطة جوجل
-        </button>
-
-        <div style="margin-top: 15px; font-size: 14px;">
-            ليس لديك حساب؟ <a href="profile.html" style="color: #4CAF50; text-decoration: none; font-weight: bold;">إنشاء حساب</a>
+            <div class="signup-link">
+                ليس لديك حساب؟
+                <a href="/profile.html">إنشاء حساب جديد</a>
+            </div>
         </div>
 
-        <div style="margin-top: 25px; font-size: 11px; color: #888;">
-            © 2024 تطبيق كين ماتش. جميع الحقوق محفوظة.
-        </div>
+        <div class="copy">&copy; 2024 كين ماتش. جميع الحقوق محفوظة.</div>
     </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getAuth, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, signInWithRedirect, getRedirectResult } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getFirestore, doc, getDoc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-        // إعدادات Firebase
+        // === إعدادات Firebase ===
         const firebaseConfig = {
             apiKey: "AIzaSyDaSsBM2GuRlrewSmYRqwA60ZMcJMIIftQ",
             authDomain: "kainmatch.firebaseapp.com",
             projectId: "kainmatch",
             storageBucket: "kainmatch.firebasestorage.app",
             messagingSenderId: "31352105772",
-            appId: "1:31352105772:web:16f4043cd987a77ada9a89"
+            appId: "1:31352105772:web:16f4043cd987a77ada9a89",
+            measurementId: "G-M0PV4Z1PD6"
         };
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
-        const provider = new GoogleAuthProvider();
+        const db = getFirestore(app);
+        const googleProvider = new GoogleAuthProvider();
 
-        // --- إدارة المظهر ---
-        const themeToggle = document.getElementById('themeToggle');
-        const themeIcon = document.getElementById('themeIcon');
-        const body = document.body;
-        const logoImage = document.getElementById('logoImage');
+        // إضافة نطاقات إضافية للحصول على معلومات المستخدم
+        googleProvider.addScope('profile');
+        googleProvider.addScope('email');
 
-        themeToggle.addEventListener('click', () => {
-            body.classList.toggle('dark-mode');
-            const isDark = body.classList.contains('dark-mode');
-            themeIcon.className = isDark ? 'fas fa-moon' : 'fas fa-sun';
-            logoImage.src = isDark ? "1000069661.png" : "1000067588.png";
+        // === العناصر ===
+        const loginForm = document.getElementById('loginForm');
+        const loginBtn = document.getElementById('loginBtn');
+        const googleBtn = document.getElementById('googleBtn');
+        const errorBox = document.getElementById('errorBox');
+        const errorText = document.getElementById('errorText');
+        const setupNote = document.getElementById('setupNote');
+        const themeBtn = document.getElementById('themeBtn');
+        const logoImg = document.getElementById('logoImg');
+
+        // === الجزيئات ===
+        (function () {
+            const c = document.getElementById('particles');
+            for (let i = 0; i < 20; i++) {
+                const d = document.createElement('div');
+                d.className = 'dot';
+                d.style.left = Math.random() * 100 + '%';
+                d.style.animationDuration = (10 + Math.random() * 18) + 's';
+                d.style.animationDelay = Math.random() * 12 + 's';
+                d.style.opacity = 0.15 + Math.random() * 0.25;
+                c.appendChild(d);
+            }
+        })();
+
+        // === Toast ===
+        function showToast(message, type = 'error') {
+            const container = document.getElementById('toastContainer');
+            const t = document.createElement('div');
+            t.className = 'toast ' + type;
+            const icons = { error: 'fa-circle-xmark', success: 'fa-circle-check', info: 'fa-circle-info' };
+            t.innerHTML = `<i class="fas ${icons[type] || icons.info}"></i><span>${message}</span>`;
+            container.appendChild(t);
+            setTimeout(() => {
+                t.style.animation = 'toastOut 0.35s ease forwards';
+                setTimeout(() => t.remove(), 350);
+            }, 4000);
+        }
+
+        // === إظهار/إخفاء الخطأ ===
+        function showError(msg) {
+            errorText.textContent = msg;
+            errorBox.classList.add('show');
+        }
+
+        function hideError() {
+            errorBox.classList.remove('show');
+        }
+
+        // === الوضع الفاتح/الداكن ===
+        let isDark = true;
+
+        themeBtn.addEventListener('click', () => {
+            isDark = !isDark;
+            document.body.classList.toggle('light-mode', !isDark);
+            themeBtn.querySelector('i').className = isDark ? 'fas fa-moon' : 'fas fa-sun';
+            logoImg.src = isDark ? '/1000067588.png' : '/1000069661.png';
         });
 
-        setTimeout(() => { themeToggle.style.opacity = '1'; }, 3500);
-
-        // إظهار/إخفاء كلمة المرور
-        document.getElementById('togglePassword').addEventListener('click', function() {
-            const pwdInput = document.getElementById('password');
+        // === إظهار/إخفاء كلمة المرور ===
+        document.getElementById('eyeBtn').addEventListener('click', function () {
+            const pwd = document.getElementById('password');
             const icon = this.querySelector('i');
-            if (pwdInput.type === 'password') {
-                pwdInput.type = 'text';
-                icon.classList.replace('fa-eye', 'fa-eye-slash');
+            if (pwd.type === 'password') {
+                pwd.type = 'text';
+                icon.className = 'fas fa-eye-slash';
             } else {
-                pwdInput.type = 'password';
-                icon.classList.replace('fa-eye-slash', 'fa-eye');
+                pwd.type = 'password';
+                icon.className = 'fas fa-eye';
             }
         });
 
-        // --- تسجيل الدخول العادي ---
-        const errorDiv = document.getElementById('errorMessage');
-        document.getElementById('loginForm').addEventListener('submit', (e) => {
+        // === ترجمة أخطاء Firebase ===
+        function translateError(code) {
+            const map = {
+                'auth/user-not-found': 'لا يوجد حساب مرتبط بهذا البريد الإلكتروني',
+                'auth/wrong-password': 'كلمة المرور غير صحيحة',
+                'auth/invalid-email': 'صيغة البريد الإلكتروني غير صحيحة',
+                'auth/invalid-credential': 'البريد الإلكتروني أو كلمة المرور غير صحيحة',
+                'auth/too-many-requests': 'تم تجاوز عدد المحاولات. حاول بعد قليل',
+                'auth/user-disabled': 'تم تعطيل هذا الحساب. تواصل مع الدعم',
+                'auth/network-request-failed': 'مشكلة في الاتصال بالإنترنت',
+                'auth/popup-closed-by-user': 'تم إغلاق نافذة تسجيل الدخول',
+                'auth/cancelled-popup-request': 'تم إلغاء عملية تسجيل الدخول',
+                'auth/popup-blocked': 'تم حظر النافذة المنبثقة. اسمح بالنوافذ المنبثقة للموقع',
+                'auth/auth-domain-config-required': 'لم يتم تهيئة نطاق المصادقة في Firebase',
+                'auth/operation-not-supported-in-this-environment': 'هذه العملية غير مدعومة في هذا المتصفح',
+                'auth/unauthorized-domain': 'هذا النطاق غير مصرح به لتسجيل الدخول. أضفه في Firebase Console',
+                'auth/account-exists-with-different-credential': 'يوجد حساب بهذا البريد مسجل بطريقة أخرى',
+            };
+            return map[code] || 'حدث خطأ غير متوقع. حاول مرة أخرى';
+        }
+
+        // === حفظ بيانات مستخدم جوجل في Firestore ===
+        async function saveGoogleUser(user) {
+            const userRef = doc(db, 'users', user.uid);
+            const existing = await getDoc(userRef).catch(() => null);
+
+            if (!existing || !existing.exists()) {
+                await setDoc(userRef, {
+                    name: user.displayName || '',
+                    email: user.email || '',
+                    phone: user.phoneNumber || '',
+                    team: '',
+                    location: '',
+                    hobbies: '',
+                    profilePic: user.photoURL || null,
+                    positions: {
+                        goalkeeper: 0,
+                        defender: 0,
+                        midfielder: 0,
+                        forward: 0
+                    },
+                    positionModes: {
+                        goalkeeper: true,
+                        defender: true,
+                        midfielder: true,
+                        forward: true
+                    },
+                    authProvider: 'google',
+                    emailVerified: user.emailVerified,
+                    createdAt: serverTimestamp()
+                });
+            }
+        }
+
+        // === الانتقال بعد النجاح ===
+        function goToHome() {
+            localStorage.setItem('loggedIn', 'true');
+            localStorage.setItem('userId', auth.currentUser.uid);
+            window.location.href = 'index.html';
+        }
+
+        // === تسجيل الدخول بالبريد ===
+        loginForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            const email = document.getElementById('email').value;
+            hideError();
+            setupNote.classList.remove('show');
+
+            const email = document.getElementById('email').value.trim();
             const password = document.getElementById('password').value;
 
-            signInWithEmailAndPassword(auth, email, password)
-                .then(() => window.location.href = "index.html")
-                .catch((error) => {
-                    errorDiv.style.display = 'block';
-                    errorDiv.textContent = "تأكد من صحة البيانات المدخلة";
-                });
+            if (!email || !password) {
+                showError('يرجى ملء جميع الحقول');
+                return;
+            }
+
+            loginBtn.classList.add('loading');
+            loginBtn.disabled = true;
+
+            try {
+                const cred = await signInWithEmailAndPassword(auth, email, password);
+
+                // التحقق من تأكيد البريد
+                if (!cred.user.emailVerified) {
+                    showError('يرجى تأكيد بريدك الإلكتروني أولاً. تحقق من صندوق الرسائل');
+                    await auth.signOut();
+                    loginBtn.classList.remove('loading');
+                    loginBtn.disabled = false;
+                    return;
+                }
+
+                goToHome();
+            } catch (err) {
+                showError(translateError(err.code));
+            } finally {
+                loginBtn.classList.remove('loading');
+                loginBtn.disabled = false;
+            }
         });
 
-        // --- تسجيل الدخول بجوجل ---
-        document.getElementById('googleBtn').addEventListener('click', () => {
-            signInWithPopup(auth, provider)
-                .then(() => window.location.href = "index.html")
-                .catch((error) => {
-                    console.error("Google Auth Error:", error);
-                    errorDiv.style.display = 'block';
-                    errorDiv.textContent = "حدث خطأ أثناء الاتصال بجوجل، حاول لاحقاً";
-                });
+        // === تسجيل الدخول بجوجل ===
+        googleBtn.addEventListener('click', async () => {
+            hideError();
+            setupNote.classList.remove('show');
+
+            googleBtn.classList.add('loading');
+            googleBtn.disabled = true;
+
+            try {
+                const result = await signInWithPopup(auth, googleProvider);
+
+                if (!result.user) {
+                    throw new Error('auth/popup-closed-by-user');
+                }
+
+                await saveGoogleUser(result.user);
+                goToHome();
+
+            } catch (err) {
+                googleBtn.classList.remove('loading');
+                googleBtn.disabled = false;
+
+                const code = err.code || '';
+
+                // أخطاء تتطلب إظهار تنبيه الإعداد
+                const setupCodes = [
+                    'auth/unauthorized-domain',
+                    'auth/auth-domain-config-required',
+                    'auth/operation-not-supported-in-this-environment'
+                ];
+
+                if (setupCodes.includes(code)) {
+                    showError(translateError(code));
+                    setupNote.classList.add('show');
+                } else if (code === 'auth/popup-blocked') {
+                    // محاولة التحويل كبديل
+                    try {
+                        await signInWithRedirect(auth, googleProvider);
+                    } catch (redirectErr) {
+                        showError(translateError(redirectErr.code));
+                        setupNote.classList.add('show');
+                    }
+                } else if (code === 'auth/account-exists-with-different-credential') {
+                    showError('يوجد حساب بهذا البريد مسجل بكلمة مرور. سجّل دخولك بالبريد أولاً');
+                } else if (code === 'auth/popup-closed-by-user' || code === 'auth/cancelled-popup-request') {
+                    // لا نُظهر خطأ إذا أغلق المستخدم النافذة
+                } else {
+                    showError(translateError(code));
+                    if (!code) setupNote.classList.add('show');
+                }
+            }
         });
+
+        // === التحقق من نتيجة التحويل (إذا استخدمنا redirect) ===
+        getRedirectResult(auth)
+            .then(async (result) => {
+                if (result) {
+                    await saveGoogleUser(result.user);
+                    goToHome();
+                }
+            })
+            .catch((err) => {
+                // تجاهل أخطاء redirect الفارغة
+                if (err.code !== 'auth/missing-auth-domain' && err.code) {
+                    showError(translateError(err.code));
+                }
+            });
+
+        // === إخفاء الخطأ عند الكتابة ===
+        document.getElementById('email').addEventListener('input', hideError);
+        document.getElementById('password').addEventListener('input', hideError);
     </script>
 </body>
 </html>
