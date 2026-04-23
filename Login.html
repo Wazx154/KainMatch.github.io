@@ -16,6 +16,8 @@
 
     <style>
 
+        /* التنسيقات الأصلية كما هي */
+
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
@@ -44,195 +46,6 @@
 
         body.dark-mode { background: linear-gradient(to bottom, #1e1e1e, #121212); color: #ffffff; }
 
-        /* === صورة المستخدم بعد تسجيل الدخول بجوجل === */
-        .user-avatar-section {
-            display: none;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            margin-bottom: 18px;
-            animation: slideDown 0.4s ease-out forwards;
-        }
-
-        .user-avatar-section.visible {
-            display: flex;
-        }
-
-        .user-avatar {
-            width: 56px;
-            height: 56px;
-            border-radius: 50%;
-            border: 3px solid #4CAF50;
-            box-shadow: 0 0 12px rgba(76, 175, 80, 0.4);
-            object-fit: cover;
-            background: #e8f5e9;
-        }
-
-        /* بديل الصورة عند فشل تحميل صورة جوجل */
-        .user-avatar-fallback {
-            width: 56px;
-            height: 56px;
-            border-radius: 50%;
-            border: 3px solid #4CAF50;
-            box-shadow: 0 0 12px rgba(76, 175, 80, 0.4);
-            background: linear-gradient(135deg, #4CAF50, #2E7D32);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            color: #fff;
-            font-weight: 700;
-        }
-
-        .user-avatar-fallback.visible {
-            display: flex;
-        }
-
-        .user-avatar-name {
-            font-size: 15px;
-            font-weight: 700;
-            color: #4CAF50;
-            direction: rtl;
-            text-align: right;
-        }
-
-        body.dark-mode .user-avatar-name { color: #66BB6A; }
-
-        /* === رسائل النجاح والخطأ المحسّنة === */
-        .message-toast {
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%) translateY(-120px);
-            padding: 14px 28px;
-            border-radius: 12px;
-            font-family: 'Cairo', sans-serif;
-            font-size: 15px;
-            font-weight: 700;
-            z-index: 9999;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            white-space: nowrap;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.25);
-            transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.4s ease;
-            opacity: 0;
-            pointer-events: none;
-        }
-
-        .message-toast.show {
-            transform: translateX(-50%) translateY(0);
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        .message-toast.hide {
-            transform: translateX(-50%) translateY(-120px);
-            opacity: 0;
-        }
-
-        .message-toast.error {
-            background: linear-gradient(135deg, #ff5252, #d32f2f);
-            color: #fff;
-            border: 1px solid rgba(255,255,255,0.15);
-        }
-
-        .message-toast.success {
-            background: linear-gradient(135deg, #4CAF50, #2E7D32);
-            color: #fff;
-            border: 1px solid rgba(255,255,255,0.15);
-        }
-
-        .message-toast .toast-icon {
-            font-size: 20px;
-            animation: iconBounce 0.6s ease;
-        }
-
-        @keyframes iconBounce {
-            0% { transform: scale(0); }
-            50% { transform: scale(1.3); }
-            100% { transform: scale(1); }
-        }
-
-        /* رسالة الخطأ داخل الفورم */
-        .error-message {
-            background: linear-gradient(135deg, #fff5f5, #ffebee);
-            color: #c62828;
-            padding: 12px 16px;
-            border-radius: 10px;
-            margin-top: 12px;
-            display: none;
-            align-items: center;
-            gap: 8px;
-            font-size: 14px;
-            font-weight: 700;
-            border: 1px solid #ffcdd2;
-            text-align: right;
-            direction: rtl;
-            overflow: hidden;
-            max-height: 0;
-            opacity: 0;
-            padding: 0 16px;
-            margin-top: 0;
-            transition: max-height 0.4s ease, opacity 0.4s ease, padding 0.4s ease, margin-top 0.4s ease;
-        }
-
-        .error-message.show {
-            display: flex;
-            max-height: 80px;
-            opacity: 1;
-            padding: 12px 16px;
-            margin-top: 12px;
-        }
-
-        .error-message .error-icon {
-            font-size: 18px;
-            flex-shrink: 0;
-            animation: shakeX 0.5s ease;
-        }
-
-        body.dark-mode .error-message {
-            background: linear-gradient(135deg, #3a1a1a, #2c1515);
-            color: #ef9a9a;
-            border-color: #5a2020;
-        }
-
-        @keyframes shakeX {
-            0%, 100% { transform: translateX(0); }
-            20% { transform: translateX(-6px); }
-            40% { transform: translateX(6px); }
-            60% { transform: translateX(-4px); }
-            80% { transform: translateX(4px); }
-        }
-
-        /* === مؤشر التحميل على الزر === */
-        .login-button, .google-signin-button {
-            position: relative;
-            overflow: hidden;
-        }
-
-        .login-button.loading, .google-signin-button.loading {
-            pointer-events: none;
-            opacity: 0.8;
-        }
-
-        .btn-spinner {
-            display: none;
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(255,255,255,0.3);
-            border-top-color: #fff;
-            border-radius: 50%;
-            animation: spin 0.7s linear infinite;
-            margin: 0 auto;
-        }
-
-        .loading .btn-spinner { display: block; }
-        .loading .btn-text { display: none; }
-
-        @keyframes spin { to { transform: rotate(360deg); } }
-
-        /* === باقي التنسيقات الأصلية === */
         .logo {
 
             margin-top: 20px; width: 150px; height: 150px; border-radius: 50%;
@@ -265,8 +78,6 @@
 
         .login-container h2 { font-size: 30px; color: #4CAF50; margin-bottom: 20px; }
 
-        body.dark-mode .login-container h2 { color: #66BB6A; }
-
         .form-group { margin-bottom: 15px; width: 100%; display: flex; flex-direction: column; }
 
         .form-group label { font-size: 18px; margin-bottom: 5px; text-align: right; }
@@ -277,14 +88,6 @@
 
             font-size: 16px; text-align: right; width: 100%; direction: rtl;
 
-            transition: border-color 0.3s ease, box-shadow 0.3s ease;
-
-        }
-
-        .form-group input:focus {
-            outline: none;
-            border-color: #4CAF50;
-            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.15);
         }
 
         body.dark-mode .form-group input { background-color: #3a3a3a; border-color: #555; color: #fff; }
@@ -295,17 +98,7 @@
 
             border-radius: 10px; cursor: pointer; font-size: 18px; width: 100%; margin-top: 20px;
 
-            transition: background-color 0.3s ease, transform 0.15s ease, box-shadow 0.3s ease;
-
         }
-
-        .login-button:hover {
-            background-color: #43A047;
-            box-shadow: 0 4px 16px rgba(76, 175, 80, 0.4);
-            transform: translateY(-1px);
-        }
-
-        .login-button:active { transform: translateY(0); }
 
         .google-signin-button {
 
@@ -317,83 +110,21 @@
 
             width: 100%; margin-top: 20px; font-family: 'Cairo', sans-serif;
 
-            transition: background-color 0.3s ease, transform 0.15s ease, box-shadow 0.3s ease;
-
         }
 
-        .google-signin-button:hover {
-            background-color: #f5f5f5;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-            transform: translateY(-1px);
-        }
+        .error-message { background-color: #ffebee; color: #c62828; padding: 10px; border-radius: 5px; margin-top: 10px; display: none; }
 
-        .google-signin-button:active { transform: translateY(0); }
-
-        body.dark-mode .google-signin-button {
-            background-color: #3a3a3a;
-            border-color: #555;
-            color: #ccc;
-        }
-
-        body.dark-mode .google-signin-button:hover { background-color: #444; }
-
-        .theme-toggle {
-
-            position: fixed; top: 20px; right: 20px; background: transparent;
-
-            border: none; cursor: pointer; font-size: 24px; color: #FFD700;
-
-            opacity: 0; transition: opacity 0.5s, transform 0.3s ease;
-
-        }
-
-        .theme-toggle:hover { transform: scale(1.15) rotate(20deg); }
+        .theme-toggle { position: fixed; top: 20px; right: 20px; background: transparent; border: none; cursor: pointer; font-size: 24px; color: #FFD700; opacity: 0; transition: opacity 0.5s; }
 
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
         @keyframes moveUp { from { top: 50%; } to { top: 20px; } }
-
-        @keyframes slideDown {
-            from { opacity: 0; transform: translateY(-15px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .signup-link { margin-top: 15px; }
-
-        .signup-link a {
-
-            color: #4CAF50; text-decoration: none; font-weight: bold;
-
-            transition: color 0.3s ease;
-
-        }
-
-        .signup-link a:hover { color: #2E7D32; text-decoration: underline; }
-
-        body.dark-mode .signup-link a { color: #66BB6A; }
-
-        .copyright { margin-top: 20px; font-size: 12px; color: #888; }
-
-        body.dark-mode .copyright { color: #666; }
 
     </style>
 
 </head>
 
 <body>
-
-
-
-    <!-- رسائل Toast العائمة -->
-    <div class="message-toast" id="toastSuccess">
-        <span class="toast-icon"><i class="fas fa-check-circle"></i></span>
-        <span>تم تسجيل الدخول بنجاح</span>
-    </div>
-
-    <div class="message-toast" id="toastError">
-        <span class="toast-icon"><i class="fas fa-exclamation-circle"></i></span>
-        <span id="toastErrorText">حدث خطأ</span>
-    </div>
 
 
 
@@ -417,15 +148,6 @@
 
         <h2>تسجيل الدخول</h2>
 
-        <!-- صورة المستخدم من جوجل تظهر بعد نجاح تسجيل الدخول -->
-        <div class="user-avatar-section" id="userAvatarSection">
-            <img class="user-avatar" id="userAvatar" src="" alt="صورة المستخدم">
-            <div class="user-avatar-fallback" id="userAvatarFallback">
-                <i class="fas fa-user"></i>
-            </div>
-            <span class="user-avatar-name" id="userAvatarName"></span>
-        </div>
-
         <form class="login-form" id="loginForm">
 
             <div class="form-group">
@@ -444,31 +166,19 @@
 
                     <input type="password" id="password" placeholder="أدخل كلمة المرور" required>
 
-                    <span id="togglePassword" style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); cursor: pointer; font-size: 18px;">👁️</span>
+                    <span id="togglePassword" style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); cursor: pointer;">👁️</span>
 
                 </div>
 
             </div>
 
-            <div id="errorMessage" class="error-message">
+            <div id="errorMessage" class="error-message"></div>
 
-                <span class="error-icon">⚠️</span>
+            <button type="submit" class="login-button" id="submitBtn">تسجيل الدخول</button>
 
-                <span id="errorText">خطأ في تسجيل الدخول</span>
+            <div class="signup-link" style="margin-top: 15px;">
 
-            </div>
-
-            <button type="submit" class="login-button" id="submitBtn">
-
-                <span class="btn-text">تسجيل الدخول</span>
-
-                <div class="btn-spinner"></div>
-
-            </button>
-
-            <div class="signup-link">
-
-                ليس لديك حساب؟ <a href="/profile.html">إنشاء حساب</a>
+                ليس لديك حساب؟ <a href="/profile.html" style="color: #4CAF50; text-decoration: none; font-weight: bold;">إنشاء حساب</a>
 
             </div>
 
@@ -480,15 +190,13 @@
 
             <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" width="20">
 
-            <span class="btn-text">تسجيل الدخول بواسطة جوجل</span>
-
-            <div class="btn-spinner"></div>
+            تسجيل الدخول بواسطة جوجل
 
         </button>
 
 
 
-        <div class="copyright">
+        <div class="copyright" style="margin-top: 20px; font-size: 12px; color: #888;">
 
             © 2024 تطبيق كين ماتش. جميع الحقوق محفوظة.
 
@@ -538,7 +246,7 @@
 
 
 
-        // --- عناصر الواجهة ---
+        // --- إدارة الواجهة ---
 
         const themeToggle = document.getElementById('themeToggle');
 
@@ -546,174 +254,7 @@
 
         const logoImage = document.getElementById('logoImage');
 
-        const errorDiv = document.getElementById('errorMessage');
 
-        const errorText = document.getElementById('errorText');
-
-        const toastSuccess = document.getElementById('toastSuccess');
-
-        const toastError = document.getElementById('toastError');
-
-        const toastErrorText = document.getElementById('toastErrorText');
-
-        const submitBtn = document.getElementById('submitBtn');
-
-        const googleBtn = document.getElementById('googleBtn');
-
-        const userAvatarSection = document.getElementById('userAvatarSection');
-
-        const userAvatar = document.getElementById('userAvatar');
-
-        const userAvatarFallback = document.getElementById('userAvatarFallback');
-
-        const userAvatarName = document.getElementById('userAvatarName');
-
-
-
-        // --- دوال الرسائل المحسّنة ---
-
-        // إظهار رسالة خطأ داخل الفورم
-        function showError(message) {
-
-            errorText.textContent = message;
-
-            errorDiv.classList.add('show');
-
-            // إخفاء تلقائي بعد 4 ثوانٍ
-
-            clearTimeout(showError._timer);
-
-            showError._timer = setTimeout(hideError, 4000);
-
-        }
-
-
-
-        // إخفاء رسالة الخطأ بتأثير سلس
-
-        function hideError() {
-
-            errorDiv.classList.remove('show');
-
-        }
-
-
-
-        // إظهار Toast النجاح من الأعلى
-
-        function showSuccessToast(message) {
-
-            if (message) toastSuccess.querySelector('span:last-child').textContent = message;
-
-            toastSuccess.classList.remove('hide');
-
-            toastSuccess.classList.add('show');
-
-            setTimeout(() => {
-
-                toastSuccess.classList.remove('show');
-
-                toastSuccess.classList.add('hide');
-
-            }, 2500);
-
-        }
-
-
-
-        // إظهار Toast الخطأ من الأعلى
-
-        function showErrorToast(message) {
-
-            toastErrorText.textContent = message;
-
-            toastError.classList.remove('hide');
-
-            toastError.classList.add('show');
-
-            setTimeout(() => {
-
-                toastError.classList.remove('show');
-
-                toastError.classList.add('hide');
-
-            }, 3000);
-
-        }
-
-
-
-        // --- حل مشكلة صورة جوجل ---
-
-        // عند نجاح تسجيل الدخول بجوجل نعرض صورة المستخدم مع بديل آمن
-
-        function showGoogleUser(user) {
-
-            const photoURL = user.photoURL;
-
-            const displayName = user.displayName || 'مستخدم جوجل';
-
-
-
-            userAvatarName.textContent = 'مرحباً، ' + displayName;
-
-
-
-            if (photoURL) {
-
-                // إضافة معامل لمنع الكاش وتجاوز مشاكل CORS
-
-                const safeURL = photoURL.split('?')[0] + '?sz=200&nocache=' + Date.now();
-
-                userAvatar.src = safeURL;
-
-                userAvatar.style.display = 'block';
-
-                userAvatarFallback.classList.remove('visible');
-
-
-
-                // إذا فشل تحميل الصورة نعرض البديل فوراً
-
-                userAvatar.onerror = function() {
-
-                    userAvatar.style.display = 'none';
-
-                    userAvatarFallback.classList.add('visible');
-
-                };
-
-
-
-                // إذا نجح التحميل نتأكد من إخفاء البديل
-
-                userAvatar.onload = function() {
-
-                    userAvatar.style.display = 'block';
-
-                    userAvatarFallback.classList.remove('visible');
-
-                };
-
-            } else {
-
-                // لا توجد صورة — نعرض البديل مباشرة
-
-                userAvatar.style.display = 'none';
-
-                userAvatarFallback.classList.add('visible');
-
-            }
-
-
-
-            userAvatarSection.classList.add('visible');
-
-        }
-
-
-
-        // --- تبديل الوضع الليلي ---
 
         themeToggle.addEventListener('click', () => {
 
@@ -723,12 +264,6 @@
 
             logoImage.src = isDarkMode ? "/1000069661.png" : "/1000067588.png";
 
-            themeToggle.innerHTML = isDarkMode
-
-                ? '<i class="fas fa-moon"></i>'
-
-                : '<i class="fas fa-sun"></i>';
-
         });
 
 
@@ -737,51 +272,31 @@
 
 
 
-        // --- إظهار/إخفاء كلمة المرور ---
-
         document.getElementById('togglePassword').addEventListener('click', function() {
 
             const pwd = document.getElementById('password');
 
-            const isPassword = pwd.type === 'password';
-
-            pwd.type = isPassword ? 'text' : 'password';
-
-            this.textContent = isPassword ? '🙈' : '👁️';
+            pwd.type = pwd.type === 'password' ? 'text' : 'password';
 
         });
 
 
 
-        // --- تسجيل الدخول بالبريد والكلمة ---
+        // --- عملية تسجيل الدخول بالبريد ---
 
-        document.getElementById('loginForm').addEventListener('submit', (e) => {
+        const loginForm = document.getElementById('loginForm');
+
+        const errorDiv = document.getElementById('errorMessage');
+
+
+
+        loginForm.addEventListener('submit', (e) => {
 
             e.preventDefault();
 
-            hideError();
-
-
-
-            const email = document.getElementById('email').value.trim();
+            const email = document.getElementById('email').value;
 
             const password = document.getElementById('password').value;
-
-
-
-            if (!email || !password) {
-
-                showError('يرجى ملء جميع الحقول المطلوبة');
-
-                return;
-
-            }
-
-
-
-            // تفعيل مؤشر التحميل
-
-            submitBtn.classList.add('loading');
 
 
 
@@ -789,57 +304,15 @@
 
                 .then((userCredential) => {
 
-                    submitBtn.classList.remove('loading');
-
-                    showSuccessToast('تم تسجيل الدخول بنجاح');
-
-                    // انتقال بعد انتهاء تأثير الرسالة
-
-                    setTimeout(() => {
-
-                        window.location.href = "index.html";
-
-                    }, 1500);
+                    window.location.href = "index.html";
 
                 })
 
                 .catch((error) => {
 
-                    submitBtn.classList.remove('loading');
+                    errorDiv.style.display = 'block';
 
-
-
-                    let message = 'حدث خطأ غير متوقع، حاول مرة أخرى';
-
-
-
-                    if (error.code === 'auth/user-not-found') {
-
-                        message = 'البريد الإلكتروني غير مسجل في النظام';
-
-                    } else if (error.code === 'auth/wrong-password') {
-
-                        message = 'كلمة المرور غير صحيحة';
-
-                    } else if (error.code === 'auth/invalid-email') {
-
-                        message = 'صيغة البريد الإلكتروني غير صحيحة';
-
-                    } else if (error.code === 'auth/too-many-requests') {
-
-                        message = 'محاولات كثيرة، انتظر قليلاً ثم حاول مجدداً';
-
-                    } else if (error.code === 'auth/invalid-credential') {
-
-                        message = 'البريد الإلكتروني أو كلمة المرور غير صحيحة';
-
-                    }
-
-
-
-                    showError(message);
-
-                    showErrorToast(message);
+                    errorDiv.textContent = "خطأ: البريد الإلكتروني أو كلمة المرور غير صحيحة";
 
                 });
 
@@ -849,71 +322,21 @@
 
         // --- تسجيل الدخول بجوجل ---
 
-        googleBtn.addEventListener('click', () => {
-
-            hideError();
-
-            googleBtn.classList.add('loading');
-
-
+        document.getElementById('googleBtn').addEventListener('click', () => {
 
             signInWithPopup(auth, provider)
 
                 .then((result) => {
 
-                    googleBtn.classList.remove('loading');
-
-                    const user = result.user;
-
-
-
-                    // عرض صورة واسم المستخدم من جوجل
-
-                    showGoogleUser(user);
-
-
-
-                    showSuccessToast('مرحباً ' + (user.displayName || '') + '!');
-
-
-
-                    setTimeout(() => {
-
-                        window.location.href = "index.html";
-
-                    }, 2000);
+                    window.location.href = "index.html";
 
                 })
 
                 .catch((error) => {
 
-                    googleBtn.classList.remove('loading');
+                    errorDiv.style.display = 'block';
 
-
-
-                    let message = 'فشل تسجيل الدخول عبر جوجل';
-
-
-
-                    if (error.code === 'auth/popup-closed-by-user') {
-
-                        message = 'تم إغلاق نافذة تسجيل الدخول';
-
-                    } else if (error.code === 'auth/cancelled-popup-request') {
-
-                        message = 'يوجد طلب تسجيل دخول مفتوح بالفعل';
-
-                    } else if (error.code === 'auth/popup-blocked') {
-
-                        message = 'تم حظر النافذة المنبثقة، اسمح بالنوافذ المنبثقة';
-
-                    }
-
-
-
-                    showError(message);
-
-                    showErrorToast(message);
+                    errorDiv.textContent = "فشل تسجيل الدخول عبر جوجل";
 
                 });
 
