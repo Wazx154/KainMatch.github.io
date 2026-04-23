@@ -1,359 +1,181 @@
 <!DOCTYPE html>
 
 <html lang="ar" dir="rtl">
-
 <head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>تسجيل الدخول - تطبيق حجز الملاعب</title>
 
-    <meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
-    <title>تسجيل الدخول - تطبيق حجز الملاعب</title>
+body {
+    font-family: 'Cairo', sans-serif;
+    background: linear-gradient(to bottom, #4CAF50, #f0f0f5);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    text-align: center;
+}
 
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+.login-container {
+    background: #fff;
+    padding: 40px;
+    border-radius: 15px;
+    width: 90%;
+    max-width: 400px;
+    margin-top: 200px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-
-    <style>
-
-        /* التنسيقات الأصلية كما هي */
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        body {
-
-            font-family: 'Cairo', sans-serif;
-
-            background: linear-gradient(to bottom, #4CAF50, #f0f0f5);
-
-            color: #333;
-
-            display: flex;
-
-            flex-direction: column;
-
-            align-items: center;
-
-            min-height: 100vh;
-
-            text-align: center;
-
-            overflow-x: hidden;
-
-            transition: background 0.5s ease, color 0.5s ease;
-
-        }
-
-        body.dark-mode { background: linear-gradient(to bottom, #1e1e1e, #121212); color: #ffffff; }
-
-        .logo {
-
-            margin-top: 20px; width: 150px; height: 150px; border-radius: 50%;
-
-            overflow: hidden; position: absolute; top: 50%; left: 50%;
-
-            transform: translate(-50%, -50%); opacity: 0;
-
-            animation: fadeIn 2s ease-in-out forwards, moveUp 2s ease-in-out 2s forwards;
-
-        }
-
-        .logo img { width: 100%; height: 100%; object-fit: cover; }
-
-        .login-container {
-
-            background-color: #fff; padding: 40px; border-radius: 15px;
-
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); width: 90%;
-
-            max-width: 400px; margin-top: 200px; opacity: 0;
-
-            animation: fadeIn 1s ease-in-out 5s forwards;
-
-            transition: background-color 0.5s ease;
-
-        }
-
-        body.dark-mode .login-container { background-color: #2c2c2c; color: #ffffff; }
-
-        .login-container h2 { font-size: 30px; color: #4CAF50; margin-bottom: 20px; }
-
-        .form-group { margin-bottom: 15px; width: 100%; display: flex; flex-direction: column; }
-
-        .form-group label { font-size: 18px; margin-bottom: 5px; text-align: right; }
-
-        .form-group input {
-
-            padding: 12px; border: 1px solid #ddd; border-radius: 8px;
-
-            font-size: 16px; text-align: right; width: 100%; direction: rtl;
-
-        }
-
-        body.dark-mode .form-group input { background-color: #3a3a3a; border-color: #555; color: #fff; }
-
-        .login-button {
-
-            background-color: #4CAF50; color: white; border: none; padding: 15px;
-
-            border-radius: 10px; cursor: pointer; font-size: 18px; width: 100%; margin-top: 20px;
-
-        }
-
-        .google-signin-button {
-    background-color: #ffffff;
-    color: #757575;
+input {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border-radius: 8px;
     border: 1px solid #ddd;
+}
+
+button {
+    width: 100%;
     padding: 12px;
     border-radius: 8px;
-    font-size: 16px;
     cursor: pointer;
+}
+
+.login-btn {
+    background: #4CAF50;
+    color: white;
+    border: none;
+}
+
+.google-btn {
+    background: #fff;
+    border: 1px solid #ddd;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 10px;
-    width: 100%;
-    margin-top: 20px;
-    font-family: 'Cairo', sans-serif;
+    margin-top: 15px;
 }
 
-.google-signin-button img {
+.google-btn img {
     width: 20px;
     height: 20px;
 }
 
-        .error-message { background-color: #ffebee; color: #c62828; padding: 10px; border-radius: 5px; margin-top: 10px; display: none; }
-
-        .theme-toggle { position: fixed; top: 20px; right: 20px; background: transparent; border: none; cursor: pointer; font-size: 24px; color: #FFD700; opacity: 0; transition: opacity 0.5s; }
-
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-        @keyframes moveUp { from { top: 50%; } to { top: 20px; } }
-
-    </style>
+.error {
+    background: #ffebee;
+    color: #c62828;
+    padding: 10px;
+    margin-top: 10px;
+    display: none;
+    border-radius: 5px;
+}
+</style>
 
 </head>
 
 <body>
 
-
-
-    <button class="theme-toggle" id="themeToggle">
-
-        <i class="fas fa-sun"></i>
-
-    </button>
-
-
-
-    <div class="logo">
-
-        <img id="logoImage" src="/1000067588.png" alt="شعار التطبيق">
-
-    </div>
-
-
-
-    <div class="login-container">
-
-        <h2>تسجيل الدخول</h2>
-
-        <form class="login-form" id="loginForm">
-
-            <div class="form-group">
-
-                <label for="email">البريد الإلكتروني</label>
-
-                <input type="email" id="email" placeholder="أدخل البريد الإلكتروني" required>
-
-            </div>
-
-            <div class="form-group">
-
-                <label for="password">كلمة المرور</label>
-
-                <div style="position: relative;">
-
-                    <input type="password" id="password" placeholder="أدخل كلمة المرور" required>
-
-                    <span id="togglePassword" style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); cursor: pointer;">👁️</span>
-
-                </div>
-
-            </div>
-
-            <div id="errorMessage" class="error-message"></div>
-
-            <button type="submit" class="login-button" id="submitBtn">تسجيل الدخول</button>
-
-            <div class="signup-link" style="margin-top: 15px;">
-
-                ليس لديك حساب؟ <a href="/profile.html" style="color: #4CAF50; text-decoration: none; font-weight: bold;">إنشاء حساب</a>
-
-            </div>
-
-        </form>
-
-
-
-        <button id="googleBtn" class="google-signin-button">
-
-            <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" width="20">
-
-            تسجيل الدخول بواسطة جوجل
-
-        </button>
-
-
-
-        <div class="copyright" style="margin-top: 20px; font-size: 12px; color: #888;">
-
-            © 2024 تطبيق كين ماتش. جميع الحقوق محفوظة.
-
-        </div>
-
-    </div>
-
-
-
-    <script type="module">
-
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg";
-
-        import { getAuth, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg";
-
-
-
-        // إعدادات Firebase الخاصة بك
-
-        const firebaseConfig = {
-
-            apiKey: "AIzaSyDaSsBM2GuRlrewSmYRqwA60ZMcJMIIftQ",
-
-            authDomain: "kainmatch.firebaseapp.com",
-
-            projectId: "kainmatch",
-
-            storageBucket: "kainmatch.firebasestorage.app",
-
-            messagingSenderId: "31352105772",
-
-            appId: "1:31352105772:web:16f4043cd987a77ada9a89",
-
-            measurementId: "G-M0PV4Z1PD6"
-
-        };
-
-
-
-        // تهيئة Firebase
-
-        const app = initializeApp(firebaseConfig);
-
-        const auth = getAuth(app);
-
-        const provider = new GoogleAuthProvider();
-
-
-
-        // --- إدارة الواجهة ---
-
-        const themeToggle = document.getElementById('themeToggle');
-
-        const body = document.body;
-
-        const logoImage = document.getElementById('logoImage');
-
-
-
-        themeToggle.addEventListener('click', () => {
-
-            body.classList.toggle('dark-mode');
-
-            const isDarkMode = body.classList.contains('dark-mode');
-
-            logoImage.src = isDarkMode ? "/1000069661.png" : "/1000067588.png";
-
-        });
-
-
-
-        setTimeout(() => { themeToggle.style.opacity = '1'; }, 4000);
-
-
-
-        document.getElementById('togglePassword').addEventListener('click', function() {
-
-            const pwd = document.getElementById('password');
-
-            pwd.type = pwd.type === 'password' ? 'text' : 'password';
-
-        });
-
-
-
-        // --- عملية تسجيل الدخول بالبريد ---
-
-        const loginForm = document.getElementById('loginForm');
-
-        const errorDiv = document.getElementById('errorMessage');
-
-
-
-        loginForm.addEventListener('submit', (e) => {
-
-            e.preventDefault();
-
-            const email = document.getElementById('email').value;
-
-            const password = document.getElementById('password').value;
-
-
-
-            signInWithEmailAndPassword(auth, email, password)
-
-                .then((userCredential) => {
-
-                    window.location.href = "index.html";
-
-                })
-
-                .catch((error) => {
-
-                    errorDiv.style.display = 'block';
-
-                    errorDiv.textContent = "خطأ: البريد الإلكتروني أو كلمة المرور غير صحيحة";
-
-                });
-
-        });
-
-
-
-        // --- تسجيل الدخول بجوجل ---
-
-        document.getElementById('googleBtn').addEventListener('click', () => {
-
-            signInWithPopup(auth, provider)
-
-                .then((result) => {
-
-                    window.location.href = "index.html";
-
-                })
-
-                .catch((error) => {
-
-                    errorDiv.style.display = 'block';
-
-                    errorDiv.textContent = "فشل تسجيل الدخول عبر جوجل";
-
-                });
-
-        });
-
-    </script>
+<div class="login-container">
+
+<h2>تسجيل الدخول</h2>
+
+<input type="email" id="email" placeholder="البريد الإلكتروني">
+<input type="password" id="password" placeholder="كلمة المرور">
+
+<div id="error" class="error"></div>
+
+<button class="login-btn" id="loginBtn">تسجيل الدخول</button>
+
+<button class="google-btn" id="googleBtn">
+<img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg">
+تسجيل الدخول بواسطة Google
+</button>
+
+</div>
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import {
+getAuth,
+signInWithEmailAndPassword,
+GoogleAuthProvider,
+signInWithPopup,
+signInWithRedirect,
+getRedirectResult
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+const firebaseConfig = {
+apiKey: "AIzaSyDaSsBM2GuRlrewSmYRqwA60ZMcJMIIftQ",
+authDomain: "kainmatch.firebaseapp.com",
+projectId: "kainmatch",
+storageBucket: "kainmatch.firebasestorage.app",
+messagingSenderId: "31352105772",
+appId: "1:31352105772:web:16f4043cd987a77ada9a89"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const provider = new GoogleAuthProvider();
+
+const errorDiv = document.getElementById("error");
+
+// 🔐 Email login
+document.getElementById("loginBtn").onclick = async () => {
+const email = document.getElementById("email").value;
+const password = document.getElementById("password").value;
+
+errorDiv.style.display = "none";
+
+try {
+await signInWithEmailAndPassword(auth, email, password);
+window.location.href = "index.html";
+} catch (error) {
+errorDiv.style.display = "block";
+errorDiv.textContent = error.message;
+}
+};
+
+// 🔥 Google login (FIXED)
+document.getElementById("googleBtn").onclick = async () => {
+errorDiv.style.display = "none";
+
+try {
+await signInWithPopup(auth, provider);
+window.location.href = "index.html";
+
+} catch (error) {
+
+console.log(error);
+
+if (error.code === "auth/popup-blocked") {
+await signInWithRedirect(auth, provider);
+} else {
+errorDiv.style.display = "block";
+errorDiv.textContent = error.message;
+}
+}
+};
+
+// 🔁 redirect support
+getRedirectResult(auth)
+.then((result) => {
+if (result) {
+window.location.href = "index.html";
+}
+})
+.catch((error) => {
+console.log(error);
+});
+
+</script>
 
 </body>
-
 </html>
