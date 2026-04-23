@@ -1,316 +1,102 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>إنشاء حساب - كين ماتش</title>
-    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { 
-            getAuth, 
-            createUserWithEmailAndPassword, 
-            sendEmailVerification,
-            updateProfile 
-        } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-        import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-
-        // ضع إعدادات Firebase الخاصة بك هنا
-        const firebaseConfig = {
-            apiKey: "YOUR_API_KEY",
-            authDomain: "kainmatch.firebaseapp.com",
-            projectId: "kainmatch",
-            storageBucket: "kainmatch.appspot.com",
-            messagingSenderId: "YOUR_ID",
-            appId: "YOUR_APP_ID"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
-        auth.languageCode = 'ar'; // لضبط رسائل البريد بالعربية
-
-        window.auth = auth;
-        window.db = db;
-        window.createUserWithEmailAndPassword = createUserWithEmailAndPassword;
-        window.sendEmailVerification = sendEmailVerification;
-        window.updateProfile = updateProfile;
-        window.setDoc = setDoc;
-        window.doc = doc;
-    </script>
-
-    <style>
-        /* (استخدمت نفس الستايل الخاص بك مع تحسينات طفيفة للمرونة) */
-        :root {
-            --primary-green: #2e7d32;
-            --light-green: #66bb6a;
-            --dark-bg: #0a1a0f;
-            --error-red: #ef5350;
-        }
-
-        *, *::before, *::after { box-sizing: border-box; }
-
-        body {
-            font-family: 'Tajawal', 'Amiri', serif;
-            background: var(--dark-bg);
-            margin: 0; padding: 0;
-            display: flex; flex-direction: column; align-items: center;
-            min-height: 100vh; color: #e8f5e9;
-        }
-
-        /* Particles & Background Animations (تاركة كما هي في كودك الأصلي لجماليتها) */
-        .particles { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
-        .particle { position: absolute; width: 4px; height: 4px; background: rgba(76, 175, 80, 0.3); border-radius: 50%; animation: particleRise linear infinite; }
-        @keyframes particleRise { 0% { transform: translateY(100vh) scale(0); opacity: 0; } 100% { transform: translateY(-10vh) scale(1); opacity: 0; } }
-
-        nav { background: rgba(27, 94, 32, 0.85); backdrop-filter: blur(20px); width: 100%; position: sticky; top: 0; z-index: 100; border-bottom: 1px solid rgba(76, 175, 80, 0.2); }
-        nav .nav-inner { max-width: 700px; margin: 0 auto; padding: 15px; display: flex; justify-content: center; }
-        nav a { color: white; text-decoration: none; font-weight: bold; }
-
-        .container {
-            width: 92%; max-width: 550px; background: rgba(20, 40, 25, 0.7);
-            backdrop-filter: blur(30px); border-radius: 20px;
-            border: 1px solid rgba(76, 175, 80, 0.15); padding: 30px;
-            margin: 30px 0; position: relative; z-index: 1;
-            animation: containerIn 0.6s ease-out forwards;
-        }
-        @keyframes containerIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-
-        .logo { text-align: center; margin-bottom: 20px; }
-        .logo img { max-width: 100px; filter: drop-shadow(0 4px 10px rgba(0,0,0,0.3)); }
-
-        .profile-pic-wrapper { text-align: center; margin-bottom: 25px; }
-        .profile-pic {
-            width: 110px; height: 110px; border-radius: 50%;
-            background: #1b5e20 url('https://via.placeholder.com/110') center/cover;
-            border: 3px solid var(--light-green); margin: 0 auto;
-            position: relative; cursor: pointer; transition: 0.3s;
-        }
-        .profile-pic:hover { transform: scale(1.05); box-shadow: 0 0 20px rgba(76, 175, 80, 0.4); }
-        .camera-icon { position: absolute; bottom: 0; left: 0; background: var(--primary-green); padding: 8px; border-radius: 50%; font-size: 12px; }
-
-        .form-field { position: relative; margin-bottom: 20px; }
-        .form-field input {
-            width: 100%; padding: 12px 45px 12px 15px;
-            background: rgba(0,0,0,0.2); border: 1px solid rgba(76, 175, 80, 0.3);
-            border-radius: 10px; color: white; font-family: 'Tajawal'; outline: none;
-        }
-        .form-field input:focus { border-color: var(--light-green); background: rgba(0,0,0,0.4); }
-        .field-icon { position: absolute; right: 15px; top: 15px; color: var(--light-green); }
-
-        .password-strength { height: 5px; background: #222; margin-top: 8px; border-radius: 3px; }
-        .strength-bar { height: 100%; width: 0; transition: 0.3s; border-radius: 3px; }
-
-        .positions-section h2 { font-size: 1.2rem; text-align: center; margin: 30px 0 20px; color: var(--light-green); }
-        .position-card {
-            background: rgba(255,255,255,0.03); padding: 15px; border-radius: 12px;
-            margin-bottom: 15px; border: 1px solid rgba(255,255,255,0.05);
-        }
-        .pos-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-        
-        /* Toggle Button */
-        .mode-toggle {
-            width: 40px; height: 20px; background: #444; border-radius: 20px;
-            position: relative; cursor: pointer; transition: 0.3s; border: none;
-        }
-        .mode-toggle.active { background: var(--primary-green); }
-        .mode-toggle::before {
-            content: ''; position: absolute; width: 16px; height: 16px;
-            background: white; border-radius: 50%; top: 2px; right: 2px; transition: 0.3s;
-        }
-        .mode-toggle.active::before { transform: translateX(-20px); }
-
-        .btn-submit {
-            width: 100%; padding: 15px; background: linear-gradient(to left, var(--primary-green), var(--light-green));
-            border: none; border-radius: 10px; color: white; font-weight: bold;
-            font-size: 1.1rem; cursor: pointer; transition: 0.3s; margin-top: 20px;
-        }
-        .btn-submit:hover { opacity: 0.9; transform: translateY(-2px); }
-        .btn-submit:disabled { background: #555; cursor: not-allowed; }
-
-        .error-msg { color: var(--error-red); font-size: 0.8rem; margin-top: 5px; display: none; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KainMatch - تسجيل</title>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
-    <div class="particles" id="particles"></div>
 
-    <nav>
-        <div class="nav-inner">
-            <a href="index.html"><i class="fas fa-home"></i> كين ماتش</a>
-        </div>
-    </nav>
+<h2>إنشاء حساب</h2>
+<input id="name" placeholder="الاسم"><br><br>
+<input id="email" placeholder="البريد"><br><br>
+<input id="password" type="password" placeholder="كلمة المرور"><br><br>
+<input id="phone" placeholder="الهاتف"><br><br>
+<button onclick="register()">تسجيل</button>
 
-    <div class="container">
-        <div class="logo">
-            <img src="/1000067588.png" alt="Kain Match">
-        </div>
+<hr>
 
-        <div class="profile-pic-wrapper">
-            <div class="profile-pic" id="profilePreview">
-                <span class="camera-icon"><i class="fas fa-camera"></i></span>
-            </div>
-            <input type="file" id="fileInput" hidden accept="image/*">
-        </div>
+<h2>الملف الشخصي</h2>
+<p>الاسم: <span id="p_name"></span></p>
+<p>البريد: <span id="p_email"></span></p>
+<p>الهاتف: <span id="p_phone"></span></p>
+<button onclick="logout()">تسجيل الخروج</button>
 
-        <h1>المعلومات الشخصية</h1>
-        <p style="text-align: center; color: #888;">سجل الآن وابدأ برحلتك الرياضية</p>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword, onAuthStateChanged, sendEmailVerification, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-        <form id="registrationForm">
-            <div class="form-field">
-                <i class="fas fa-user field-icon"></i>
-                <input type="text" id="fullName" placeholder="الاسم الكامل" required>
-            </div>
+const firebaseConfig = {
+  apiKey: "AIzaSyDaSsBM2GuRlrewSmYRqwA60ZMcJMIIftQ",
+  authDomain: "kainmatch.firebaseapp.com",
+  projectId: "kainmatch",
+  storageBucket: "kainmatch.firebasestorage.app",
+  messagingSenderId: "31352105772",
+  appId: "1:31352105772:web:16f4043cd987a77ada9a89"
+};
 
-            <div class="form-field">
-                <i class="fas fa-envelope field-icon"></i>
-                <input type="email" id="email" placeholder="البريد الإلكتروني" required>
-            </div>
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
 
-            <div class="form-field">
-                <i class="fas fa-phone field-icon"></i>
-                <input type="tel" id="phone" placeholder="رقم الهاتف" required>
-            </div>
+// تسجيل
+window.register = async function() {
+  const name = document.getElementById("name").value;
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+  const phone = document.getElementById("phone").value;
 
-            <div class="form-field">
-                <i class="fas fa-lock field-icon"></i>
-                <input type="password" id="password" placeholder="كلمة السر" required>
-                <div class="password-strength"><div class="strength-bar" id="strengthBar"></div></div>
-            </div>
+  try {
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    const user = userCredential.user;
 
-            <div class="positions-section">
-                <h2><i class="fas fa-star"></i> مهاراتك في الملعب</h2>
-                
-                <div class="position-card">
-                    <div class="pos-header">
-                        <span>حارس مرمى</span>
-                        <button type="button" class="mode-toggle" onclick="togglePos(this, 'gkRange')"></button>
-                    </div>
-                    <input type="range" id="gkRange" min="0" max="100" value="0" disabled style="width: 100%;">
-                </div>
+    // إرسال تأكيد البريد
+    await sendEmailVerification(user);
 
-                <div class="position-card">
-                    <div class="pos-header">
-                        <span>مدافع</span>
-                        <button type="button" class="mode-toggle" onclick="togglePos(this, 'defRange')"></button>
-                    </div>
-                    <input type="range" id="defRange" min="0" max="100" value="0" disabled style="width: 100%;">
-                </div>
+    // حفظ البيانات
+    await setDoc(doc(db, "users", user.uid), {
+      name,
+      email,
+      phone,
+      verified: false
+    });
 
-                <div class="position-card">
-                    <div class="pos-header">
-                        <span>مهاجم</span>
-                        <button type="button" class="mode-toggle" onclick="togglePos(this, 'atkRange')"></button>
-                    </div>
-                    <input type="range" id="atkRange" min="0" max="100" value="0" disabled style="width: 100%;">
-                </div>
-            </div>
+    Swal.fire("تم التسجيل", "تحقق من بريدك الإلكتروني 📩", "success");
 
-            <button type="submit" class="btn-submit" id="submitBtn">إنشاء حساب جديد</button>
-        </form>
-    </div>
+  } catch (error) {
+    Swal.fire("خطأ", error.message, "error");
+  }
+};
 
-    <script>
-        // 1. تفعيل/تعطيل الرينج الخاص بالمراكز
-        function togglePos(btn, rangeId) {
-            btn.classList.toggle('active');
-            const range = document.getElementById(rangeId);
-            range.disabled = !btn.classList.contains('active');
-        }
+// تحميل البيانات
+onAuthStateChanged(auth, async (user) => {
+  if (user) {
+    await user.reload();
 
-        // 2. معاينة الصورة الشخصية
-        const profilePreview = document.getElementById('profilePreview');
-        const fileInput = document.getElementById('fileInput');
-        profilePreview.onclick = () => fileInput.click();
-        fileInput.onchange = (e) => {
-            const file = e.target.files[0];
-            if(file) {
-                const reader = new FileReader();
-                reader.onload = (event) => profilePreview.style.backgroundImage = `url('${event.target.result}')`;
-                reader.readAsDataURL(file);
-            }
-        };
+    if (!user.emailVerified) {
+      Swal.fire("تنبيه", "يجب تأكيد البريد أولاً", "warning");
+      return;
+    }
 
-        // 3. فحص قوة كلمة السر
-        const passwordInput = document.getElementById('password');
-        const strengthBar = document.getElementById('strengthBar');
-        passwordInput.oninput = () => {
-            let val = passwordInput.value;
-            let strength = 0;
-            if(val.length > 6) strength += 40;
-            if(/[A-Z]/.test(val)) strength += 30;
-            if(/[0-9]/.test(val)) strength += 30;
-            
-            strengthBar.style.width = strength + "%";
-            strengthBar.style.backgroundColor = strength < 40 ? "#ef5350" : strength < 80 ? "#ffca28" : "#66bb6a";
-        };
+    const docSnap = await getDoc(doc(db, "users", user.uid));
 
-        // 4. منطق التسجيل مع Firebase وتأكيد الإيميل
-        document.getElementById('registrationForm').onsubmit = async (e) => {
-            e.preventDefault();
-            const submitBtn = document.getElementById('submitBtn');
-            submitBtn.disabled = true;
-            submitBtn.innerText = "جاري المعالجة...";
+    if (docSnap.exists()) {
+      const data = docSnap.data();
+      document.getElementById("p_name").textContent = data.name;
+      document.getElementById("p_email").textContent = data.email;
+      document.getElementById("p_phone").textContent = data.phone;
+    }
+  }
+});
 
-            const email = document.getElementById('email').value;
-            const password = passwordInput.value;
-            const name = document.getElementById('fullName').value;
+// تسجيل الخروج
+window.logout = function() {
+  signOut(auth);
+};
 
-            try {
-                // إنشاء الحساب
-                const userCredential = await window.createUserWithEmailAndPassword(window.auth, email, password);
-                const user = userCredential.user;
+</script>
 
-                // تحديث اسم المستخدم في Firebase Auth
-                await window.updateProfile(user, { displayName: name });
-
-                // إرسال إيميل التحقق (الخطوة الاحترافية)
-                await window.sendEmailVerification(user);
-
-                // حفظ البيانات الإضافية في Firestore
-                await window.setDoc(window.doc(window.db, "users", user.uid), {
-                    fullName: name,
-                    phone: document.getElementById('phone').value,
-                    skills: {
-                        gk: document.getElementById('gkRange').value,
-                        def: document.getElementById('defRange').value,
-                        atk: document.getElementById('atkRange').value
-                    },
-                    isVerified: false
-                });
-
-                Swal.fire({
-                    icon: 'success',
-                    title: 'تم إنشاء الحساب بنجاح!',
-                    text: 'يرجى مراجعة بريدك الإلكتروني لتفعيل الحساب قبل تسجيل الدخول.',
-                    confirmButtonText: 'حسناً',
-                    confirmButtonColor: '#2e7d32'
-                }).then(() => {
-                    window.location.href = "login.html"; // حوله لصفحة الدخول
-                });
-
-            } catch (error) {
-                let msg = "حدث خطأ ما، حاول مرة أخرى.";
-                if(error.code === 'auth/email-already-in-use') msg = "هذا البريد مسجل مسبقاً.";
-                
-                Swal.fire({ icon: 'error', title: 'خطأ', text: msg });
-                submitBtn.disabled = false;
-                submitBtn.innerText = "إنشاء حساب جديد";
-            }
-        };
-
-        // تفعيل جزيئات الخلفية
-        const particlesContainer = document.getElementById('particles');
-        for (let i = 0; i < 20; i++) {
-            const p = document.createElement('div');
-            p.className = 'particle';
-            p.style.left = Math.random() * 100 + 'vw';
-            p.style.animationDuration = (Math.random() * 3 + 2) + 's';
-            p.style.animationDelay = Math.random() * 2 + 's';
-            particlesContainer.appendChild(p);
-        }
-    </script>
 </body>
 </html>
