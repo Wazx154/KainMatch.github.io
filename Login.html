@@ -4,94 +4,95 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>تسجيل الدخول - كين ماتش</title>
+<title>تسجيل الدخول - تطبيق حجز الملاعب</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
-body{
-font-family:'Cairo',sans-serif;
-background:linear-gradient(to bottom,#4CAF50,#f0f0f5);
-display:flex;
-justify-content:center;
-align-items:center;
-height:100vh;
+body {
+    font-family: 'Cairo', sans-serif;
+    background: linear-gradient(to bottom, #4CAF50, #f0f0f5);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
 }
 
-.container{
-background:#fff;
-padding:30px;
-border-radius:15px;
-width:90%;
-max-width:400px;
-box-shadow:0 10px 25px rgba(0,0,0,0.2);
-text-align:center;
+.logo {
+    margin-top: 20px;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    overflow: hidden;
 }
 
-h2{
-margin-bottom:20px;
-color:#4CAF50;
+.logo img {
+    width: 100%;
+    height: 100%;
 }
 
-input{
-width:100%;
-padding:12px;
-margin:10px 0;
-border-radius:8px;
-border:1px solid #ddd;
-font-size:15px;
+.login-container {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 15px;
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    margin-top: 20px;
 }
 
-button{
-width:100%;
-padding:12px;
-border:none;
-border-radius:8px;
-cursor:pointer;
-font-size:16px;
-transition:0.3s;
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #4CAF50;
 }
 
-button:hover{
-opacity:0.9;
+input {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border-radius: 8px;
+    border: 1px solid #ddd;
 }
 
-.login-btn{
-background:#4CAF50;
-color:#fff;
+.login-button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 15px;
+    border-radius: 10px;
+    width: 100%;
+    cursor: pointer;
 }
 
-.google-btn{
-margin-top:15px;
-background:#fff;
-border:1px solid #ddd;
-display:flex;
-align-items:center;
-justify-content:center;
-gap:10px;
-font-weight:bold;
+.google-signin-button {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    padding: 12px;
+    border-radius: 8px;
+    width: 100%;
+    margin-top: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    cursor: pointer;
 }
 
-.google-btn img{
-width:22px;
-height:22px;
+.google-signin-button img {
+    width: 22px;
 }
 
-.error{
-background:#ffebee;
-color:#c62828;
-padding:10px;
-border-radius:6px;
-margin-top:10px;
-display:none;
-}
-
-.footer{
-margin-top:15px;
-font-size:13px;
-color:#888;
+.error-message {
+    background-color: #ffebee;
+    color: #c62828;
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 10px;
+    display: none;
 }
 </style>
 
@@ -99,25 +100,25 @@ color:#888;
 
 <body>
 
-<div class="container">
+<div class="logo">
+<img src="/1000067588.png">
+</div>
+
+<div class="login-container">
 
 <h2>تسجيل الدخول</h2>
 
 <input type="email" id="email" placeholder="البريد الإلكتروني">
 <input type="password" id="password" placeholder="كلمة المرور">
 
-<button class="login-btn" id="loginBtn">تسجيل الدخول</button>
+<div id="errorMessage" class="error-message"></div>
 
-<button class="google-btn" id="googleBtn">
+<button class="login-button" id="loginBtn">تسجيل الدخول</button>
+
+<button id="googleBtn" class="google-signin-button">
 <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg">
-تسجيل الدخول بواسطة Google
+تسجيل الدخول بواسطة جوجل
 </button>
-
-<div class="error" id="error"></div>
-
-<div class="footer">
-ليس لديك حساب؟ <a href="profile.html" style="color:#4CAF50;">إنشاء حساب</a>
-</div>
 
 </div>
 
@@ -134,76 +135,68 @@ signInWithRedirect,
 getRedirectResult
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
-// ⚠️ ضع بياناتك الحقيقية هنا
+// إعداد Firebase
 const firebaseConfig = {
-apiKey: "YOUR_API_KEY",
+apiKey: "AIzaSyDaSsBM2GuRlrewSmYRqwA60ZMcJMIIftQ",
 authDomain: "kainmatch.firebaseapp.com",
 projectId: "kainmatch",
+storageBucket: "kainmatch.firebasestorage.app",
+messagingSenderId: "31352105772",
 appId: "1:31352105772:web:16f4043cd987a77ada9a89"
 };
 
-// تشغيل Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
 
-// عناصر الصفحة
-const errorDiv = document.getElementById("error");
+const errorDiv = document.getElementById("errorMessage");
 
-// ✅ تسجيل الدخول بالبريد
+// تسجيل الدخول بالبريد
 document.getElementById("loginBtn").onclick = async () => {
-const email = document.getElementById("email").value.trim();
-const password = document.getElementById("password").value.trim();
+const email = document.getElementById("email").value;
+const password = document.getElementById("password").value;
 
 errorDiv.style.display = "none";
-
-if(!email || !password){
-errorDiv.style.display = "block";
-errorDiv.textContent = "يرجى ملء جميع الحقول";
-return;
-}
 
 try {
 await signInWithEmailAndPassword(auth, email, password);
 window.location.href = "index.html";
 } catch (error) {
 errorDiv.style.display = "block";
-
-if(error.code === "auth/invalid-credential"){
-errorDiv.textContent = "البريد أو كلمة المرور غير صحيحة";
-}else{
 errorDiv.textContent = error.message;
-}
 }
 };
 
-// ✅ تسجيل الدخول بجوجل (حل نهائي)
-document.getElementById("googleBtn").onclick = async () => {
-errorDiv.style.display = "none";
+// تسجيل الدخول بجوجل (مصلح)
+document.getElementById('googleBtn').addEventListener('click', async () => {
+errorDiv.style.display = 'none';
 
 try {
 await signInWithPopup(auth, provider);
 window.location.href = "index.html";
+
 } catch (error) {
 
-// fallback إذا popup محجوب
-if(error.code === "auth/popup-blocked"){
-await signInWithRedirect(auth, provider);
-}else{
-errorDiv.style.display = "block";
-errorDiv.textContent = "فشل تسجيل الدخول: " + error.message;
-}
-}
-};
+console.log(error); // 🔥 مهم لمعرفة الخطأ الحقيقي
 
-// ✅ دعم redirect (في حالة fallback)
+if (error.code === "auth/popup-blocked") {
+await signInWithRedirect(auth, provider);
+} else {
+errorDiv.style.display = 'block';
+errorDiv.textContent = error.message;
+}
+}
+});
+
+// دعم redirect
 getRedirectResult(auth)
 .then((result) => {
-if(result){
+if (result) {
 window.location.href = "index.html";
 }
 })
 .catch((error) => {
+console.log(error);
 errorDiv.style.display = "block";
 errorDiv.textContent = error.message;
 });
