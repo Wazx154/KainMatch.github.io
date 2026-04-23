@@ -31,12 +31,52 @@
       color: #ffffff;
     }
 
-    body.dark-mode header { background-color: #2c2c2c; }
-    body.dark-mode .card { background-color: #2c2c2c; color: #ffffff; box-shadow: 0px 4px 10px rgba(255, 255, 255, 0.1); }
-    body.dark-mode table th { background-color: #2c2c2c; }
-    body.dark-mode table td { background-color: #3a3a3a; color: #ffffff; }
-    body.dark-mode .menu { background-color: #2c2c2c; }
-    body.dark-mode .menu a { background-color: rgba(255, 255, 255, 0.1); }
+    body.dark-mode header {
+      background-color: #2c2c2c;
+    }
+
+    body.dark-mode .card {
+      background-color: #2c2c2c;
+      color: #ffffff;
+      box-shadow: 0px 4px 10px rgba(255, 255, 255, 0.1);
+    }
+
+    body.dark-mode .card p {
+      color: #ddd;
+    }
+
+    body.dark-mode table th {
+      background-color: #2c2c2c;
+    }
+
+    body.dark-mode table td {
+      background-color: #3a3a3a;
+      color: #ffffff;
+    }
+
+    body.dark-mode .floating-button {
+      background-color: #2c2c2c;
+    }
+
+    body.dark-mode .menu {
+      background-color: #2c2c2c;
+    }
+
+    body.dark-mode .menu a {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    body.dark-mode .toast {
+      background-color: #2c2c2c;
+    }
+
+    body.dark-mode .download-button {
+      background-color: #2c2c2c;
+    }
+
+    body.dark-mode .download-button:hover {
+      background-color: #3a3a3a;
+    }
 
     /* Header Styles */
     header {
@@ -46,6 +86,15 @@
       text-align: center;
       font-size: 24px;
       font-weight: bold;
+      transition: background-color 0.5s ease;
+    }
+
+    h1 {
+      font-size: 36px;
+      text-align: center;
+      margin: 15px 0;
+      color: #4CAF50;
+      font-weight: 600;
     }
 
     .logo {
@@ -53,14 +102,37 @@
       height: 100px;
       margin: 0 auto;
       display: block;
+      transition: opacity 0.5s ease;
     }
 
-    body.dark-mode .logo { content: url('/1000069661.png'); }
-    body:not(.dark-mode) .logo { content: url('/1000067588.png'); }
+    body.dark-mode .logo {
+      content: url('/1000069661.png');
+    }
+
+    body:not(.dark-mode) .logo {
+      content: url('/1000067588.png');
+    }
 
     /* Main Section Styles */
-    .section { padding: 20px; text-align: center; flex: 1; }
-    .section h1 { font-size: 30px; margin: 20px 0; color: #4CAF50; }
+    .section {
+      padding: 20px;
+      text-align: center;
+      flex: 1;
+    }
+
+    .section h1 {
+      font-size: 30px;
+      text-align: center;
+      margin: 20px 0;
+      color: #4CAF50;
+      font-weight: 600;
+    }
+
+    .section p {
+      font-size: 18px;
+      color: #666;
+      margin-bottom: 20px;
+    }
 
     /* Card Styles */
     .card {
@@ -71,15 +143,54 @@
       max-width: 450px;
       border-radius: 10px;
       box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      transition: transform 0.3s ease, background-color 0.5s ease, color 0.5s ease;
       cursor: pointer;
     }
 
-    /* Table Styles */
-    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-    th, td { padding: 10px; border: 1px solid #ddd; text-align: right; }
-    th { background-color: #4CAF50; color: white; }
+    .card:hover {
+      transform: translateY(-5px);
+    }
 
-    /* Floating Button */
+    .card h2 {
+      font-size: 22px;
+      color: #4CAF50;
+      margin-bottom: 10px;
+    }
+
+    .card p {
+      font-size: 16px;
+      color: #555;
+      transition: color 0.5s ease;
+    }
+
+    /* Table Styles */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      font-size: 16px;
+    }
+
+    th, td {
+      padding: 10px;
+      border: 1px solid #ddd;
+      text-align: right;
+      color: #333;
+      transition: background-color 0.5s ease, color 0.5s ease;
+    }
+
+    th {
+      background-color: #4CAF50;
+      color: white;
+      font-weight: bold;
+    }
+
+    td {
+      background-color: #f9f9f9;
+    }
+
+    /* Floating Button Styles */
     .floating-button {
       position: fixed;
       bottom: 30px;
@@ -88,29 +199,50 @@
       color: white;
       border: none;
       border-radius: 30px;
-      padding: 0 25px;
-      height: 60px;
+      font-size: 18px;
       font-weight: bold;
+      text-align: center;
+      line-height: 60px;
+      box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
       cursor: pointer;
+      transition: all 0.3s ease;
       display: flex;
       align-items: center;
+      justify-content: center;
       gap: 10px;
+      white-space: nowrap;
+      padding: 0 25px;
+      width: auto;
+      height: 60px;
       animation: jump 2s infinite;
-      z-index: 99;
     }
 
-    @keyframes jump { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+    .floating-button:hover {
+      background-color: #45a049;
+      transform: scale(1.05);
+      box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    /* تأثير القفز */
+    @keyframes jump {
+      0%, 100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-10px);
+      }
+    }
 
     /* Menu Styles */
     .menu {
       position: fixed;
       top: 0;
       left: 0;
-      width: 280px;
+      width: 250px;
       height: 100%;
       background-color: #4CAF50;
       color: white;
-      padding: 60px 15px 15px;
+      padding: 15px;
       box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
       transform: translateX(-100%);
       transition: transform 0.3s ease;
@@ -118,20 +250,18 @@
     }
 
     .menu a {
-      display: flex;
-      align-items: center;
-      gap: 12px;
+      display: block;
       color: white;
       text-decoration: none;
-      margin: 15px 0;
+      margin: 10px 0;
       font-size: 18px;
-      padding: 12px;
+      padding: 10px;
       background-color: rgba(255, 255, 255, 0.1);
       border-radius: 8px;
+      text-align: center;
     }
 
-    .menu a.logout-link { background-color: rgba(255, 0, 0, 0.2); margin-top: 30px; }
-
+    /* Menu Button Styles */
     .menu-btn {
       position: fixed;
       top: 20px;
@@ -143,41 +273,163 @@
       width: 50px;
       height: 50px;
       font-size: 24px;
+      line-height: 50px;
+      text-align: center;
       cursor: pointer;
-      z-index: 1001;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
     }
 
-    /* Other Buttons */
-    .theme-toggle { position: fixed; top: 20px; right: 20px; background: none; border: none; cursor: pointer; font-size: 24px; color: #FFD700; z-index: 100; }
-    .language-toggle { position: fixed; top: 20px; right: 80px; background: #4CAF50; color: white; border: none; border-radius: 20px; padding: 10px 20px; cursor: pointer; z-index: 100; }
-
-    /* Toast */
+    /* Toast Styles */
     .toast {
       position: fixed;
-      top: 50%; left: 50%;
+      top: 50%;
+      left: 50%;
       transform: translate(-50%, -50%);
       background-color: #4CAF50;
       color: white;
-      padding: 20px;
+      padding: 20px 30px;
       border-radius: 10px;
-      visibility: hidden;
+      font-size: 18px;
+      text-align: center;
+      box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+      z-index: 1000;
       opacity: 0;
-      transition: 0.5s;
-      z-index: 2000;
+      visibility: hidden;
+      transition: opacity 0.5s ease, visibility 0.5s ease;
     }
-    .toast.show { visibility: visible; opacity: 1; }
+
+    .toast.show {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    /* Countdown Styles */
+    #countdown {
+        text-align: center;
+        font-size: 20px;
+        margin: 15px 0;
+    }
+
+    /* زر تبديل الوضع */
+    .theme-toggle {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      font-size: 24px;
+      color: #FFD700;
+      opacity: 1;
+      transition: opacity 0.5s ease, color 0.5s ease;
+    }
+
+    body.dark-mode .theme-toggle {
+      color: #FFFFFF;
+    }
+
+    .theme-toggle i {
+      transition: transform 0.5s ease, opacity 0.5s ease;
+    }
+
+    .theme-toggle .fa-sun {
+      opacity: 1;
+      transform: rotate(0deg);
+    }
+
+    .theme-toggle .fa-moon {
+      opacity: 0;
+      transform: rotate(-90deg);
+      position: absolute;
+      top: 0;
+      right: 0;
+    }
+
+    body.dark-mode .theme-toggle .fa-sun {
+      opacity: 0;
+      transform: rotate(90deg);
+    }
+
+    body.dark-mode .theme-toggle .fa-moon {
+      opacity: 1;
+      transform: rotate(0deg);
+    }
+
+    /* زر تغيير اللغة */
+    .language-toggle {
+      position: fixed;
+      top: 20px;
+      right: 80px;
+      background: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 20px;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+      transition: background 0.3s ease, transform 0.3s ease;
+    }
+
+    .language-toggle:hover {
+      background: #45a049;
+      transform: scale(1.05);
+    }
+
+    body.dark-mode .language-toggle {
+      background: #2c2c2c;
+      color: #ffffff;
+    }
+
+    /* Responsive Styles */
+    @media (max-width: 768px) {
+      .logo {
+          width: 80px;
+          height: 80px;
+      }
+      .section h1 {
+      font-size: 28px;
+      }
+      .section p {
+      font-size: 16px;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .card {
+        width: 95%;
+        font-size: 14px;
+      }
+
+      .menu {
+        width: 80%;
+      }
+
+      .floating-button {
+        font-size: 16px;
+        padding: 0 15px;
+        height: 50px;
+        line-height: 50px;
+      }
+
+      .language-toggle {
+        right: 20px;
+        top: 80px;
+      }
+    }
   </style>
 </head>
 <body>
 
   <script>
     if (localStorage.getItem('loggedIn') !== 'true') {
-      window.location.href = "Login.html";
+        window.location.href = "Login.html";
     }
   </script>
 
   <button class="theme-toggle" id="themeToggle">
     <i class="fas fa-sun"></i>
+    <i class="fas fa-moon"></i>
   </button>
 
   <button class="language-toggle" id="languageToggle">
@@ -189,44 +441,41 @@
 
   <div class="section">
     <h1 id="welcomeText">مرحبًا بك في تطبيق حجز الملاعب! ⚽</h1>
-    <p id="descriptionText">نحن هنا لتوفير أفضل تجربة لك في حجز الملاعب الرياضية بكل سهولة. 🎉</p>
+    <p id="descriptionText">نحن هنا لتوفير أفضل تجربة لك في حجز الملاعب الرياضية في أي وقت وبسهولة. 🎉</p>
 
     <div class="card" onclick="toggleBookingInfo()">
       <h2 id="myBookingsText">حجوزاتي 📅</h2>
-      <div id="bookingInfo" style="display: none; margin-top: 10px;"></div>
+      <div id="bookingInfo" style="display: none;"></div>
     </div>
-
-    <div class="card" onclick="redirectToSportsGear()">
+    <div class="card">
+      <h2 id="notificationsText">إشعارات 🔔</h2>
+      <p id="notificationsDescription">تفقد التنبيهات الجديدة حول مواعيد الحجز والتحديثات. 📢</p>
+    </div>
+    <div class="card" onclick="redirectToSportsBooking()">
       <h2 id="sportsGearText">شراء الملابس الرياضية 👕</h2>
-      <p>اكتشف أحدث المعدات الرياضية لمبارياتك.</p>
+      <p id="sportsGearDescription">اضغط هنا لشراء الملابس الرياضية المناسبة لمبارياتك القادمة. 🛒</p>
     </div>
   </div>
 
-  <button class="floating-button" onclick="redirectToBooking()">
-    <i class="fas fa-plus"></i>
+  <button class="floating-button" onclick="redirectToBooking()" id="bookNowButton">
+    <span class="icon">⚽</span>
     <span id="bookNowText">احجز ملعبك الآن</span>
   </button>
-
   <button class="menu-btn" onclick="toggleMenu()">☰</button>
 
   <div class="menu" id="menu">
-    <a href="profile.html">
-      <i class="fas fa-user-circle"></i>
-      <span>الملف الشخصي (البروفيل)</span>
-    </a>
     <a href="#" onclick="showInfo(); closeMenu()">
-      <i class="fas fa-info-circle"></i>
-      <span id="appInfoText">معلومات التطبيق</span>
+      <span id="appInfoText">معلومات التطبيق ℹ️</span>
     </a>
-    <a href="#" class="logout-link" onclick="logout()">
-      <i class="fas fa-sign-out-alt"></i>
-      <span>تسجيل الخروج</span>
+    <a href="#" onclick="logout();">
+      <span>تسجيل الخروج 🚪</span>
     </a>
   </div>
 
   <div id="toast" class="toast">
-    <span id="toastText">تطبيق كين ماتش - الإصدار 1.0 <br> تجربة حجز سهلة وسريعة!</span>
+    <span id="toastText">تطبيق حجز الملاعب - الإصدار 1.0<br>يوفر لك هذا التطبيق تجربة حجز الملاعب الرياضية بكل سهولة! 🎉</span>
   </div>
+  <div id="countdown" style="text-align: center; font-size: 20px;"></div>
 
   <script>
     // وظيفة تسجيل الخروج
@@ -235,64 +484,237 @@
       window.location.href = "Login.html";
     }
 
-    // إدارة القائمة الجانبية
-    function toggleMenu() {
-      const menu = document.getElementById('menu');
-      const isOpen = menu.style.transform === 'translateX(0px)';
-      menu.style.transform = isOpen ? 'translateX(-100%)' : 'translateX(0px)';
-    }
-
-    function closeMenu() {
-      document.getElementById('menu').style.transform = 'translateX(-100%)';
-    }
-
     // إدارة الوضع الليلي
     const themeToggle = document.getElementById('themeToggle');
+    const body = document.body;
+
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'dark') {
+      body.classList.add('dark-mode');
+    }
+
     themeToggle.addEventListener('click', () => {
-      document.body.classList.toggle('dark-mode');
-      const isDark = document.body.classList.contains('dark-mode');
-      localStorage.setItem('theme', isDark ? 'dark' : 'light');
+      body.classList.toggle('dark-mode');
+      const isDarkMode = body.classList.contains('dark-mode');
+      localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
     });
 
-    if (localStorage.getItem('theme') === 'dark') document.body.classList.add('dark-mode');
-
-    // وظائف التوجيه
-    function redirectToBooking() { window.location.href = "KainMatch now.html"; }
-    function redirectToSportsGear() { window.location.href = "réservation.html"; }
-
-    // عرض معلومات الحجز من localStorage
-    function toggleBookingInfo() {
-      const infoDiv = document.getElementById('bookingInfo');
-      if (infoDiv.style.display === 'none') {
-        const data = JSON.parse(localStorage.getItem('bookingData'));
-        if (data) {
-          infoDiv.innerHTML = `
-            <table>
-              <tr><th>الملعب</th><td>${data.field}</td></tr>
-              <tr><th>التاريخ</th><td>${data.date}</td></tr>
-              <tr><th>الوقت</th><td>${data.time}</td></tr>
-            </table>`;
-        } else {
-          infoDiv.innerHTML = "<p>لا توجد حجوزات حالية.</p>";
+    // إدارة تغيير اللغة
+    const languageToggle = document.getElementById('languageToggle');
+    const languageText = document.getElementById('languageText');
+    const bookNowButton = document.getElementById('bookNowButton');
+    const texts = {
+      ar: {
+        header: "تطبيق كين ماتش",
+        welcome: "مرحبًا بك في تطبيق حجز الملاعب! ⚽",
+        description: "نحن هنا لتوفير أفضل تجربة لك في حجز الملاعب الرياضية في أي وقت وبسهولة. 🎉",
+        myBookings: "حجوزاتي 📅",
+        notifications: "إشعارات 🔔",
+        notificationsDescription: "تفقد التنبيهات الجديدة حول مواعيد الحجز والتحديثات. 📢",
+        sportsGear: "شراء الملابس الرياضية 👕",
+        sportsGearDescription: "اضغط هنا لشراء الملابس الرياضية المناسبة لمبارياتك القادمة. 🛒",
+        bookNow: "احجز ملعبك الآن",
+        appInfo: "معلومات التطبيق ℹ️",
+        toast: "تطبيق حجز الملاعب - الإصدار 1.0<br>يوفر لك هذا التطبيق تجربة حجز الملاعب الرياضية بكل سهولة! 🎉",
+        countdown: "الوقت المتبقي حتى الحجز:",
+        bookingDetails: {
+          name: "الاسم", age: "العمر", idCard: "رقم البطاقة", teamStatus: "الحالة",
+          teamSize: "عدد الأشخاص في الفريق", teamCards: "بطاقات اللاعبين", date: "تاريخ الحجز",
+          time: "وقت الحجز", field: "الملعب", position: "المركز", noBookings: "لا توجد معلومات حجوزات.",
+          noCards: "لا توجد بطاقات لاعبين.", download: "تنزيل الحجز"
         }
-        infoDiv.style.display = 'block';
+      },
+      en: {
+        header: "Kain Match App",
+        welcome: "Welcome to the Stadium Booking App! ⚽",
+        description: "We are here to provide you with the best experience in booking sports stadiums anytime, easily. 🎉",
+        myBookings: "My Bookings 📅",
+        notifications: "Notifications 🔔",
+        notificationsDescription: "Check new alerts about booking times and updates. 📢",
+        sportsGear: "Buy Sports Gear 👕",
+        sportsGearDescription: "Click here to buy the right sports gear for your upcoming matches. 🛒",
+        bookNow: "Book Your Stadium Now",
+        appInfo: "App Information ℹ️",
+        toast: "Stadium Booking App - Version 1.0<br>This app provides you with an easy stadium booking experience! 🎉",
+        countdown: "Time remaining until booking:",
+        bookingDetails: {
+          name: "Name", age: "Age", idCard: "ID Card", teamStatus: "Status",
+          teamSize: "Team Size", teamCards: "Player Cards", date: "Booking Date",
+          time: "Booking Time", field: "Field", position: "Position", noBookings: "No booking information available.",
+          noCards: "No player cards available.", download: "Download Booking"
+        }
+      },
+      fr: {
+        header: "Application Kain Match",
+        welcome: "Bienvenue dans l'application de réservation de stades! ⚽",
+        description: "Nous sommes ici pour vous offrir la meilleure expérience de réservation de stades sportifs à tout moment, facilement. 🎉",
+        myBookings: "Mes Réservations 📅",
+        notifications: "Notifications 🔔",
+        notificationsDescription: "Vérifiez les nouvelles alertes concernant les heures de réservation et les mises à jour. 📢",
+        sportsGear: "Acheter des Équipements Sportifs 👕",
+        sportsGearDescription: "Cliquez ici pour acheter les équipements sportifs adaptés à vos prochains matchs. 🛒",
+        bookNow: "Réservez Votre Stade Maintenant",
+        appInfo: "Informations sur l'Application ℹ️",
+        toast: "Application de Réservation de Stades - Version 1.0<br>Cette application vous offre une expérience de réservation de stades facile! 🎉",
+        countdown: "Temps restant jusqu'à la réservation:",
+        bookingDetails: {
+          name: "Nom", age: "Âge", idCard: "Carte d'identité", teamStatus: "Statut",
+          teamSize: "Taille de l'équipe", teamCards: "Cartes des joueurs", date: "Date de réservation",
+          time: "Heure de réservation", field: "Terrain", position: "Position", noBookings: "Aucune information de réservation disponible.",
+          noCards: "Aucune carte de joueur disponible.", download: "Télécharger la Réservation"
+        }
+      }
+    };
+
+    let currentLanguage = localStorage.getItem('language') || 'ar';
+
+    function updateTexts(language) {
+      document.getElementById("headerText").textContent = texts[language].header;
+      document.getElementById("welcomeText").textContent = texts[language].welcome;
+      document.getElementById("descriptionText").textContent = texts[language].description;
+      document.getElementById("myBookingsText").textContent = texts[language].myBookings;
+      document.getElementById("notificationsText").textContent = texts[language].notifications;
+      document.getElementById("notificationsDescription").textContent = texts[language].notificationsDescription;
+      document.getElementById("sportsGearText").textContent = texts[language].sportsGear;
+      document.getElementById("sportsGearDescription").textContent = texts[language].sportsGearDescription;
+      document.getElementById("bookNowText").textContent = texts[language].bookNow;
+      document.getElementById("appInfoText").textContent = texts[language].appInfo;
+      document.getElementById("toastText").innerHTML = texts[language].toast;
+
+      const bookNowText = document.getElementById("bookNowText").textContent;
+      const textLength = bookNowText.length;
+      const buttonPadding = Math.min(10 + textLength * 1.5, 30);
+      bookNowButton.style.padding = `0 ${buttonPadding}px`;
+
+      displayBookingInfo();
+    }
+
+    function updateLanguageButtonText(language) {
+      if (language === "ar") languageText.textContent = "English";
+      else if (language === "en") languageText.textContent = "Français";
+      else if (language === "fr") languageText.textContent = "العربية";
+    }
+
+    languageToggle.addEventListener('click', () => {
+      if (currentLanguage === "ar") currentLanguage = "en";
+      else if (currentLanguage === "en") currentLanguage = "fr";
+      else currentLanguage = "ar";
+      updateTexts(currentLanguage);
+      updateLanguageButtonText(currentLanguage);
+      localStorage.setItem('language', currentLanguage);
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+      updateTexts(currentLanguage);
+      updateLanguageButtonText(currentLanguage);
+      displayBookingInfo();
+    });
+
+    function toggleMenu() {
+      const menu = document.getElementById('menu');
+      menu.style.transform = menu.style.transform === 'translateX(0px)' ? 'translateX(-100%)' : 'translateX(0)';
+    }
+
+    document.addEventListener('click', function(event) {
+      const menu = document.getElementById('menu');
+      const menuBtn = document.querySelector('.menu-btn');
+      if (!menu.contains(event.target) && event.target !== menuBtn) {
+        menu.style.transform = 'translateX(-100%)';
+      }
+    });
+
+    function redirectToBooking() { window.location.href = "/KainMatch now.html"; }
+    function redirectToSportsBooking() { window.location.href = "/réservation.html"; }
+
+    function toggleBookingInfo() {
+      const bookingInfo = document.getElementById("bookingInfo");
+      bookingInfo.style.display = bookingInfo.style.display === "none" ? "block" : "none";
+      if (bookingInfo.style.display === "block") displayBookingInfo();
+    }
+
+    function displayBookingInfo() {
+      const bookingData = JSON.parse(localStorage.getItem('bookingData')) || {};
+      const bookingInfo = document.getElementById("bookingInfo");
+      let playersList = '';
+
+      if (bookingData && Object.keys(bookingData).length > 0) {
+        if (bookingData.teamCards && bookingData.teamCards.length > 0) {
+          playersList = `<div class="player-cards-list"><ul>${bookingData.teamCards.map((card, index) => `<li>${index + 1}. ${card}</li>`).join('')}</ul></div>`;
+        } else {
+          playersList = `<p>${texts[currentLanguage].bookingDetails.noCards}</p>`;
+        }
+
+        bookingInfo.innerHTML = `
+          <table>
+            <tr><th>${texts[currentLanguage].bookingDetails.name}</th><td>${bookingData.name || texts[currentLanguage].bookingDetails.noBookings}</td></tr>
+            <tr><th>${texts[currentLanguage].bookingDetails.age}</th><td>${bookingData.age || texts[currentLanguage].bookingDetails.noBookings}</td></tr>
+            <tr><th>${texts[currentLanguage].bookingDetails.idCard}</th><td>${bookingData.idCard || texts[currentLanguage].bookingDetails.noBookings}</td></tr>
+            <tr><th>${texts[currentLanguage].bookingDetails.teamStatus}</th><td>${bookingData.teamStatus || texts[currentLanguage].bookingDetails.noBookings}</td></tr>
+            <tr><th>${texts[currentLanguage].bookingDetails.teamSize}</th><td>${bookingData.teamSize || 'N/A'}</td></tr>
+            <tr><th>${texts[currentLanguage].bookingDetails.teamCards}</th><td>${playersList}</td></tr>
+            <tr><th>${texts[currentLanguage].bookingDetails.date}</th><td>${bookingData.date || texts[currentLanguage].bookingDetails.noBookings}</td></tr>
+            <tr><th>${texts[currentLanguage].bookingDetails.time}</th><td>${bookingData.time || texts[currentLanguage].bookingDetails.noBookings}</td></tr>
+            <tr><th>${texts[currentLanguage].bookingDetails.field}</th><td>${bookingData.field || texts[currentLanguage].bookingDetails.noBookings}</td></tr>
+            <tr><th>${texts[currentLanguage].bookingDetails.position}</th><td>${bookingData.position || texts[currentLanguage].bookingDetails.noBookings}</td></tr>
+          </table>
+          <button class="download-button" onclick="downloadBooking()">
+            <span class="icon">⬇️</span> ${texts[currentLanguage].bookingDetails.download}
+          </button>
+        `;
+
+        if (bookingData.date && bookingData.time) updateCountdown(bookingData.date + "T" + bookingData.time);
       } else {
-        infoDiv.style.display = 'none';
+        bookingInfo.innerHTML = texts[currentLanguage].bookingDetails.noBookings;
       }
     }
 
     function showInfo() {
       const toast = document.getElementById('toast');
       toast.classList.add('show');
-      setTimeout(() => toast.classList.remove('show'), 3000);
+      setTimeout(() => toast.classList.remove('show'), 2000);
     }
 
-    // إغلاق القائمة عند النقر خارجها
-    document.addEventListener('click', (e) => {
-      const menu = document.getElementById('menu');
-      const btn = document.querySelector('.menu-btn');
-      if (!menu.contains(e.target) && e.target !== btn) closeMenu();
-    });
+    let countdownInterval;
+    function startCountdown(date) {
+      clearInterval(countdownInterval);
+      const countDownDate = new Date(date).getTime();
+      countdownInterval = setInterval(function () {
+        const now = new Date().getTime();
+        const distance = countDownDate - now;
+        if (distance < 0) {
+          clearInterval(countdownInterval);
+          document.getElementById("countdown").innerHTML = "";
+          return;
+        }
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+        document.getElementById("countdown").innerHTML = texts[currentLanguage].countdown + " " + `${days} يوم ${hours} ساعة ${minutes} دقيقة ${seconds} ثانية`;
+      }, 1000);
+    }
+
+    function updateCountdown(newDate) { startCountdown(newDate); }
+
+    function downloadBooking() {
+      const bookingData = JSON.parse(localStorage.getItem('bookingData')) || {};
+      let tableRows = '';
+      const fields = ['name', 'age', 'idCard', 'teamStatus', 'teamSize', 'date', 'time', 'field', 'position'];
+      
+      fields.forEach(f => {
+        tableRows += `<tr><th>${texts[currentLanguage].bookingDetails[f]}</th><td>${bookingData[f] || '---'}</td></tr>`;
+      });
+
+      const htmlContent = `<html><head><meta charset="UTF-8"><style>body{font-family:Cairo;direction:${currentLanguage==='ar'?'rtl':'ltr'}}table{width:100%;border-collapse:collapse}th,td{padding:8px;border:1px solid #ddd;text-align:right}th{background:#4CAF50;color:white}</style></head><body><h2>${texts[currentLanguage].bookingDetails.download}</h2><table>${tableRows}</table></body></html>`;
+      const blob = new Blob([htmlContent], { type: 'text/html' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `booking.html`;
+      a.click();
+    }
+
+    function closeMenu() { toggleMenu(); }
   </script>
 </body>
 </html>
