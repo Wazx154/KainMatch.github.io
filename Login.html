@@ -531,12 +531,10 @@
         // ===== تسجيل الدخول بجوجل =====
         document.getElementById('googleSignInButton').addEventListener('click', async () => {
             hideError();
-            showLoading();
             try {
                 const result = await signInWithPopup(auth, provider);
                 handleSuccess(result.user);
             } catch (err) {
-                hideLoading();
                 showError(firebaseErrorToArabic(err.code));
             }
         });
