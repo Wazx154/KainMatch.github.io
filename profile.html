@@ -1,91 +1,1412 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <title>KainMatch App</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>معلوماتك الشخصية - كرة القدم</title>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Amiri', serif;
+            background: #0a1a0f;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            color: #e8f5e9;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(ellipse at 30% 20%, rgba(56, 142, 60, 0.12) 0%, transparent 50%),
+                        radial-gradient(ellipse at 70% 80%, rgba(76, 175, 80, 0.08) 0%, transparent 50%),
+                        radial-gradient(ellipse at 50% 50%, rgba(27, 94, 32, 0.05) 0%, transparent 70%);
+            animation: bgFloat 20s ease-in-out infinite;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        @keyframes bgFloat {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            33% { transform: translate(2%, -2%) rotate(1deg); }
+            66% { transform: translate(-1%, 1%) rotate(-0.5deg); }
+        }
+
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(76, 175, 80, 0.3);
+            border-radius: 50%;
+            animation: particleRise linear infinite;
+        }
+
+        @keyframes particleRise {
+            0% { transform: translateY(100vh) scale(0); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-10vh) scale(1); opacity: 0; }
+        }
+
+        nav {
+            background: rgba(27, 94, 32, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            color: white;
+            padding: 0;
+            width: 100%;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid rgba(76, 175, 80, 0.2);
+        }
+
+        nav .nav-inner {
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        nav a {
+            color: rgba(255, 255, 255, 0.85);
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.05rem;
+            transition: all 0.3s;
+            padding: 6px 16px;
+            border-radius: 8px;
+        }
+
+        nav a:hover {
+            color: #fff;
+            background: rgba(76, 175, 80, 0.25);
+        }
+
+        .container {
+            width: 92%;
+            max-width: 600px;
+            background: rgba(20, 40, 25, 0.7);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border-radius: 20px;
+            border: 1px solid rgba(76, 175, 80, 0.15);
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.4),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            padding: 35px 30px;
+            text-align: right;
+            margin-top: 30px;
+            margin-bottom: 40px;
+            position: relative;
+            z-index: 1;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: containerIn 0.8s ease forwards 0.2s;
+        }
+
+        @keyframes containerIn {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .logo img {
+            max-width: 120px;
+            border-radius: 16px;
+            transition: transform 0.4s ease;
+            filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.3));
+        }
+
+        .logo img:hover {
+            transform: scale(1.08) rotate(-2deg);
+        }
+
+        .profile-pic-wrapper {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .profile-pic {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #1b5e20, #2e7d32);
+            border: 4px solid rgba(76, 175, 80, 0.5);
+            margin: 0 auto;
+            background-size: cover;
+            background-position: center;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3),
+                        0 0 0 8px rgba(76, 175, 80, 0.08);
+            transition: all 0.4s ease;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .profile-pic:hover {
+            transform: scale(1.06);
+            border-color: rgba(76, 175, 80, 0.8);
+            box-shadow: 0 6px 30px rgba(76, 175, 80, 0.2),
+                        0 0 0 12px rgba(76, 175, 80, 0.1);
+        }
+
+        .profile-pic .camera-icon {
+            position: absolute;
+            bottom: 2px;
+            left: 2px;
+            width: 32px;
+            height: 32px;
+            background: #388e3c;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 13px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s;
+        }
+
+        .profile-pic:hover .camera-icon {
+            transform: scale(1.15);
+        }
+
+        .profile-pic-info {
+            text-align: center;
+            font-size: 0.9rem;
+            color: rgba(200, 230, 201, 0.7);
+            margin-top: 8px;
+            margin-bottom: 10px;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        h1 {
+            color: #e8f5e9;
+            font-size: 1.7rem;
+            text-align: center;
+            margin: 10px 0 8px;
+            font-weight: 700;
+            text-shadow: 0 2px 10px rgba(76, 175, 80, 0.2);
+        }
+
+        .subtitle {
+            text-align: center;
+            color: rgba(200, 230, 201, 0.5);
+            font-size: 0.95rem;
+            margin-bottom: 25px;
+        }
+
+        form {
+            width: 100%;
+        }
+
+        .form-field {
+            position: relative;
+            margin-bottom: 18px;
+        }
+
+        .form-field .field-icon {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(76, 175, 80, 0.5);
+            font-size: 0.95rem;
+            transition: color 0.3s;
+            pointer-events: none;
+        }
+
+        .form-field input[type="text"],
+        .form-field input[type="email"],
+        .form-field input[type="tel"],
+        .form-field input[type="password"],
+        .form-field input[type="date"] {
+            width: 100%;
+            padding: 13px 14px 13px 42px;
+            border: 1.5px solid rgba(76, 175, 80, 0.2);
+            border-radius: 12px;
+            font-size: 1rem;
+            font-family: 'Amiri', serif;
+            background: rgba(15, 30, 18, 0.6);
+            color: #e8f5e9;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        .form-field input:focus {
+            border-color: rgba(76, 175, 80, 0.6);
+            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1), 0 0 20px rgba(76, 175, 80, 0.08);
+            background: rgba(15, 30, 18, 0.8);
+        }
+
+        .form-field input:focus + .field-icon,
+        .form-field input:focus ~ .field-icon {
+            color: #66bb6a;
+        }
+
+        .form-field input::placeholder {
+            color: rgba(200, 230, 201, 0.4);
+            font-style: italic;
+        }
+
+        .form-field input[type="date"]::-webkit-calendar-picker-indicator {
+            filter: invert(0.6) sepia(1) hue-rotate(90deg);
+            cursor: pointer;
+        }
+
+        .form-field.error input {
+            border-color: #ef5350;
+            box-shadow: 0 0 0 3px rgba(239, 83, 80, 0.1);
+        }
+
+        .form-field.error .field-icon {
+            color: #ef5350 !important;
+        }
+
+        .form-field.success input {
+            border-color: #66bb6a;
+        }
+
+        .form-field.success .field-icon {
+            color: #66bb6a !important;
+        }
+
+        .field-error {
+            color: #ef5350;
+            font-size: 0.82rem;
+            margin-top: 5px;
+            display: none;
+            padding-right: 4px;
+        }
+
+        .form-field.error .field-error {
+            display: block;
+            animation: shakeIn 0.3s ease;
+        }
+
+        @keyframes shakeIn {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(5px); }
+            75% { transform: translateX(-5px); }
+        }
+
+        .password-wrapper {
+            position: relative;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: rgba(76, 175, 80, 0.5);
+            font-size: 0.95rem;
+            transition: color 0.3s;
+            background: none;
+            border: none;
+            padding: 4px;
+            z-index: 2;
+        }
+
+        .toggle-password:hover {
+            color: #66bb6a;
+        }
+
+        .password-strength {
+            height: 4px;
+            border-radius: 2px;
+            background: rgba(76, 175, 80, 0.15);
+            margin-top: 6px;
+            overflow: hidden;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .password-strength.visible {
+            opacity: 1;
+        }
+
+        .password-strength-bar {
+            height: 100%;
+            border-radius: 2px;
+            width: 0%;
+            transition: all 0.4s ease;
+        }
+
+        .strength-text {
+            font-size: 0.78rem;
+            margin-top: 3px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .strength-text.visible {
+            opacity: 1;
+        }
+
+        /* ===== مراكز اللعب ===== */
+        .positions-section {
+            margin-top: 30px;
+            margin-bottom: 10px;
+        }
+
+        .positions-section h2 {
+            color: #e8f5e9;
+            font-size: 1.3rem;
+            text-align: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(76, 175, 80, 0.15);
+        }
+
+        .position-field {
+            margin-bottom: 22px;
+            padding: 14px 16px;
+            border-radius: 14px;
+            background: rgba(76, 175, 80, 0.04);
+            border: 1px solid rgba(76, 175, 80, 0.08);
+            transition: all 0.4s ease;
+        }
+
+        .position-field.active {
+            background: rgba(76, 175, 80, 0.08);
+            border-color: rgba(76, 175, 80, 0.2);
+            box-shadow: 0 2px 15px rgba(76, 175, 80, 0.06);
+        }
+
+        .position-field.dimmed {
+            background: rgba(255, 255, 255, 0.02);
+            border-color: rgba(255, 255, 255, 0.05);
+            opacity: 0.5;
+        }
+
+        .position-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .position-label {
+            font-weight: bold;
+            color: rgba(200, 230, 201, 0.8);
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: color 0.3s;
+        }
+
+        .position-field.dimmed .position-label {
+            color: rgba(200, 230, 201, 0.35);
+        }
+
+        .position-field.active .position-label {
+            color: #a5d6a7;
+        }
+
+        .position-label .pos-icon {
+            width: 30px;
+            height: 30px;
+            border-radius: 8px;
+            background: rgba(76, 175, 80, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            color: #66bb6a;
+            transition: all 0.3s;
+        }
+
+        .position-field.dimmed .pos-icon {
+            background: rgba(255, 255, 255, 0.05);
+            color: rgba(255, 255, 255, 0.2);
+        }
+
+        .position-field.active .pos-icon {
+            background: rgba(76, 175, 80, 0.25);
+            color: #81c784;
+        }
+
+        .position-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .position-value {
+            color: #66bb6a;
+            font-weight: bold;
+            font-size: 0.95rem;
+            min-width: 40px;
+            text-align: left;
+            transition: all 0.3s;
+        }
+
+        .position-field.dimmed .position-value {
+            color: rgba(255, 255, 255, 0.2);
+        }
+
+        /* زر التبديل */
+        .mode-toggle {
+            width: 44px;
+            height: 24px;
+            border-radius: 12px;
+            border: none;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.35s ease;
+            flex-shrink: 0;
+            outline: none;
+        }
+
+        .mode-toggle.normal {
+            background: linear-gradient(135deg, #2e7d32, #43a047);
+            box-shadow: 0 2px 8px rgba(46, 125, 50, 0.3);
+        }
+
+        .mode-toggle.dimmed {
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: none;
+        }
+
+        .mode-toggle::after {
+            content: '';
+            position: absolute;
+            top: 3px;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: white;
+            transition: all 0.35s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .mode-toggle.normal::after {
+            right: 3px;
+        }
+
+        .mode-toggle.dimmed::after {
+            right: 23px;
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        .mode-toggle:focus-visible {
+            outline: 2px solid #66bb6a;
+            outline-offset: 2px;
+        }
+
+        .mode-label {
+            font-size: 0.72rem;
+            color: rgba(200, 230, 201, 0.4);
+            margin-top: 6px;
+            text-align: left;
+            transition: all 0.3s;
+        }
+
+        .position-field.active .mode-label {
+            color: rgba(129, 199, 132, 0.6);
+        }
+
+        .position-field.dimmed .mode-label {
+            color: rgba(255, 255, 255, 0.15);
+        }
+
+        /* ===== Range Slider ===== */
+        .range-wrapper {
+            position: relative;
+            direction: ltr;
+        }
+
+        input[type="range"] {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            height: 8px;
+            border-radius: 4px;
+            outline: none;
+            direction: ltr;
+            cursor: pointer;
+            margin: 0;
+            transition: opacity 0.4s, filter 0.4s;
+        }
+
+        input[type="range"]::-webkit-slider-runnable-track {
+            height: 8px;
+            border-radius: 4px;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #43a047, #66bb6a);
+            box-shadow: 0 2px 10px rgba(76, 175, 80, 0.5);
+            cursor: grab;
+            transition: transform 0.25s cubic-bezier(0.68, -0.55, 0.265, 1.55),
+                        box-shadow 0.25s,
+                        background 0.4s;
+            border: 3px solid #0a1a0f;
+            margin-top: -8px;
+        }
+
+        input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.25);
+            box-shadow: 0 3px 18px rgba(76, 175, 80, 0.7);
+        }
+
+        input[type="range"]:active::-webkit-slider-thumb {
+            cursor: grabbing;
+            transform: scale(1.15);
+            box-shadow: 0 4px 20px rgba(76, 175, 80, 0.8);
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #43a047, #66bb6a);
+            box-shadow: 0 2px 10px rgba(76, 175, 80, 0.5);
+            cursor: grab;
+            border: 3px solid #0a1a0f;
+        }
+
+        /* الوضع العادي */
+        input[type="range"].normal-mode {
+            background: linear-gradient(to right,
+                rgba(76, 175, 80, 0.5) 0%,
+                rgba(76, 175, 80, 0.5) var(--fill),
+                rgba(76, 175, 80, 0.12) var(--fill),
+                rgba(76, 175, 80, 0.12) 100%
+            );
+        }
+
+        input[type="range"].normal-mode::-webkit-slider-thumb {
+            background: linear-gradient(135deg, #43a047, #66bb6a);
+            box-shadow: 0 2px 10px rgba(76, 175, 80, 0.5);
+        }
+
+        input[type="range"].normal-mode::-moz-range-thumb {
+            background: linear-gradient(135deg, #43a047, #66bb6a);
+            box-shadow: 0 2px 10px rgba(76, 175, 80, 0.5);
+        }
+
+        /* الوضع المطلم */
+        input[type="range"].dimmed-mode {
+            background: linear-gradient(to right,
+                rgba(255, 255, 255, 0.06) 0%,
+                rgba(255, 255, 255, 0.06) 100%
+            );
+            cursor: not-allowed;
+            opacity: 0.4;
+            filter: grayscale(1);
+        }
+
+        input[type="range"].dimmed-mode::-webkit-slider-thumb {
+            background: linear-gradient(135deg, #555, #777);
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+            cursor: not-allowed;
+        }
+
+        input[type="range"].dimmed-mode::-moz-range-thumb {
+            background: linear-gradient(135deg, #555, #777);
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+            cursor: not-allowed;
+        }
+
+        /* توهج المؤشر */
+        .cursor-glow {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(76, 175, 80, 0.3) 0%, transparent 70%);
+            top: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            transition: opacity 0.4s, left 0.05s linear;
+            z-index: 1;
+        }
+
+        .position-field.dimmed .cursor-glow {
+            opacity: 0;
+        }
+
+        /* ===== الأزرار ===== */
+        .button {
+            padding: 14px 20px;
+            background: linear-gradient(135deg, #2e7d32, #43a047);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-family: 'Amiri', serif;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-top: 25px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(46, 125, 50, 0.3);
+        }
+
+        .button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            transition: left 0.5s;
+        }
+
+        .button:hover::before {
+            left: 100%;
+        }
+
+        .button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(46, 125, 50, 0.4);
+        }
+
+        .button:active {
+            transform: translateY(0);
+        }
+
+        .button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        .button .spinner {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+            margin: 0 auto;
+        }
+
+        .button.loading .button-text {
+            display: none;
+        }
+
+        .button.loading .spinner {
+            display: inline-block;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* ===== Toast ===== */
+        .toast {
+            position: fixed;
+            top: 80px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-20px);
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-family: 'Amiri', serif;
+            font-size: 0.95rem;
+            z-index: 9999;
+            opacity: 0;
+            transition: all 0.4s ease;
+            backdrop-filter: blur(20px);
+            pointer-events: none;
+            max-width: 90%;
+            text-align: center;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .toast.error {
+            background: rgba(211, 47, 47, 0.9);
+            color: white;
+            border: 1px solid rgba(239, 83, 80, 0.3);
+        }
+
+        .toast.success {
+            background: rgba(46, 125, 50, 0.9);
+            color: white;
+            border: 1px solid rgba(76, 175, 80, 0.3);
+        }
+
+        .form-field.has-toggle input {
+            padding-right: 44px;
+        }
+
+        @media (max-width: 640px) {
+            .container {
+                width: 95%;
+                padding: 25px 18px;
+                margin-top: 15px;
+                border-radius: 16px;
+            }
+            h1 { font-size: 1.4rem; }
+            .profile-pic { width: 100px; height: 100px; }
+            .form-field input {
+                padding: 11px 12px 11px 38px;
+                font-size: 0.95rem;
+            }
+            .button { padding: 12px 16px; font-size: 1rem; }
+            .position-field { padding: 12px; }
+            .mode-toggle { width: 38px; height: 20px; }
+            .mode-toggle::after { width: 14px; height: 14px; }
+            .mode-toggle.dimmed::after { right: 20px; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0a1a0f; }
+        ::-webkit-scrollbar-thumb { background: rgba(76, 175, 80, 0.3); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(76, 175, 80, 0.5); }
+    </style>
 </head>
 <body>
+    <div class="particles" id="particles"></div>
+    <div class="toast" id="toast"></div>
 
-<h2>تسجيل حساب</h2>
-<input id="name" placeholder="الاسم"><br>
-<input id="email" placeholder="البريد"><br>
-<input id="password" type="password" placeholder="كلمة المرور"><br>
-<input id="phone" placeholder="الهاتف"><br>
-<button onclick="register()">تسجيل</button>
+    <nav>
+        <div class="nav-inner">
+            <i class="fas fa-home" style="color: rgba(255,255,255,0.6);"></i>
+            <a href="/index.html">الصفحة الرئيسية</a>
+        </div>
+    </nav>
 
-<hr>
+    <div class="container">
+        <div class="logo">
+            <img src="/1000067588.png" alt="شعار الموقع">
+        </div>
 
-<h2>الملف الشخصي</h2>
-<img id="profilePic" width="100"><br>
-<p>الاسم: <span id="p_name"></span></p>
-<p>البريد: <span id="p_email"></span></p>
-<p>الهاتف: <span id="p_phone"></span></p>
-<button onclick="logout()">تسجيل الخروج</button>
+        <div class="profile-pic-wrapper">
+            <label for="profilePic" style="cursor: pointer;">
+                <div class="profile-pic" id="preview" title="اضغط لاختيار صورة">
+                    <span class="camera-icon"><i class="fas fa-camera"></i></span>
+                </div>
+            </label>
+            <p class="profile-pic-info">اضغط لتغيير الصورة الشخصية</p>
+            <input type="file" id="profilePic" accept="image/*">
+        </div>
 
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        <h1>معلوماتك الشخصية</h1>
+        <p class="subtitle">أنشئ حسابك وانضم لمجتمع كرة القدم</p>
 
-const firebaseConfig = {
-  apiKey: "AIzaSyDaSsBM2GuRlrewSmYRqwA60ZMcJMIIftQ",
-  authDomain: "kainmatch.firebaseapp.com",
-  projectId: "kainmatch",
-  storageBucket: "kainmatch.firebasestorage.app",
-  messagingSenderId: "31352105772",
-  appId: "1:31352105772:web:16f4043cd987a77ada9a89",
-  measurementId: "G-M0PV4Z1PD6"
-};
+        <form id="personalForm" novalidate>
+            <div class="form-field" id="nameField">
+                <input type="text" id="name" name="name" required placeholder="الاسم الكامل" autocomplete="name">
+                <i class="fas fa-user field-icon"></i>
+                <div class="field-error">يرجى إدخال الاسم الكامل (3 أحرف على الأقل)</div>
+            </div>
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
+            <div class="form-field" id="dobField">
+                <input type="date" id="dob" name="dob" required>
+                <i class="fas fa-calendar-alt field-icon"></i>
+                <div class="field-error">يرجى اختيار تاريخ الميلاد</div>
+            </div>
 
-// تسجيل مستخدم
-window.register = async function() {
-  const name = document.getElementById("name").value;
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
-  const phone = document.getElementById("phone").value;
+            <div class="form-field" id="teamField">
+                <input type="text" id="team" name="team" required placeholder="الفريق المفضل" autocomplete="off">
+                <i class="fas fa-shield-halved field-icon"></i>
+                <div class="field-error">يرجى إدخال الفريق المفضل</div>
+            </div>
 
-  try {
-    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-    const user = userCredential.user;
+            <div class="form-field" id="locationField">
+                <input type="text" id="location" name="location" required placeholder="المنطقة" autocomplete="address-level2">
+                <i class="fas fa-map-marker-alt field-icon"></i>
+                <div class="field-error">يرجى إدخال المنطقة</div>
+            </div>
 
-    await setDoc(doc(db, "users", user.uid), {
-      name,
-      email,
-      phone,
-      createdAt: new Date()
-    });
+            <div class="form-field" id="emailField">
+                <input type="email" id="email" name="email" required placeholder="البريد الإلكتروني" autocomplete="email">
+                <i class="fas fa-envelope field-icon"></i>
+                <div class="field-error">يرجى إدخال بريد إلكتروني صحيح</div>
+            </div>
 
-    alert("تم التسجيل بنجاح ✅");
-  } catch (error) {
-    alert(error.message);
-  }
-};
+            <div class="form-field" id="phoneField">
+                <input type="tel" id="phone" name="phone" required placeholder="رقم الهاتف" autocomplete="tel">
+                <i class="fas fa-phone field-icon"></i>
+                <div class="field-error">يرجى إدخال رقم هاتف صحيح (8-15 رقم)</div>
+            </div>
 
-// تحميل بيانات المستخدم
-onAuthStateChanged(auth, async (user) => {
-  if (user) {
-    const docRef = doc(db, "users", user.uid);
-    const docSnap = await getDoc(docRef);
+            <div class="form-field">
+                <input type="text" id="hobbies" name="hobbies" placeholder="الهوايات (اختياري)" autocomplete="off">
+                <i class="fas fa-futbol field-icon"></i>
+            </div>
 
-    if (docSnap.exists()) {
-      const data = docSnap.data();
-      document.getElementById("p_name").textContent = data.name;
-      document.getElementById("p_email").textContent = data.email;
-      document.getElementById("p_phone").textContent = data.phone;
-    }
-  }
-});
+            <div class="form-field has-toggle" id="passwordField">
+                <div class="password-wrapper">
+                    <input type="password" id="password" name="password" required placeholder="كلمة السر" autocomplete="new-password">
+                    <i class="fas fa-lock field-icon"></i>
+                    <button type="button" class="toggle-password" id="togglePassword" aria-label="إظهار كلمة السر">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                </div>
+                <div class="password-strength" id="passwordStrength">
+                    <div class="password-strength-bar" id="passwordStrengthBar"></div>
+                </div>
+                <div class="strength-text" id="strengthText"></div>
+                <div class="field-error">كلمة السر يجب أن تكون 6 أحرف على الأقل</div>
+            </div>
 
-// تسجيل الخروج
-window.logout = function() {
-  signOut(auth);
-};
+            <div class="form-field has-toggle" id="confirmPasswordField">
+                <div class="password-wrapper">
+                    <input type="password" id="confirmPassword" name="confirmPassword" required placeholder="تأكيد كلمة السر" autocomplete="new-password">
+                    <i class="fas fa-lock field-icon"></i>
+                    <button type="button" class="toggle-password" id="toggleConfirmPassword" aria-label="إظهار كلمة السر">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                </div>
+                <div class="field-error">كلمتا السر غير متطابقتين</div>
+            </div>
 
-</script>
+            <!-- مراكز اللعب -->
+            <div class="positions-section">
+                <h2>مراكز اللعب</h2>
 
+                <div class="position-field active" id="goalkeeperField">
+                    <div class="position-header">
+                        <label class="position-label">
+                            <span class="pos-icon"><i class="fas fa-hands"></i></span>
+                            حارس مرمى
+                        </label>
+                        <div class="position-right">
+                            <span class="position-value" id="goalkeeperValue">0%</span>
+                            <button type="button" class="mode-toggle normal" id="goalkeeperToggle" aria-label="تبديل وضع حارس المرمى"></button>
+                        </div>
+                    </div>
+                    <div class="range-wrapper">
+                        <div class="cursor-glow" id="goalkeeperGlow"></div>
+                        <input type="range" min="0" max="100" value="0" id="goalkeeper" class="normal-mode" style="--fill: 0%;">
+                    </div>
+                    <div class="mode-label" id="goalkeeperModeLabel"><i class="fas fa-check-circle"></i> وضع عادي</div>
+                </div>
+
+                <div class="position-field active" id="defenderField">
+                    <div class="position-header">
+                        <label class="position-label">
+                            <span class="pos-icon"><i class="fas fa-shield"></i></span>
+                            مدافع
+                        </label>
+                        <div class="position-right">
+                            <span class="position-value" id="defenderValue">0%</span>
+                            <button type="button" class="mode-toggle normal" id="defenderToggle" aria-label="تبديل وضع المدافع"></button>
+                        </div>
+                    </div>
+                    <div class="range-wrapper">
+                        <div class="cursor-glow" id="defenderGlow"></div>
+                        <input type="range" min="0" max="100" value="0" id="defender" class="normal-mode" style="--fill: 0%;">
+                    </div>
+                    <div class="mode-label" id="defenderModeLabel"><i class="fas fa-check-circle"></i> وضع عادي</div>
+                </div>
+
+                <div class="position-field active" id="midfielderField">
+                    <div class="position-header">
+                        <label class="position-label">
+                            <span class="pos-icon"><i class="fas fa-arrows-alt"></i></span>
+                            وسط
+                        </label>
+                        <div class="position-right">
+                            <span class="position-value" id="midfielderValue">0%</span>
+                            <button type="button" class="mode-toggle normal" id="midfielderToggle" aria-label="تبديل وضع الوسط"></button>
+                        </div>
+                    </div>
+                    <div class="range-wrapper">
+                        <div class="cursor-glow" id="midfielderGlow"></div>
+                        <input type="range" min="0" max="100" value="0" id="midfielder" class="normal-mode" style="--fill: 0%;">
+                    </div>
+                    <div class="mode-label" id="midfielderModeLabel"><i class="fas fa-check-circle"></i> وضع عادي</div>
+                </div>
+
+                <div class="position-field active" id="forwardField">
+                    <div class="position-header">
+                        <label class="position-label">
+                            <span class="pos-icon"><i class="fas fa-crosshairs"></i></span>
+                            مهاجم
+                        </label>
+                        <div class="position-right">
+                            <span class="position-value" id="forwardValue">0%</span>
+                            <button type="button" class="mode-toggle normal" id="forwardToggle" aria-label="تبديل وضع المهاجم"></button>
+                        </div>
+                    </div>
+                    <div class="range-wrapper">
+                        <div class="cursor-glow" id="forwardGlow"></div>
+                        <input type="range" min="0" max="100" value="0" id="forward" class="normal-mode" style="--fill: 0%;">
+                    </div>
+                    <div class="mode-label" id="forwardModeLabel"><i class="fas fa-check-circle"></i> وضع عادي</div>
+                </div>
+            </div>
+
+            <button type="submit" class="button" id="submitBtn">
+                <span class="button-text">حفظ المعلومات</span>
+                <span class="spinner"></span>
+            </button>
+        </form>
+    </div>
+
+    <script type="module">
+        // === استيراد Firebase ===
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword, sendEmailVerification } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        // === تكوين Firebase الجديد ===
+        const firebaseConfig = {
+            apiKey: "AIzaSyDaSsBM2GuRlrewSmYRqwA60ZMcJMIIftQ",
+            authDomain: "kainmatch.firebaseapp.com",
+            projectId: "kainmatch",
+            storageBucket: "kainmatch.firebasestorage.app",
+            messagingSenderId: "31352105772",
+            appId: "1:31352105772:web:16f4043cd987a77ada9a89",
+            measurementId: "G-M0PV4Z1PD6"
+        };
+
+        // === تهيئة Firebase ===
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // === العناصر ===
+        const form = document.getElementById('personalForm');
+        const profilePicInput = document.getElementById('profilePic');
+        const preview = document.getElementById('preview');
+        const submitBtn = document.getElementById('submitBtn');
+        const passwordInput = document.getElementById('password');
+        const confirmPasswordInput = document.getElementById('confirmPassword');
+
+        // === الجزيئات ===
+        (function createParticles() {
+            const container = document.getElementById('particles');
+            for (let i = 0; i < 25; i++) {
+                const p = document.createElement('div');
+                p.className = 'particle';
+                p.style.left = Math.random() * 100 + '%';
+                p.style.width = p.style.height = (2 + Math.random() * 4) + 'px';
+                p.style.animationDuration = (8 + Math.random() * 15) + 's';
+                p.style.animationDelay = Math.random() * 10 + 's';
+                p.style.opacity = 0.1 + Math.random() * 0.3;
+                container.appendChild(p);
+            }
+        })();
+
+        // === إشعار Toast ===
+        function showToast(message, type = 'error') {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = 'toast ' + type + ' show';
+            setTimeout(() => toast.classList.remove('show'), 3500);
+        }
+
+        // === الصورة الشخصية ===
+        let profilePicData = null;
+
+        profilePicInput.addEventListener('change', function () {
+            const file = this.files[0];
+            if (!file) return;
+            if (!file.type.startsWith('image/')) {
+                showToast('يرجى اختيار ملف صورة صالح');
+                this.value = "";
+                return;
+            }
+            if (file.size > 2 * 1024 * 1024) {
+                showToast('حجم الصورة يجب أن يكون أقل من 2 ميجابايت');
+                this.value = "";
+                return;
+            }
+            const reader = new FileReader();
+            reader.onload = e => {
+                preview.style.backgroundImage = `url('${e.target.result}')`;
+                const img = new Image();
+                img.onload = () => {
+                    const canvas = document.createElement('canvas');
+                    const maxSize = 200;
+                    let w = img.width, h = img.height;
+                    if (w > h) { h = h * maxSize / w; w = maxSize; }
+                    else { w = w * maxSize / h; h = maxSize; }
+                    canvas.width = w;
+                    canvas.height = h;
+                    canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+                    profilePicData = canvas.toDataURL('image/jpeg', 0.7);
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        });
+
+        // === التحقق الفوري من الحقول ===
+        function validateField(fieldId, validator) {
+            const field = document.getElementById(fieldId);
+            const input = field.querySelector('input');
+            if (!input) return true;
+            const value = input.value.trim();
+            if (!value) { field.classList.remove('success', 'error'); return false; }
+            const isValid = validator(value);
+            field.classList.toggle('error', !isValid);
+            field.classList.toggle('success', isValid);
+            return isValid;
+        }
+
+        document.getElementById('name').addEventListener('input', function () {
+            validateField('nameField', v => v.length >= 3);
+        });
+
+        document.getElementById('dob').addEventListener('change', function () {
+            validateField('dobField', v => {
+                const age = (new Date() - new Date(v)) / (365.25 * 24 * 60 * 60 * 1000);
+                return age >= 5 && age <= 100;
+            });
+        });
+
+        document.getElementById('team').addEventListener('input', function () {
+            validateField('teamField', v => v.length >= 2);
+        });
+
+        document.getElementById('location').addEventListener('input', function () {
+            validateField('locationField', v => v.length >= 2);
+        });
+
+        document.getElementById('email').addEventListener('input', function () {
+            validateField('emailField', v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v));
+        });
+
+        document.getElementById('phone').addEventListener('input', function () {
+            this.value = this.value.replace(/[^0-9]/g, '');
+            validateField('phoneField', v => v.length >= 8 && v.length <= 15);
+        });
+
+        // === قوة كلمة السر ===
+        passwordInput.addEventListener('input', function () {
+            const val = this.value;
+            const strengthDiv = document.getElementById('passwordStrength');
+            const strengthBar = document.getElementById('passwordStrengthBar');
+            const strengthText = document.getElementById('strengthText');
+            if (!val) {
+                strengthDiv.classList.remove('visible');
+                strengthText.classList.remove('visible');
+                validateField('passwordField', () => false);
+                return;
+            }
+            strengthDiv.classList.add('visible');
+            strengthText.classList.add('visible');
+            let score = 0;
+            if (val.length >= 6) score++;
+            if (val.length >= 10) score++;
+            if (/[A-Z]/.test(val)) score++;
+            if (/[0-9]/.test(val)) score++;
+            if (/[^A-Za-z0-9]/.test(val)) score++;
+            const levels = [
+                { width: '20%', color: '#ef5350', text: 'ضعيفة جداً' },
+                { width: '40%', color: '#ff9800', text: 'ضعيفة' },
+                { width: '60%', color: '#fdd835', text: 'متوسطة' },
+                { width: '80%', color: '#66bb6a', text: 'جيدة' },
+                { width: '100%', color: '#43a047', text: 'قوية' }
+            ];
+            const level = levels[Math.min(score, levels.length) - 1] || levels[0];
+            strengthBar.style.width = level.width;
+            strengthBar.style.background = level.color;
+            strengthText.textContent = level.text;
+            strengthText.style.color = level.color;
+            validateField('passwordField', v => v.length >= 6);
+            if (confirmPasswordInput.value) {
+                validateField('confirmPasswordField', v => v === passwordInput.value);
+            }
+        });
+
+        confirmPasswordInput.addEventListener('input', function () {
+            if (this.value) {
+                validateField('confirmPasswordField', v => v === passwordInput.value);
+            } else {
+                document.getElementById('confirmPasswordField').classList.remove('success', 'error');
+            }
+        });
+
+        // === إظهار/إخفاء كلمة السر ===
+        function setupPasswordToggle(btnId, inputEl) {
+            document.getElementById(btnId).addEventListener('click', function () {
+                const icon = this.querySelector('i');
+                if (inputEl.type === 'password') {
+                    inputEl.type = 'text';
+                    icon.classList.replace('fa-eye', 'fa-eye-slash');
+                } else {
+                    inputEl.type = 'password';
+                    icon.classList.replace('fa-eye-slash', 'fa-eye');
+                }
+            });
+        }
+        setupPasswordToggle('togglePassword', passwordInput);
+        setupPasswordToggle('toggleConfirmPassword', confirmPasswordInput);
+
+        // === مراكز اللعب: الوضع العادي والمطلم ===
+        const positions = [
+            { id: 'goalkeeper', fieldId: 'goalkeeperField', toggleId: 'goalkeeperToggle', valueId: 'goalkeeperValue', glowId: 'goalkeeperGlow', labelId: 'goalkeeperModeLabel' },
+            { id: 'defender', fieldId: 'defenderField', toggleId: 'defenderToggle', valueId: 'defenderValue', glowId: 'defenderGlow', labelId: 'defenderModeLabel' },
+            { id: 'midfielder', fieldId: 'midfielderField', toggleId: 'midfielderToggle', valueId: 'midfielderValue', glowId: 'midfielderGlow', labelId: 'midfielderModeLabel' },
+            { id: 'forward', fieldId: 'forwardField', toggleId: 'forwardToggle', valueId: 'forwardValue', glowId: 'forwardGlow', labelId: 'forwardModeLabel' }
+        ];
+
+        // حالة كل مركز: true = عادي، false = مطلم
+        const positionModes = {};
+
+        positions.forEach(pos => {
+            positionModes[pos.id] = true;
+            const range = document.getElementById(pos.id);
+            const toggle = document.getElementById(pos.toggleId);
+            const field = document.getElementById(pos.fieldId);
+            const valueEl = document.getElementById(pos.valueId);
+            const glowEl = document.getElementById(pos.glowId);
+            const labelEl = document.getElementById(pos.labelId);
+
+            // تحديث المظهر حسب الوضع
+            function updateVisuals() {
+                const val = range.value;
+                const percent = val + '%';
+                valueEl.textContent = percent;
+
+                if (positionModes[pos.id]) {
+                    range.style.setProperty('--fill', percent);
+                    range.classList.add('normal-mode');
+                    range.classList.remove('dimmed-mode');
+                    range.disabled = false;
+                    field.classList.add('active');
+                    field.classList.remove('dimmed');
+                    toggle.classList.add('normal');
+                    toggle.classList.remove('dimmed');
+                    labelEl.innerHTML = '<i class="fas fa-check-circle"></i> وضع عادي';
+                    glowEl.style.left = percent;
+                    glowEl.style.opacity = '1';
+                } else {
+                    range.classList.remove('normal-mode');
+                    range.classList.add('dimmed-mode');
+                    range.disabled = true;
+                    field.classList.remove('active');
+                    field.classList.add('dimmed');
+                    toggle.classList.remove('normal');
+                    toggle.classList.add('dimmed');
+                    labelEl.innerHTML = '<i class="fas fa-moon"></i> وضع مطلم';
+                    glowEl.style.opacity = '0';
+                }
+            }
+
+            // زر التبديل بين الوضعين
+            toggle.addEventListener('click', function () {
+                positionModes[pos.id] = !positionModes[pos.id];
+                if (!positionModes[pos.id]) {
+                    // الانتقال للمطلم: نحفظ القيمة الحالية ونصفر بصرياً
+                    range.dataset.savedValue = range.value;
+                    range.value = 0;
+                } else {
+                    // الانتقال للعادي: نسترجع القيمة المحفوظة
+                    if (range.dataset.savedValue !== undefined) {
+                        range.value = range.dataset.savedValue;
+                    }
+                }
+                updateVisuals();
+            });
+
+            // تحديث أثناء التحريك
+            range.addEventListener('input', function () {
+                const percent = this.value + '%';
+                valueEl.textContent = percent;
+                this.style.setProperty('--fill', percent);
+                glowEl.style.left = percent;
+            });
+
+            // تأثير التوهج عند السحب
+            range.addEventListener('mousedown', () => glowEl.style.opacity = '0.6');
+            range.addEventListener('mouseup', () => glowEl.style.opacity = '1');
+            range.addEventListener('touchstart', () => glowEl.style.opacity = '0.6');
+            range.addEventListener('touchend', () => glowEl.style.opacity = '1');
+
+            updateVisuals();
+        });
+
+        // === إرسال النموذج ===
+        form.addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            // التحقق من جميع الحقول المطلوبة
+            const nameOk = validateField('nameField', v => v.length >= 3);
+            const dobOk = validateField('dobField', v => {
+                const age = (new Date() - new Date(v)) / (365.25 * 24 * 60 * 60 * 1000);
+                return age >= 5 && age <= 100;
+            });
+            const teamOk = validateField('teamField', v => v.length >= 2);
+            const locationOk = validateField('locationField', v => v.length >= 2);
+            const emailOk = validateField('emailField', v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v));
+            const phoneOk = validateField('phoneField', v => v.length >= 8 && v.length <= 15);
+            const passwordOk = validateField('passwordField', v => v.length >= 6);
+            const confirmOk = validateField('confirmPasswordField', v => v === passwordInput.value);
+
+            if (!nameOk || !dobOk || !teamOk || !locationOk || !emailOk || !phoneOk || !passwordOk || !confirmOk) {
+                showToast('يرجى تصحيح الحقول المطلوبة');
+                const firstError = form.querySelector('.form-field.error');
+                if (firstError) firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                return;
+            }
+
+            const name = document.getElementById('name').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const password = passwordInput.value;
+
+            // حالة التحميل
+            submitBtn.classList.add('loading');
+            submitBtn.disabled = true;
+
+            try {
+                // إنشاء الحساب
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
+
+                // إرسال بريد التأكيد
+                await sendEmailVerification(user);
+
+                // جمع قيم المراكز (المطلم = 0)
+                const positionsData = {};
+                const modesData = {};
+                positions.forEach(pos => {
+                    const range = document.getElementById(pos.id);
+                    positionsData[pos.id] = positionModes[pos.id] ? parseInt(range.value) : 0;
+                    modesData[pos.id] = positionModes[pos.id];
+                });
+
+                // حفظ البيانات في Firestore (بدون كلمة السر)
+                const userData = {
+                    name: name,
+                    dob: document.getElementById('dob').value,
+                    team: document.getElementById('team').value.trim(),
+                    location: document.getElementById('location').value.trim(),
+                    email: email,
+                    phone: document.getElementById('phone').value.trim(),
+                    hobbies: document.getElementById('hobbies').value.trim(),
+                    profilePic: profilePicData || null,
+                    positions: positionsData,
+                    positionModes: modesData,
+                    emailVerified: false,
+                    createdAt: serverTimestamp()
+                };
+
+                await setDoc(doc(db, "users", user.uid), userData);
+
+                // حفظ حالة الدخول محلياً
+                localStorage.setItem('loggedIn', 'true');
+                localStorage.setItem('userId', user.uid);
+
+                // إعادة تعيين النموذج
+                form.reset();
+                preview.style.backgroundImage = '';
+                profilePicData = null;
+                document.getElementById('passwordStrength').classList.remove('visible');
+                document.getElementById('strengthText').classList.remove('visible');
+
+                // إعادة مراكز اللعب للوضع الابتدائي
+                positions.forEach(pos => {
+                    const range = document.getElementById(pos.id);
+                    range.value = 0;
+                    range.dataset.savedValue = '0';
+                    positionModes[pos.id] = true;
+                    document.getElementById(pos.fieldId).classList.add('active');
+                    document.getElementById(pos.fieldId).classList.remove('dimmed');
+                    document.getElementById(pos.toggleId).classList.add('normal');
+                    document.getElementById(pos.toggleId).classList.remove('dimmed');
+                    document.getElementById(pos.valueId).textContent = '0%';
+                    document.getElementById(pos.labelId).innerHTML = '<i class="fas fa-check-circle"></i> وضع عادي';
+                    range.style.setProperty('--fill', '0%');
+                    range.classList.add('normal-mode');
+                    range.classList.remove('dimmed-mode');
+                    range.disabled = false;
+                    document.getElementById(pos.glowId).style.left = '0%';
+                    document.getElementById(pos.glowId).style.opacity = '1';
+                });
+
+                // إزالة حالات التحقق
+                form.querySelectorAll('.form-field').forEach(f => f.classList.remove('success', 'error'));
+
+                // رسالة النجاح
+                Swal.fire({
+                    icon: 'success',
+                    title: 'تم التسجيل بنجاح',
+                    text: 'تم إرسال بريد التأكيد إلى بريدك الإلكتروني. يرجى التحقق منه قبل تسجيل الدخول.',
+                    confirmButtonText: 'حسناً',
+                    confirmButtonColor: '#2e7d32',
+                    background: '#1a2e1f',
+                    color: '#e8f5e9'
+                }).then(() => {
+                    window.location.href = 'Login.html';
+                });
+
+            } catch (error) {
+                let message = 'حدث خطأ غير متوقع';
+                const errorMap = {
+                    'auth/email-already-in-use': 'هذا البريد الإلكتروني مستخدم بالفعل',
+                    'auth/weak-password': 'كلمة السر ضعيفة، يرجى اختيار كلمة سر أقوى',
+                    'auth/invalid-email': 'صيغة البريد الإلكتروني غير صحيحة',
+                    'auth/network-request-failed': 'مشكلة في الاتصال بالإنترنت، يرجى المحاولة لاحقاً'
+                };
+                if (errorMap[error.code]) {
+                    message = errorMap[error.code];
+                } else if (error.message) {
+                    message = error.message;
+                }
+                showToast(message);
+            } finally {
+                submitBtn.classList.remove('loading');
+                submitBtn.disabled = false;
+            }
+        });
+    </script>
 </body>
 </html>
