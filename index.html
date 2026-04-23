@@ -1,399 +1,362 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="google-site-verification" content="google8698ec0481bef4a2">
-  <title>تطبيق حجز ملعب</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-  <style>
-    /* Reset & General Styles */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google-site-verification" content="google8698ec0481bef4a2">
+    <title>تطبيق حجز ملعب - كين ماتش</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Reset & General Styles */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
-    body {
-      font-family: 'Cairo', sans-serif, "Segoe UI Emoji", "Apple Color Emoji", "Noto Color Emoji";
-      background: linear-gradient(to bottom, #4CAF50, #f0f0f5);
-      color: #333;
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-      transition: background 0.5s ease, color 0.5s ease;
-    }
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: linear-gradient(to bottom, #4CAF50, #f0f0f5);
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            transition: background 0.3s ease, color 0.3s ease;
+            overflow-x: hidden;
+        }
 
-    /* الوضع الليلي */
-    body.dark-mode {
-      background: linear-gradient(to bottom, #1e1e1e, #121212);
-      color: #ffffff;
-    }
+        /* الوضع الليلي */
+        body.dark-mode {
+            background: linear-gradient(to bottom, #1e1e1e, #121212);
+            color: #ffffff;
+        }
 
-    body.dark-mode header { background-color: #2c2c2c; }
-    body.dark-mode .card { background-color: #2c2c2c; color: #ffffff; box-shadow: 0px 4px 10px rgba(255, 255, 255, 0.1); }
-    body.dark-mode table th { background-color: #2c2c2c; }
-    body.dark-mode table td { background-color: #3a3a3a; color: #ffffff; }
-    body.dark-mode .menu { background-color: #2c2c2c; }
-    body.dark-mode .menu a { background-color: rgba(255, 255, 255, 0.1); }
+        body.dark-mode header { background-color: #2c2c2c; }
+        body.dark-mode .card { background-color: #2c2c2c; color: #ffffff; box-shadow: 0px 4px 10px rgba(255, 255, 255, 0.05); }
+        body.dark-mode table th { background-color: #1a1a1a; }
+        body.dark-mode table td { background-color: #333; color: #fff; border-color: #444; }
+        body.dark-mode .menu { background-color: #1a1a1a; }
 
-    /* Header Styles */
-    header {
-      background-color: #4CAF50;
-      color: white;
-      padding: 15px;
-      text-align: center;
-      font-size: 24px;
-      font-weight: bold;
-      transition: background-color 0.5s ease;
-    }
+        /* Header Styles */
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
 
-    .logo {
-      width: 100px;
-      height: 100px;
-      margin: 0 auto;
-      display: block;
-    }
+        .logo-container { text-align: center; margin: 10px 0; }
+        .logo { width: 100px; height: 100px; object-fit: contain; }
 
-    body.dark-mode .logo { content: url('/1000069661.png'); }
-    body:not(.dark-mode) .logo { content: url('/1000067588.png'); }
+        /* Main Section Styles */
+        .section { padding: 20px; text-align: center; flex: 1; }
+        .section h1 { font-size: 24px; margin: 10px 0; color: #4CAF50; }
+        body.dark-mode .section h1 { color: #81c784; }
 
-    /* Main Section Styles */
-    .section { padding: 20px; text-align: center; flex: 1; }
-    .section h1 { font-size: 30px; margin: 20px 0; color: #4CAF50; font-weight: 600; }
+        /* Card Styles */
+        .card {
+            background-color: #fff;
+            margin: 15px auto;
+            padding: 20px;
+            width: 90%;
+            max-width: 450px;
+            border-radius: 15px;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+        .card:hover { transform: scale(1.02); }
 
-    /* Card Styles */
-    .card {
-      background-color: #fff;
-      margin: 15px auto;
-      padding: 20px;
-      width: 90%;
-      max-width: 450px;
-      border-radius: 10px;
-      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-      cursor: pointer;
-      transition: transform 0.3s ease;
-    }
-    .card:hover { transform: translateY(-5px); }
+        /* Floating Button */
+        .floating-button {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 15px 25px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            z-index: 99;
+            animation: jump 2s infinite;
+        }
 
-    /* Floating Button */
-    .floating-button {
-      position: fixed;
-      bottom: 30px;
-      right: 30px;
-      background-color: #4CAF50;
-      color: white;
-      border: none;
-      border-radius: 30px;
-      padding: 0 25px;
-      height: 60px;
-      font-weight: bold;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      animation: jump 2s infinite;
-      z-index: 99;
-    }
+        @keyframes jump { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
 
-    @keyframes jump { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+        /* Menu */
+        .menu {
+            position: fixed;
+            top: 0;
+            right: -280px; /* الافتراضي لليمين في العربي */
+            width: 280px;
+            height: 100%;
+            background-color: #4CAF50;
+            color: white;
+            padding: 20px;
+            box-shadow: -2px 0 10px rgba(0, 0, 0, 0.3);
+            transition: right 0.3s ease, left 0.3s ease;
+            z-index: 1000;
+        }
+        
+        /* ضبط القائمة حسب الاتجاه */
+        [dir="ltr"] .menu { right: auto; left: -280px; box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3); }
+        [dir="rtl"] .menu.active { right: 0; }
+        [dir="ltr"] .menu.active { left: 0; }
 
-    /* Menu & User Info */
-    .menu {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 280px;
-      height: 100%;
-      background-color: #4CAF50;
-      color: white;
-      padding: 20px;
-      box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
-      transform: translateX(-100%);
-      transition: transform 0.3s ease;
-      z-index: 1000;
-      overflow-y: auto;
-    }
+        .user-profile-section {
+            text-align: center;
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
 
-    .user-profile-section {
-      text-align: center;
-      padding-bottom: 20px;
-      margin-bottom: 20px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-    }
+        .user-avatar {
+            width: 80px; height: 80px;
+            border-radius: 50%;
+            background-color: #fff;
+            margin-bottom: 10px;
+            object-fit: cover;
+            border: 3px solid white;
+        }
 
-    .user-avatar {
-      width: 70px;
-      height: 70px;
-      border-radius: 50%;
-      background-color: #fff;
-      margin-bottom: 10px;
-      object-fit: cover;
-      border: 2px solid white;
-    }
+        .menu a {
+            display: flex; align-items: center; gap: 10px;
+            color: white; text-decoration: none;
+            margin: 10px 0; padding: 12px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+        }
 
-    .user-name { font-weight: bold; font-size: 18px; display: block; }
-    .user-email { font-size: 14px; opacity: 0.9; display: block; }
+        .menu-btn {
+            position: fixed; top: 20px; left: 20px;
+            background-color: #4CAF50; color: white;
+            border: none; border-radius: 50%;
+            width: 45px; height: 45px; font-size: 20px;
+            cursor: pointer; z-index: 1001;
+        }
 
-    .menu a {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      color: white;
-      text-decoration: none;
-      margin: 10px 0;
-      padding: 12px;
-      background-color: rgba(255, 255, 255, 0.1);
-      border-radius: 8px;
-    }
+        /* Toast */
+        .toast {
+            position: fixed; top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #333; color: white;
+            padding: 20px; border-radius: 10px;
+            visibility: hidden; opacity: 0;
+            transition: 0.3s; z-index: 2000; text-align: center;
+        }
+        .toast.show { visibility: visible; opacity: 1; }
 
-    .menu-btn {
-      position: fixed;
-      top: 20px;
-      left: 20px;
-      background-color: #4CAF50;
-      color: white;
-      border: none;
-      border-radius: 50%;
-      width: 50px;
-      height: 50px;
-      font-size: 24px;
-      cursor: pointer;
-      z-index: 1001;
-    }
+        .controls { position: fixed; top: 20px; right: 20px; display: flex; gap: 10px; z-index: 1001; }
+        .controls button { background: #4CAF50; color: white; border: none; padding: 10px; border-radius: 10px; cursor: pointer; }
 
-    /* Toast */
-    .toast {
-      position: fixed;
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      background-color: #4CAF50;
-      color: white;
-      padding: 20px;
-      border-radius: 10px;
-      visibility: hidden;
-      opacity: 0;
-      transition: 0.5s;
-      z-index: 2000;
-    }
-    .toast.show { visibility: visible; opacity: 1; }
-
-    .theme-toggle { position: fixed; top: 20px; right: 20px; background: none; border: none; cursor: pointer; font-size: 24px; color: #FFD700; z-index: 100; }
-    .language-toggle { position: fixed; top: 20px; right: 80px; background: #4CAF50; color: white; border: none; border-radius: 20px; padding: 10px 20px; cursor: pointer; z-index: 100; }
-
-    table { width: 100%; border-collapse: collapse; margin-top: 15px; }
-    th, td { padding: 8px; border: 1px solid #ddd; text-align: center; }
-    th { background: #4CAF50; color: white; }
-  </style>
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th, td { padding: 10px; border: 1px solid #ddd; text-align: center; font-size: 14px; }
+        th { background: #4CAF50; color: white; }
+    </style>
 </head>
 <body>
 
-  <script>
-    if (localStorage.getItem('loggedIn') !== 'true') {
-      window.location.href = "Login.html";
-    }
-  </script>
+    <script>
+        // التحقق من تسجيل الدخول
+        if (localStorage.getItem('loggedIn') !== 'true') {
+            window.location.href = "Login.html";
+        }
+    </script>
 
-  <button class="theme-toggle" id="themeToggle"><i class="fas fa-sun"></i></button>
-  <button class="language-toggle" id="languageToggle"><span id="languageText">English</span></button>
-
-  <header id="headerText">تطبيق كين ماتش</header>
-  <div class="logo"></div>
-
-  <div class="section">
-    <h1 id="welcomeText">مرحبًا بك في تطبيق حجز الملاعب! ⚽</h1>
-    <p id="descriptionText">نحن هنا لتوفير أفضل تجربة لك في حجز الملاعب الرياضية بكل سهولة. 🎉</p>
-
-    <div class="card" onclick="toggleBookingInfo()">
-      <h2 id="myBookingsText">حجوزاتي 📅</h2>
-      <div id="bookingInfo" style="display: none; margin-top: 10px;"></div>
+    <div class="controls">
+        <button id="themeToggle"><i class="fas fa-moon"></i></button>
+        <button id="languageToggle"><i class="fas fa-globe"></i> <span id="languageText">English</span></button>
     </div>
 
-    <div class="card" onclick="redirectToSportsBooking()">
-      <h2 id="sportsGearText">شراء الملابس الرياضية 👕</h2>
-      <p id="sportsGearDescription">اضغط هنا لشراء الملابس الرياضية المناسبة لمبارياتك القادمة. 🛒</p>
-    </div>
-  </div>
-
-  <button class="floating-button" onclick="redirectToBooking()" id="bookNowButton">
-    <span id="bookNowText">احجز ملعبك الآن</span>
-  </button>
-
-  <button class="menu-btn" onclick="toggleMenu()">☰</button>
-
-  <div class="menu" id="menu">
-    <div class="user-profile-section">
-      <img src="https://via.placeholder.com/70" alt="User" class="user-avatar" id="userAvatar">
-      <span class="user-name" id="userNameDisplay">مستخدم كين ماتش</span>
-      <span class="user-email" id="userEmailDisplay">user@example.com</span>
-    </div>
+    <header id="headerText">تطبيق كين ماتش</header>
     
-    <a href="profile.html">
-        <i class="fas fa-user-edit"></i>
-        <span id="editProfileText">تعديل الملف الشخصي</span>
-    </a>
+    <div class="logo-container">
+        <img id="appLogo" src="/1000067588.png" class="logo" alt="Logo">
+    </div>
 
-    <a href="#" onclick="showInfo(); closeMenu()">
-      <i class="fas fa-info-circle"></i>
-      <span id="appInfoText">معلومات التطبيق ℹ️</span>
-    </a>
+    <div class="section">
+        <h1 id="welcomeText">مرحبًا بك في تطبيق حجز الملاعب! ⚽</h1>
+        <p id="descriptionText">نحن هنا لتوفير أفضل تجربة لك في حجز الملاعب الرياضية بكل سهولة. 🎉</p>
 
-    <a href="#" onclick="logout()" style="background-color: rgba(255, 0, 0, 0.2); margin-top: 20px;">
-      <i class="fas fa-sign-out-alt"></i>
-      <span id="logoutText">تسجيل الخروج 🚪</span>
-    </a>
-  </div>
+        <div class="card" onclick="toggleBookingInfo()">
+            <h2 id="myBookingsText">حجوزاتي 📅</h2>
+            <div id="bookingInfo" style="display: none; margin-top: 10px;"></div>
+        </div>
 
-  <div id="toast" class="toast">
-    <span id="toastText">تطبيق حجز الملاعب - الإصدار 1.0</span>
-  </div>
+        <div class="card" onclick="redirectToSportsBooking()">
+            <h2 id="sportsGearText">شراء الملابس الرياضية 👕</h2>
+            <p id="sportsGearDescription">اضغط هنا لشراء الملابس الرياضية المناسبة لمبارياتك القادمة. 🛒</p>
+        </div>
+    </div>
 
-  <script>
-    const texts = {
-      ar: {
-        header: "تطبيق كين ماتش",
-        welcome: "مرحبًا بك في تطبيق حجز الملاعب! ⚽",
-        description: "نحن هنا لتوفير أفضل تجربة لك في حجز الملاعب الرياضية بكل سهولة. 🎉",
-        myBookings: "حجوزاتي 📅",
-        sportsGear: "شراء الملابس الرياضية 👕",
-        sportsGearDescription: "اضغط هنا لشراء الملابس الرياضية المناسبة لمبارياتك القادمة. 🛒",
-        bookNow: "احجز ملعبك الآن",
-        appInfo: "معلومات التطبيق ℹ️",
-        editProfile: "تعديل الملف الشخصي",
-        logout: "تسجيل الخروج 🚪",
-        toast: "تطبيق حجز الملاعب - الإصدار 1.0<br>يوفر لك تجربة سهلة! 🎉",
-        noBookings: "لا توجد حجوزات حالية."
-      },
-      en: {
-        header: "Kain Match App",
-        welcome: "Welcome to the Stadium Booking App! ⚽",
-        description: "We provide the best experience to book stadiums easily. 🎉",
-        myBookings: "My Bookings 📅",
-        sportsGear: "Buy Sports Gear 👕",
-        sportsGearDescription: "Click here to buy the right sports gear for your matches. 🛒",
-        bookNow: "Book Your Stadium Now",
-        appInfo: "App Information ℹ️",
-        editProfile: "Edit Profile",
-        logout: "Logout 🚪",
-        toast: "Stadium Booking App - v1.0<br>Easy booking experience! 🎉",
-        noBookings: "No current bookings found."
-      },
-      fr: {
-        header: "Application Kain Match",
-        welcome: "Bienvenue dans l'application! ⚽",
-        description: "Nous offrons la meilleure expérience de réservation. 🎉",
-        myBookings: "Mes Réservations 📅",
-        sportsGear: "Équipements Sportifs 👕",
-        sportsGearDescription: "Cliquez ici pour acheter vos équipements. 🛒",
-        bookNow: "Réservez Maintenant",
-        appInfo: "Infos sur l'App ℹ️",
-        editProfile: "Modifier le profil",
-        logout: "Déconnexion 🚪",
-        toast: "Application de Réservation - v1.0",
-        noBookings: "Aucune réservation trouvée."
-      }
-    };
+    <button class="floating-button" onclick="redirectToBooking()" id="bookNowButton">
+        <span id="bookNowText">احجز ملعبك الآن</span>
+    </button>
 
-    let currentLanguage = localStorage.getItem('language') || 'ar';
+    <button class="menu-btn" onclick="toggleMenu()">☰</button>
 
-    function updateTexts(language) {
-      document.getElementById("headerText").textContent = texts[language].header;
-      document.getElementById("welcomeText").textContent = texts[language].welcome;
-      document.getElementById("descriptionText").textContent = texts[language].description;
-      document.getElementById("myBookingsText").textContent = texts[language].myBookings;
-      document.getElementById("sportsGearText").textContent = texts[language].sportsGear;
-      document.getElementById("sportsGearDescription").textContent = texts[language].sportsGearDescription;
-      document.getElementById("bookNowText").textContent = texts[language].bookNow;
-      document.getElementById("appInfoText").textContent = texts[language].appInfo;
-      document.getElementById("editProfileText").textContent = texts[language].editProfile;
-      document.getElementById("logoutText").textContent = texts[language].logout;
-      document.getElementById("toastText").innerHTML = texts[language].toast;
-      
-      // تغيير اتجاه الصفحة بناءً على اللغة
-      document.documentElement.dir = (language === 'ar') ? 'rtl' : 'ltr';
-      document.documentElement.lang = language;
-    }
+    <div class="menu" id="menu">
+        <div class="user-profile-section">
+            <img src="https://via.placeholder.com/80" alt="User" class="user-avatar" id="userAvatar">
+            <span class="user-name" id="userNameDisplay">مستخدم كين ماتش</span>
+            <br>
+            <span class="user-email" id="userEmailDisplay">user@example.com</span>
+        </div>
+        
+        <a href="profile.html"><i class="fas fa-user-edit"></i> <span id="editProfileText">تعديل الملف الشخصي</span></a>
+        <a href="#" onclick="showInfo(); toggleMenu()"><i class="fas fa-info-circle"></i> <span id="appInfoText">معلومات التطبيق ℹ️</span></a>
+        <a href="#" onclick="logout()" style="background-color: rgba(255, 68, 68, 0.3); margin-top: 20px;">
+            <i class="fas fa-sign-out-alt"></i> <span id="logoutText">تسجيل الخروج 🚪</span>
+        </a>
+    </div>
 
-    // جلب بيانات المستخدم من LocalStorage وعرضها
-    function loadUserProfile() {
-        const userData = JSON.parse(localStorage.getItem('userData'));
-        if (userData) {
-            document.getElementById('userNameDisplay').textContent = userData.name || "مستخدم كين ماتش";
-            document.getElementById('userEmailDisplay').textContent = userData.email || "";
-            if (userData.picture) {
-                document.getElementById('userAvatar').src = userData.picture;
+    <div id="toast" class="toast">
+        <span id="toastText">تطبيق حجز الملاعب - الإصدار 1.0</span>
+    </div>
+
+    <script>
+        const texts = {
+            ar: {
+                header: "تطبيق كين ماتش",
+                welcome: "مرحبًا بك في تطبيق حجز الملاعب! ⚽",
+                description: "نحن هنا لتوفير أفضل تجربة لك في حجز الملاعب الرياضية بكل سهولة. 🎉",
+                myBookings: "حجوزاتي 📅",
+                sportsGear: "شراء الملابس الرياضية 👕",
+                sportsGearDescription: "اضغط هنا لشراء الملابس الرياضية المناسبة لمبارياتك القادمة. 🛒",
+                bookNow: "احجز ملعبك الآن",
+                appInfo: "معلومات التطبيق ℹ️",
+                editProfile: "تعديل الملف الشخصي",
+                logout: "تسجيل الخروج 🚪",
+                toast: "تطبيق حجز الملاعب - الإصدار 1.0<br>يوفر لك تجربة سهلة! 🎉",
+                noBookings: "لا توجد حجوزات حالية."
+            },
+            en: {
+                header: "Kain Match App",
+                welcome: "Welcome to Stadium Booking! ⚽",
+                description: "We provide the best experience to book stadiums easily. 🎉",
+                myBookings: "My Bookings 📅",
+                sportsGear: "Sports Gear 👕",
+                sportsGearDescription: "Click here to buy the right gear for your matches. 🛒",
+                bookNow: "Book Now",
+                appInfo: "App Info ℹ️",
+                editProfile: "Edit Profile",
+                logout: "Logout 🚪",
+                toast: "Stadium Booking App - v1.0<br>Easy booking experience! 🎉",
+                noBookings: "No current bookings found."
+            },
+            fr: {
+                header: "Application Kain Match",
+                welcome: "Bienvenue dans l'application! ⚽",
+                description: "Nous offrons la meilleure expérience de réservation. 🎉",
+                myBookings: "Mes Réservations 📅",
+                sportsGear: "Équipements 👕",
+                sportsGearDescription: "Cliquez ici pour acheter vos équipements. 🛒",
+                bookNow: "Réserver",
+                appInfo: "Infos App ℹ️",
+                editProfile: "Modifier profil",
+                logout: "Déconnexion 🚪",
+                toast: "App de Réservation - v1.0",
+                noBookings: "Aucune réservation trouvée."
+            }
+        };
+
+        let currentLanguage = localStorage.getItem('language') || 'ar';
+
+        function updateTexts(language) {
+            document.getElementById("headerText").textContent = texts[language].header;
+            document.getElementById("welcomeText").textContent = texts[language].welcome;
+            document.getElementById("descriptionText").textContent = texts[language].description;
+            document.getElementById("myBookingsText").textContent = texts[language].myBookings;
+            document.getElementById("sportsGearText").textContent = texts[language].sportsGear;
+            document.getElementById("sportsGearDescription").textContent = texts[language].sportsGearDescription;
+            document.getElementById("bookNowText").textContent = texts[language].bookNow;
+            document.getElementById("appInfoText").textContent = texts[language].appInfo;
+            document.getElementById("editProfileText").textContent = texts[language].editProfile;
+            document.getElementById("logoutText").textContent = texts[language].logout;
+            document.getElementById("toastText").innerHTML = texts[language].toast;
+            
+            document.documentElement.dir = (language === 'ar') ? 'rtl' : 'ltr';
+            document.documentElement.lang = language;
+            
+            // تحديث نص زر اللغة
+            const langMap = { ar: "English", en: "Français", fr: "العربية" };
+            document.getElementById('languageText').textContent = langMap[language];
+        }
+
+        function loadUserProfile() {
+            const userData = JSON.parse(localStorage.getItem('userData'));
+            if (userData) {
+                document.getElementById('userNameDisplay').textContent = userData.name || "مستخدم كين ماتش";
+                document.getElementById('userEmailDisplay').textContent = userData.email || "";
+                if (userData.picture) document.getElementById('userAvatar').src = userData.picture;
             }
         }
-    }
 
-    function toggleMenu() {
-      const menu = document.getElementById('menu');
-      const isAr = currentLanguage === 'ar';
-      if (menu.style.transform === 'translateX(0px)') {
-        menu.style.transform = isAr ? 'translateX(100%)' : 'translateX(-100%)';
-      } else {
-        menu.style.transform = 'translateX(0px)';
-      }
-    }
-
-    function closeMenu() {
-        const menu = document.getElementById('menu');
-        menu.style.transform = (currentLanguage === 'ar') ? 'translateX(100%)' : 'translateX(-100%)';
-    }
-
-    function logout() {
-      localStorage.removeItem('loggedIn');
-      window.location.href = "Login.html";
-    }
-
-    const languageToggle = document.getElementById('languageToggle');
-    languageToggle.addEventListener('click', () => {
-      if (currentLanguage === "ar") currentLanguage = "en";
-      else if (currentLanguage === "en") currentLanguage = "fr";
-      else currentLanguage = "ar";
-      
-      updateTexts(currentLanguage);
-      document.getElementById('languageText').textContent = currentLanguage === "ar" ? "English" : (currentLanguage === "en" ? "Français" : "العربية");
-      localStorage.setItem('language', currentLanguage);
-    });
-
-    // تبديل الوضع الليلي
-    document.getElementById('themeToggle').addEventListener('click', () => {
-      document.body.classList.toggle('dark-mode');
-      localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
-    });
-
-    if (localStorage.getItem('theme') === 'dark') document.body.classList.add('dark-mode');
-
-    function redirectToBooking() { window.location.href = "KainMatch now.html"; }
-    function redirectToSportsBooking() { window.location.href = "réservation.html"; }
-
-    function toggleBookingInfo() {
-      const infoDiv = document.getElementById('bookingInfo');
-      if (infoDiv.style.display === 'none') {
-        const data = JSON.parse(localStorage.getItem('bookingData'));
-        if (data) {
-          infoDiv.innerHTML = `<table><tr><th>الملعب</th><td>${data.field}</td></tr><tr><th>التاريخ</th><td>${data.date}</td></tr></table>`;
-        } else {
-          infoDiv.innerHTML = `<p>${texts[currentLanguage].noBookings}</p>`;
+        function toggleMenu() {
+            document.getElementById('menu').classList.toggle('active');
         }
-        infoDiv.style.display = 'block';
-      } else {
-        infoDiv.style.display = 'none';
-      }
-    }
 
-    function showInfo() {
-      const toast = document.getElementById('toast');
-      toast.classList.add('show');
-      setTimeout(() => toast.classList.remove('show'), 3000);
-    }
+        function logout() {
+            localStorage.removeItem('loggedIn');
+            window.location.href = "Login.html";
+        }
 
-    document.addEventListener('DOMContentLoaded', () => {
-      updateTexts(currentLanguage);
-      loadUserProfile();
-    });
-  </script>
+        document.getElementById('languageToggle').addEventListener('click', () => {
+            if (currentLanguage === "ar") currentLanguage = "en";
+            else if (currentLanguage === "en") currentLanguage = "fr";
+            else currentLanguage = "ar";
+            
+            updateTexts(currentLanguage);
+            localStorage.setItem('language', currentLanguage);
+        });
+
+        const themeToggle = document.getElementById('themeToggle');
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            const isDark = document.body.classList.contains('dark-mode');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            
+            // تحديث الأيقونة والشعار
+            themeToggle.innerHTML = isDark ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+            document.getElementById('appLogo').src = isDark ? '/1000069661.png' : '/1000067588.png';
+        });
+
+        function redirectToBooking() { window.location.href = "KainMatch now.html"; }
+        function redirectToSportsBooking() { window.location.href = "réservation.html"; }
+
+        function toggleBookingInfo() {
+            const infoDiv = document.getElementById('bookingInfo');
+            if (infoDiv.style.display === 'none') {
+                const data = JSON.parse(localStorage.getItem('bookingData'));
+                if (data) {
+                    infoDiv.innerHTML = `<table><tr><th>الملعب</th><td>${data.field}</td></tr><tr><th>التاريخ</th><td>${data.date}</td></tr></table>`;
+                } else {
+                    infoDiv.innerHTML = `<p>${texts[currentLanguage].noBookings}</p>`;
+                }
+                infoDiv.style.display = 'block';
+            } else {
+                infoDiv.style.display = 'none';
+            }
+        }
+
+        function showInfo() {
+            const toast = document.getElementById('toast');
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+
+        // تهيئة الصفحة
+        document.addEventListener('DOMContentLoaded', () => {
+            updateTexts(currentLanguage);
+            loadUserProfile();
+            if (localStorage.getItem('theme') === 'dark') {
+                document.body.classList.add('dark-mode');
+                themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+                document.getElementById('appLogo').src = '/1000069661.png';
+            }
+        });
+    </script>
 </body>
 </html>
