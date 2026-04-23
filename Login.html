@@ -7,7 +7,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        /* التنسيقات الأصلية كما هي */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Cairo', sans-serif;
@@ -22,82 +21,110 @@
             transition: background 0.5s ease, color 0.5s ease;
         }
         body.dark-mode { background: linear-gradient(to bottom, #1e1e1e, #121212); color: #ffffff; }
+        
         .logo {
             margin-top: 20px; width: 150px; height: 150px; border-radius: 50%;
             overflow: hidden; position: absolute; top: 50%; left: 50%;
             transform: translate(-50%, -50%); opacity: 0;
-            animation: fadeIn 2s ease-in-out forwards, moveUp 2s ease-in-out 2s forwards;
+            animation: fadeIn 1.5s ease-in-out forwards, moveUp 1.5s ease-in-out 1.5s forwards;
+            background: #fff; /* خلفية بيضاء للشعار في حال كان شفافاً */
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
         .logo img { width: 100%; height: 100%; object-fit: cover; }
+
         .login-container {
             background-color: #fff; padding: 40px; border-radius: 15px;
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); width: 90%;
             max-width: 400px; margin-top: 200px; opacity: 0;
-            animation: fadeIn 1s ease-in-out 5s forwards;
+            animation: fadeIn 1s ease-in-out 3s forwards;
             transition: background-color 0.5s ease;
         }
         body.dark-mode .login-container { background-color: #2c2c2c; color: #ffffff; }
+        
         .login-container h2 { font-size: 30px; color: #4CAF50; margin-bottom: 20px; }
         .form-group { margin-bottom: 15px; width: 100%; display: flex; flex-direction: column; }
-        .form-group label { font-size: 18px; margin-bottom: 5px; text-align: right; }
+        .form-group label { font-size: 16px; margin-bottom: 8px; text-align: right; }
         .form-group input {
             padding: 12px; border: 1px solid #ddd; border-radius: 8px;
             font-size: 16px; text-align: right; width: 100%; direction: rtl;
+            outline: none; transition: border 0.3s;
         }
+        .form-group input:focus { border-color: #4CAF50; }
         body.dark-mode .form-group input { background-color: #3a3a3a; border-color: #555; color: #fff; }
+
         .login-button {
             background-color: #4CAF50; color: white; border: none; padding: 15px;
-            border-radius: 10px; cursor: pointer; font-size: 18px; width: 100%; margin-top: 20px;
+            border-radius: 10px; cursor: pointer; font-size: 18px; width: 100%; 
+            margin-top: 10px; font-family: 'Cairo', sans-serif; font-weight: bold;
         }
+
         .google-signin-button {
-            background-color: #ffffff; color: #757575; border: 1px solid #ddd;
+            background-color: #ffffff; color: #333; border: 1px solid #ddd;
             padding: 12px; border-radius: 8px; font-size: 16px; cursor: pointer;
-            display: flex; align-items: center; justify-content: center; gap: 10px;
-            width: 100%; margin-top: 20px; font-family: 'Cairo', sans-serif;
+            display: flex; align-items: center; justify-content: center; gap: 12px;
+            width: 100%; margin-top: 15px; font-family: 'Cairo', sans-serif;
+            transition: background 0.3s;
         }
-        .error-message { background-color: #ffebee; color: #c62828; padding: 10px; border-radius: 5px; margin-top: 10px; display: none; }
-        .theme-toggle { position: fixed; top: 20px; right: 20px; background: transparent; border: none; cursor: pointer; font-size: 24px; color: #FFD700; opacity: 0; transition: opacity 0.5s; }
+        .google-signin-button:hover { background-color: #f8f8f8; }
+
+        .error-message { 
+            background-color: #ffebee; color: #c62828; padding: 10px; 
+            border-radius: 5px; margin-top: 10px; display: none; font-size: 14px;
+        }
+
+        .theme-toggle { 
+            position: fixed; top: 20px; right: 20px; background: white; 
+            border: none; cursor: pointer; font-size: 20px; color: #f1c40f; 
+            opacity: 0; transition: opacity 0.5s; width: 40px; height: 40px; 
+            border-radius: 50%; box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            display: flex; align-items: center; justify-content: center;
+            z-index: 1000;
+        }
+
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes moveUp { from { top: 50%; } to { top: 20px; } }
+        @keyframes moveUp { from { top: 50%; } to { top: 100px; } }
     </style>
 </head>
 <body>
 
     <button class="theme-toggle" id="themeToggle">
-        <i class="fas fa-sun"></i>
+        <i class="fas fa-sun" id="themeIcon"></i>
     </button>
 
     <div class="logo">
-        <img id="logoImage" src="/1000067588.png" alt="شعار التطبيق">
+        <img id="logoImage" src="1000067588.png" alt="شعار التطبيق">
     </div>
 
     <div class="login-container">
         <h2>تسجيل الدخول</h2>
-        <form class="login-form" id="loginForm">
+        <form id="loginForm">
             <div class="form-group">
                 <label for="email">البريد الإلكتروني</label>
-                <input type="email" id="email" placeholder="أدخل البريد الإلكتروني" required>
+                <input type="email" id="email" placeholder="example@mail.com" required>
             </div>
             <div class="form-group">
                 <label for="password">كلمة المرور</label>
-                <div style="position: relative;">
+                <div style="position: relative; width: 100%;">
                     <input type="password" id="password" placeholder="أدخل كلمة المرور" required>
-                    <span id="togglePassword" style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); cursor: pointer;">👁️</span>
+                    <span id="togglePassword" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); cursor: pointer; color: #888;">
+                        <i class="fas fa-eye"></i>
+                    </span>
                 </div>
             </div>
             <div id="errorMessage" class="error-message"></div>
-            <button type="submit" class="login-button" id="submitBtn">تسجيل الدخول</button>
-            <div class="signup-link" style="margin-top: 15px;">
-                ليس لديك حساب؟ <a href="/profile.html" style="color: #4CAF50; text-decoration: none; font-weight: bold;">إنشاء حساب</a>
-            </div>
+            <button type="submit" class="login-button">دخول</button>
         </form>
 
         <button id="googleBtn" class="google-signin-button">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" width="20">
+            <img src="https://fonts.gstatic.com/s/i/productlogos/googleg/v6/24px.svg" alt="Google Logo" width="20">
             تسجيل الدخول بواسطة جوجل
         </button>
 
-        <div class="copyright" style="margin-top: 20px; font-size: 12px; color: #888;">
+        <div style="margin-top: 15px; font-size: 14px;">
+            ليس لديك حساب؟ <a href="profile.html" style="color: #4CAF50; text-decoration: none; font-weight: bold;">إنشاء حساب</a>
+        </div>
+
+        <div style="margin-top: 25px; font-size: 11px; color: #888;">
             © 2024 تطبيق كين ماتش. جميع الحقوق محفوظة.
         </div>
     </div>
@@ -106,68 +133,71 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getAuth, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
-        // إعدادات Firebase الخاصة بك
+        // إعدادات Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyDaSsBM2GuRlrewSmYRqwA60ZMcJMIIftQ",
             authDomain: "kainmatch.firebaseapp.com",
             projectId: "kainmatch",
             storageBucket: "kainmatch.firebasestorage.app",
             messagingSenderId: "31352105772",
-            appId: "1:31352105772:web:16f4043cd987a77ada9a89",
-            measurementId: "G-M0PV4Z1PD6"
+            appId: "1:31352105772:web:16f4043cd987a77ada9a89"
         };
 
-        // تهيئة Firebase
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const provider = new GoogleAuthProvider();
 
-        // --- إدارة الواجهة ---
+        // --- إدارة المظهر ---
         const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
         const body = document.body;
         const logoImage = document.getElementById('logoImage');
 
         themeToggle.addEventListener('click', () => {
             body.classList.toggle('dark-mode');
-            const isDarkMode = body.classList.contains('dark-mode');
-            logoImage.src = isDarkMode ? "/1000069661.png" : "/1000067588.png";
+            const isDark = body.classList.contains('dark-mode');
+            themeIcon.className = isDark ? 'fas fa-moon' : 'fas fa-sun';
+            logoImage.src = isDark ? "1000069661.png" : "1000067588.png";
         });
 
-        setTimeout(() => { themeToggle.style.opacity = '1'; }, 4000);
+        setTimeout(() => { themeToggle.style.opacity = '1'; }, 3500);
 
+        // إظهار/إخفاء كلمة المرور
         document.getElementById('togglePassword').addEventListener('click', function() {
-            const pwd = document.getElementById('password');
-            pwd.type = pwd.type === 'password' ? 'text' : 'password';
+            const pwdInput = document.getElementById('password');
+            const icon = this.querySelector('i');
+            if (pwdInput.type === 'password') {
+                pwdInput.type = 'text';
+                icon.classList.replace('fa-eye', 'fa-eye-slash');
+            } else {
+                pwdInput.type = 'password';
+                icon.classList.replace('fa-eye-slash', 'fa-eye');
+            }
         });
 
-        // --- عملية تسجيل الدخول بالبريد ---
-        const loginForm = document.getElementById('loginForm');
+        // --- تسجيل الدخول العادي ---
         const errorDiv = document.getElementById('errorMessage');
-
-        loginForm.addEventListener('submit', (e) => {
+        document.getElementById('loginForm').addEventListener('submit', (e) => {
             e.preventDefault();
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
 
             signInWithEmailAndPassword(auth, email, password)
-                .then((userCredential) => {
-                    window.location.href = "index.html";
-                })
+                .then(() => window.location.href = "index.html")
                 .catch((error) => {
                     errorDiv.style.display = 'block';
-                    errorDiv.textContent = "خطأ: البريد الإلكتروني أو كلمة المرور غير صحيحة";
+                    errorDiv.textContent = "تأكد من صحة البيانات المدخلة";
                 });
         });
 
         // --- تسجيل الدخول بجوجل ---
         document.getElementById('googleBtn').addEventListener('click', () => {
             signInWithPopup(auth, provider)
-                .then((result) => {
-                    window.location.href = "index.html";
-                })
+                .then(() => window.location.href = "index.html")
                 .catch((error) => {
+                    console.error("Google Auth Error:", error);
                     errorDiv.style.display = 'block';
-                    errorDiv.textContent = "فشل تسجيل الدخول عبر جوجل";
+                    errorDiv.textContent = "حدث خطأ أثناء الاتصال بجوجل، حاول لاحقاً";
                 });
         });
     </script>
