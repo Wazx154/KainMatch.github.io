@@ -101,7 +101,7 @@
             font-size: 1.1rem; font-weight: 700; color: var(--green-300);
             text-decoration: none;
         }
-        .nav-brand img { width: 32px; height: 32px; border-radius: 8px; }
+        .nav-brand img { width: 42px; height: 42px; border-radius: 10px; object-fit: cover; }
         .nav-link {
             display: flex; align-items: center; gap: 7px;
             color: var(--text-muted); text-decoration: none;
@@ -191,6 +191,24 @@
             background: linear-gradient(to left, var(--green-400), var(--green-600));
             transition: width 0.5s cubic-bezier(0.4,0,0.2,1);
             width: 0%;
+        }
+
+        /* ===== شعار بارز ===== */
+        .site-logo { text-align: center; margin-bottom: 20px; }
+        .site-logo img {
+            width: 88px; height: 88px;
+            border-radius: 20px;
+            object-fit: cover;
+            box-shadow: 0 6px 28px rgba(0,0,0,0.5), 0 0 0 3px rgba(76,175,80,0.3);
+            transition: transform 0.35s ease, box-shadow 0.35s ease;
+        }
+        .site-logo img:hover {
+            transform: scale(1.07) rotate(-2deg);
+            box-shadow: 0 10px 36px rgba(0,0,0,0.55), 0 0 0 5px rgba(76,175,80,0.4);
+        }
+        .site-logo-name {
+            margin-top: 8px; font-size: 1.1rem; font-weight: 900;
+            color: var(--green-300); letter-spacing: 0.5px;
         }
 
         /* ===== صورة الملف الشخصي ===== */
@@ -602,6 +620,12 @@
 <!-- ===== الحاوية الرئيسية ===== -->
 <div class="container">
     <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+
+    <!-- شعار الموقع البارز -->
+    <div class="site-logo">
+        <img src="/1000067588.png" alt="شعار كين ماتش">
+        <div class="site-logo-name">كين ماتش</div>
+    </div>
 
     <!-- صورة الملف الشخصي (ثابتة دائماً) -->
     <div class="profile-section">
