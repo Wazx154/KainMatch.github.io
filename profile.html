@@ -3,1410 +3,1183 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>معلوماتك الشخصية - كرة القدم</title>
-    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+    <title>إنشاء حساب - كين ماتش</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;900&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
-        *, *::before, *::after {
-            box-sizing: border-box;
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --green-900: #0d2410;
+            --green-800: #1b5e20;
+            --green-700: #2e7d32;
+            --green-600: #388e3c;
+            --green-500: #4caf50;
+            --green-400: #66bb6a;
+            --green-300: #81c784;
+            --green-200: #a5d6a7;
+            --green-100: #c8e6c9;
+            --green-50:  #e8f5e9;
+            --bg:        #0a1a0f;
+            --surface:   rgba(18, 38, 22, 0.75);
+            --surface2:  rgba(26, 52, 30, 0.6);
+            --border:    rgba(76, 175, 80, 0.15);
+            --border2:   rgba(76, 175, 80, 0.30);
+            --text:      #e8f5e9;
+            --text-muted: rgba(200, 230, 201, 0.6);
+            --text-dim:   rgba(200, 230, 201, 0.35);
+            --error:     #ef5350;
+            --error-bg:  rgba(239, 83, 80, 0.1);
+            --radius-sm: 10px;
+            --radius-md: 14px;
+            --radius-lg: 20px;
+            --transition: 0.25s ease;
         }
 
+        html { scroll-behavior: smooth; }
+
         body {
-            font-family: 'Amiri', serif;
-            background: #0a1a0f;
-            margin: 0;
-            padding: 0;
+            font-family: 'Cairo', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
-            min-height: 100vh;
-            color: #e8f5e9;
             overflow-x: hidden;
         }
 
+        /* ===== خلفية متحركة ===== */
         body::before {
             content: '';
-            position: fixed;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(ellipse at 30% 20%, rgba(56, 142, 60, 0.12) 0%, transparent 50%),
-                        radial-gradient(ellipse at 70% 80%, rgba(76, 175, 80, 0.08) 0%, transparent 50%),
-                        radial-gradient(ellipse at 50% 50%, rgba(27, 94, 32, 0.05) 0%, transparent 70%);
-            animation: bgFloat 20s ease-in-out infinite;
-            z-index: 0;
-            pointer-events: none;
+            position: fixed; inset: 0;
+            background:
+                radial-gradient(ellipse 60% 50% at 20% 10%, rgba(46,125,50,0.18) 0%, transparent 60%),
+                radial-gradient(ellipse 50% 60% at 80% 90%, rgba(76,175,80,0.10) 0%, transparent 60%),
+                radial-gradient(ellipse 40% 40% at 55% 45%, rgba(27,94,32,0.08) 0%, transparent 60%);
+            animation: bgPulse 18s ease-in-out infinite alternate;
+            pointer-events: none; z-index: 0;
         }
 
-        @keyframes bgFloat {
-            0%, 100% { transform: translate(0, 0) rotate(0deg); }
-            33% { transform: translate(2%, -2%) rotate(1deg); }
-            66% { transform: translate(-1%, 1%) rotate(-0.5deg); }
+        @keyframes bgPulse {
+            0%   { opacity: 0.7; transform: scale(1); }
+            100% { opacity: 1;   transform: scale(1.04); }
         }
 
-        .particles {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 0;
-            overflow: hidden;
-        }
-
+        /* ===== جزيئات ===== */
+        #particles { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
         .particle {
             position: absolute;
-            width: 4px;
-            height: 4px;
-            background: rgba(76, 175, 80, 0.3);
             border-radius: 50%;
-            animation: particleRise linear infinite;
+            background: rgba(76,175,80,0.25);
+            animation: rise linear infinite;
+        }
+        @keyframes rise {
+            from { transform: translateY(110vh) scale(0.5); opacity: 0; }
+            10%  { opacity: 1; }
+            90%  { opacity: 0.6; }
+            to   { transform: translateY(-10vh) scale(1); opacity: 0; }
         }
 
-        @keyframes particleRise {
-            0% { transform: translateY(100vh) scale(0); opacity: 0; }
-            10% { opacity: 1; }
-            90% { opacity: 1; }
-            100% { transform: translateY(-10vh) scale(1); opacity: 0; }
-        }
-
+        /* ===== شريط التنقل ===== */
         nav {
-            background: rgba(27, 94, 32, 0.85);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            color: white;
-            padding: 0;
+            position: sticky; top: 0; z-index: 200;
             width: 100%;
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            border-bottom: 1px solid rgba(76, 175, 80, 0.2);
+            background: rgba(13, 36, 16, 0.88);
+            backdrop-filter: blur(24px);
+            border-bottom: 1px solid var(--border);
+            box-shadow: 0 2px 20px rgba(0,0,0,0.3);
         }
-
-        nav .nav-inner {
-            max-width: 700px;
-            margin: 0 auto;
-            padding: 16px 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
+        .nav-inner {
+            max-width: 680px; margin: 0 auto;
+            padding: 14px 24px;
+            display: flex; align-items: center; justify-content: space-between;
         }
-
-        nav a {
-            color: rgba(255, 255, 255, 0.85);
+        .nav-brand {
+            display: flex; align-items: center; gap: 10px;
+            font-size: 1.1rem; font-weight: 700; color: var(--green-300);
             text-decoration: none;
-            font-weight: bold;
-            font-size: 1.05rem;
-            transition: all 0.3s;
-            padding: 6px 16px;
-            border-radius: 8px;
         }
-
-        nav a:hover {
-            color: #fff;
-            background: rgba(76, 175, 80, 0.25);
+        .nav-brand img { width: 32px; height: 32px; border-radius: 8px; }
+        .nav-link {
+            display: flex; align-items: center; gap: 7px;
+            color: var(--text-muted); text-decoration: none;
+            font-size: 0.9rem; font-weight: 500;
+            padding: 7px 14px; border-radius: var(--radius-sm);
+            transition: all var(--transition);
         }
+        .nav-link:hover { color: var(--text); background: rgba(76,175,80,0.12); }
 
-        .container {
-            width: 92%;
-            max-width: 600px;
-            background: rgba(20, 40, 25, 0.7);
-            backdrop-filter: blur(30px);
-            -webkit-backdrop-filter: blur(30px);
-            border-radius: 20px;
-            border: 1px solid rgba(76, 175, 80, 0.15);
-            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.4),
-                        inset 0 1px 0 rgba(255, 255, 255, 0.05);
-            padding: 35px 30px;
-            text-align: right;
-            margin-top: 30px;
-            margin-bottom: 40px;
+        /* ===== شريط الخطوات ===== */
+        .steps-bar {
+            width: 92%; max-width: 600px;
+            margin: 28px auto 0;
+            position: relative; z-index: 1;
+            opacity: 0; animation: fadeUp 0.6s ease 0.1s forwards;
+        }
+        .steps-track {
+            display: flex; align-items: center; justify-content: space-between;
             position: relative;
-            z-index: 1;
-            opacity: 0;
-            transform: translateY(30px);
-            animation: containerIn 0.8s ease forwards 0.2s;
+        }
+        .steps-track::before {
+            content: '';
+            position: absolute; top: 18px; right: 20%; left: 20%;
+            height: 2px;
+            background: var(--border);
+        }
+        .step-item {
+            display: flex; flex-direction: column; align-items: center; gap: 6px;
+            flex: 1; position: relative; z-index: 1;
+        }
+        .step-circle {
+            width: 36px; height: 36px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.85rem; font-weight: 700;
+            border: 2px solid var(--border2);
+            background: var(--surface);
+            color: var(--text-dim);
+            transition: all 0.4s ease;
+        }
+        .step-item.active .step-circle {
+            background: var(--green-700);
+            border-color: var(--green-500);
+            color: #fff;
+            box-shadow: 0 0 16px rgba(76,175,80,0.4);
+        }
+        .step-item.done .step-circle {
+            background: var(--green-600);
+            border-color: var(--green-400);
+            color: #fff;
+        }
+        .step-label {
+            font-size: 0.72rem; color: var(--text-dim);
+            transition: color 0.4s;
+            white-space: nowrap;
+        }
+        .step-item.active .step-label,
+        .step-item.done .step-label { color: var(--green-300); }
+
+        /* ===== الحاوية الرئيسية ===== */
+        .container {
+            width: 92%; max-width: 600px;
+            background: var(--surface);
+            backdrop-filter: blur(30px);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border);
+            box-shadow: 0 12px 50px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.04);
+            padding: 36px 32px 40px;
+            margin: 20px auto 50px;
+            position: relative; z-index: 1;
+            opacity: 0; transform: translateY(24px);
+            animation: fadeUp 0.7s ease 0.2s forwards;
         }
 
-        @keyframes containerIn {
+        @keyframes fadeUp {
             to { opacity: 1; transform: translateY(0); }
         }
 
-        .logo {
-            text-align: center;
-            margin-bottom: 15px;
+        /* شريط التقدم العلوي */
+        .progress-bar {
+            position: absolute; top: 0; right: 0; left: 0;
+            height: 3px; border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+            background: var(--border);
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(to left, var(--green-400), var(--green-600));
+            transition: width 0.5s cubic-bezier(0.4,0,0.2,1);
+            width: 0%;
         }
 
-        .logo img {
-            max-width: 120px;
-            border-radius: 16px;
-            transition: transform 0.4s ease;
-            filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.3));
+        /* ===== صورة الملف الشخصي ===== */
+        .profile-section {
+            text-align: center; margin-bottom: 28px;
         }
-
-        .logo img:hover {
-            transform: scale(1.08) rotate(-2deg);
-        }
-
-        .profile-pic-wrapper {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .profile-pic {
-            width: 120px;
-            height: 120px;
+        .profile-pic-ring {
+            width: 110px; height: 110px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #1b5e20, #2e7d32);
-            border: 4px solid rgba(76, 175, 80, 0.5);
-            margin: 0 auto;
-            background-size: cover;
-            background-position: center;
+            margin: 0 auto 12px;
+            padding: 3px;
+            background: conic-gradient(var(--green-500) var(--progress, 0%), var(--surface2) var(--progress, 0%));
+            transition: --progress 0.4s;
             cursor: pointer;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3),
-                        0 0 0 8px rgba(76, 175, 80, 0.08);
-            transition: all 0.4s ease;
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
         }
-
-        .profile-pic:hover {
-            transform: scale(1.06);
-            border-color: rgba(76, 175, 80, 0.8);
-            box-shadow: 0 6px 30px rgba(76, 175, 80, 0.2),
-                        0 0 0 12px rgba(76, 175, 80, 0.1);
-        }
-
-        .profile-pic .camera-icon {
-            position: absolute;
-            bottom: 2px;
-            left: 2px;
-            width: 32px;
-            height: 32px;
-            background: #388e3c;
+        .profile-pic {
+            width: 100%; height: 100%;
             border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 13px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-            transition: transform 0.3s;
+            background: linear-gradient(135deg, var(--green-800), var(--green-700));
+            background-size: cover; background-position: center;
+            display: flex; align-items: center; justify-content: center;
+            border: 3px solid var(--bg);
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+        .profile-pic:hover { transform: scale(1.04); }
+        .profile-pic .cam-icon {
+            width: 100%; height: 100%;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            gap: 4px;
+            color: rgba(200,230,201,0.7);
+            font-size: 1.5rem;
+            transition: all 0.3s;
+        }
+        .profile-pic:hover .cam-icon { color: var(--green-300); }
+        .cam-hint { font-size: 0.65rem; font-family: 'Cairo', sans-serif; }
+        input[type="file"] { display: none; }
+        .profile-name-preview {
+            font-size: 1rem; font-weight: 700; color: var(--green-200);
+            min-height: 24px; transition: all 0.3s;
+        }
+        .profile-subtitle {
+            font-size: 0.8rem; color: var(--text-dim); margin-top: 2px;
         }
 
-        .profile-pic:hover .camera-icon {
-            transform: scale(1.15);
+        /* ===== خطوات النموذج ===== */
+        .form-step { display: none; }
+        .form-step.active { display: block; animation: stepIn 0.4s ease; }
+
+        @keyframes stepIn {
+            from { opacity: 0; transform: translateX(-16px); }
+            to   { opacity: 1; transform: translateX(0); }
         }
 
-        .profile-pic-info {
-            text-align: center;
-            font-size: 0.9rem;
-            color: rgba(200, 230, 201, 0.7);
-            margin-top: 8px;
-            margin-bottom: 10px;
+        .step-title {
+            font-size: 1.15rem; font-weight: 700;
+            color: var(--green-200);
+            margin-bottom: 20px;
+            display: flex; align-items: center; gap: 10px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border);
+        }
+        .step-title i {
+            width: 34px; height: 34px; border-radius: 10px;
+            background: rgba(76,175,80,0.15);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.9rem; color: var(--green-400);
+            flex-shrink: 0;
         }
 
-        input[type="file"] {
-            display: none;
+        /* ===== حقول النموذج ===== */
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
         }
-
-        h1 {
-            color: #e8f5e9;
-            font-size: 1.7rem;
-            text-align: center;
-            margin: 10px 0 8px;
-            font-weight: 700;
-            text-shadow: 0 2px 10px rgba(76, 175, 80, 0.2);
-        }
-
-        .subtitle {
-            text-align: center;
-            color: rgba(200, 230, 201, 0.5);
-            font-size: 0.95rem;
-            margin-bottom: 25px;
-        }
-
-        form {
-            width: 100%;
-        }
+        .form-row .form-field { margin-bottom: 0; }
 
         .form-field {
-            position: relative;
-            margin-bottom: 18px;
+            margin-bottom: 16px;
         }
-
-        .form-field .field-icon {
+        .form-field label {
+            display: block;
+            font-size: 0.82rem; font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+        }
+        .input-wrap {
+            position: relative;
+        }
+        .input-wrap .f-icon {
             position: absolute;
-            left: 14px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: rgba(76, 175, 80, 0.5);
+            left: 13px; top: 50%; transform: translateY(-50%);
+            color: rgba(76,175,80,0.4);
+            font-size: 0.85rem;
+            pointer-events: none;
+            transition: color var(--transition);
+        }
+        .form-field input {
+            width: 100%;
+            padding: 12px 14px 12px 40px;
+            background: rgba(10, 22, 12, 0.5);
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-sm);
+            color: var(--text);
+            font-family: 'Cairo', sans-serif;
             font-size: 0.95rem;
-            transition: color 0.3s;
+            outline: none;
+            transition: all var(--transition);
+            -webkit-appearance: none;
+        }
+        .form-field input::placeholder { color: var(--text-dim); font-style: italic; }
+        .form-field input:focus {
+            border-color: var(--green-500);
+            background: rgba(10, 22, 12, 0.7);
+            box-shadow: 0 0 0 3px rgba(76,175,80,0.1);
+        }
+        .form-field input:focus ~ .f-icon,
+        .form-field input:focus + .f-icon { color: var(--green-400); }
+
+        /* حالة النجاح والخطأ */
+        .form-field.valid input   { border-color: var(--green-500); }
+        .form-field.invalid input { border-color: var(--error); box-shadow: 0 0 0 3px var(--error-bg); }
+        .form-field.valid   .f-icon { color: var(--green-400) !important; }
+        .form-field.invalid .f-icon { color: var(--error) !important; }
+
+        .field-msg {
+            font-size: 0.78rem; margin-top: 5px;
+            display: none; padding-right: 2px;
+        }
+        .field-msg.error  { color: var(--error); display: block; }
+        .field-msg.hint   { color: var(--text-dim); display: block; }
+
+        /* أيقونة الحالة */
+        .status-icon {
+            position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+            font-size: 0.8rem; opacity: 0; transition: opacity var(--transition);
             pointer-events: none;
         }
+        .form-field.valid   .status-icon { opacity: 1; color: var(--green-400); }
+        .form-field.invalid .status-icon { opacity: 1; color: var(--error); }
+        .form-field.valid   .status-icon::before { content: '\f058'; font-family: 'Font Awesome 6 Free'; font-weight: 900; }
+        .form-field.invalid .status-icon::before { content: '\f057'; font-family: 'Font Awesome 6 Free'; font-weight: 900; }
 
-        .form-field input[type="text"],
-        .form-field input[type="email"],
-        .form-field input[type="tel"],
-        .form-field input[type="password"],
-        .form-field input[type="date"] {
-            width: 100%;
-            padding: 13px 14px 13px 42px;
-            border: 1.5px solid rgba(76, 175, 80, 0.2);
-            border-radius: 12px;
-            font-size: 1rem;
-            font-family: 'Amiri', serif;
-            background: rgba(15, 30, 18, 0.6);
-            color: #e8f5e9;
-            transition: all 0.3s ease;
-            outline: none;
+        /* تبديل كلمة السر */
+        .toggle-pw {
+            position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+            background: none; border: none; cursor: pointer;
+            color: rgba(76,175,80,0.45); font-size: 0.85rem;
+            padding: 4px; transition: color var(--transition); z-index: 2;
         }
+        .toggle-pw:hover { color: var(--green-400); }
 
-        .form-field input:focus {
-            border-color: rgba(76, 175, 80, 0.6);
-            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1), 0 0 20px rgba(76, 175, 80, 0.08);
-            background: rgba(15, 30, 18, 0.8);
-        }
-
-        .form-field input:focus + .field-icon,
-        .form-field input:focus ~ .field-icon {
-            color: #66bb6a;
-        }
-
-        .form-field input::placeholder {
-            color: rgba(200, 230, 201, 0.4);
-            font-style: italic;
-        }
-
-        .form-field input[type="date"]::-webkit-calendar-picker-indicator {
-            filter: invert(0.6) sepia(1) hue-rotate(90deg);
-            cursor: pointer;
-        }
-
-        .form-field.error input {
-            border-color: #ef5350;
-            box-shadow: 0 0 0 3px rgba(239, 83, 80, 0.1);
-        }
-
-        .form-field.error .field-icon {
-            color: #ef5350 !important;
-        }
-
-        .form-field.success input {
-            border-color: #66bb6a;
-        }
-
-        .form-field.success .field-icon {
-            color: #66bb6a !important;
-        }
-
-        .field-error {
-            color: #ef5350;
-            font-size: 0.82rem;
-            margin-top: 5px;
+        /* قوة كلمة السر */
+        .pw-strength {
+            margin-top: 8px;
             display: none;
-            padding-right: 4px;
         }
-
-        .form-field.error .field-error {
-            display: block;
-            animation: shakeIn 0.3s ease;
+        .pw-strength.show { display: block; }
+        .pw-bars {
+            display: flex; gap: 4px; margin-bottom: 4px;
         }
-
-        @keyframes shakeIn {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(5px); }
-            75% { transform: translateX(-5px); }
+        .pw-bar {
+            height: 4px; flex: 1; border-radius: 2px;
+            background: rgba(76,175,80,0.12);
+            transition: background 0.35s ease;
         }
-
-        .password-wrapper {
-            position: relative;
-        }
-
-        .toggle-password {
-            position: absolute;
-            right: 14px;
-            top: 50%;
-            transform: translateY(-50%);
-            cursor: pointer;
-            color: rgba(76, 175, 80, 0.5);
-            font-size: 0.95rem;
-            transition: color 0.3s;
-            background: none;
-            border: none;
-            padding: 4px;
-            z-index: 2;
-        }
-
-        .toggle-password:hover {
-            color: #66bb6a;
-        }
-
-        .password-strength {
-            height: 4px;
-            border-radius: 2px;
-            background: rgba(76, 175, 80, 0.15);
-            margin-top: 6px;
-            overflow: hidden;
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-
-        .password-strength.visible {
-            opacity: 1;
-        }
-
-        .password-strength-bar {
-            height: 100%;
-            border-radius: 2px;
-            width: 0%;
-            transition: all 0.4s ease;
-        }
-
-        .strength-text {
-            font-size: 0.78rem;
-            margin-top: 3px;
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-
-        .strength-text.visible {
-            opacity: 1;
+        .pw-label {
+            font-size: 0.76rem; color: var(--text-dim);
+            transition: color 0.35s;
         }
 
         /* ===== مراكز اللعب ===== */
-        .positions-section {
-            margin-top: 30px;
-            margin-bottom: 10px;
-        }
-
-        .positions-section h2 {
-            color: #e8f5e9;
-            font-size: 1.3rem;
-            text-align: center;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid rgba(76, 175, 80, 0.15);
-        }
-
-        .position-field {
-            margin-bottom: 22px;
-            padding: 14px 16px;
-            border-radius: 14px;
-            background: rgba(76, 175, 80, 0.04);
-            border: 1px solid rgba(76, 175, 80, 0.08);
-            transition: all 0.4s ease;
-        }
-
-        .position-field.active {
-            background: rgba(76, 175, 80, 0.08);
-            border-color: rgba(76, 175, 80, 0.2);
-            box-shadow: 0 2px 15px rgba(76, 175, 80, 0.06);
-        }
-
-        .position-field.dimmed {
-            background: rgba(255, 255, 255, 0.02);
-            border-color: rgba(255, 255, 255, 0.05);
-            opacity: 0.5;
-        }
-
-        .position-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-
-        .position-label {
-            font-weight: bold;
-            color: rgba(200, 230, 201, 0.8);
-            font-size: 0.95rem;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: color 0.3s;
-        }
-
-        .position-field.dimmed .position-label {
-            color: rgba(200, 230, 201, 0.35);
-        }
-
-        .position-field.active .position-label {
-            color: #a5d6a7;
-        }
-
-        .position-label .pos-icon {
-            width: 30px;
-            height: 30px;
-            border-radius: 8px;
-            background: rgba(76, 175, 80, 0.15);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.8rem;
-            color: #66bb6a;
-            transition: all 0.3s;
-        }
-
-        .position-field.dimmed .pos-icon {
-            background: rgba(255, 255, 255, 0.05);
-            color: rgba(255, 255, 255, 0.2);
-        }
-
-        .position-field.active .pos-icon {
-            background: rgba(76, 175, 80, 0.25);
-            color: #81c784;
-        }
-
-        .position-right {
-            display: flex;
-            align-items: center;
+        .positions-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
             gap: 12px;
         }
 
-        .position-value {
-            color: #66bb6a;
-            font-weight: bold;
-            font-size: 0.95rem;
-            min-width: 40px;
-            text-align: left;
-            transition: all 0.3s;
-        }
-
-        .position-field.dimmed .position-value {
-            color: rgba(255, 255, 255, 0.2);
-        }
-
-        /* زر التبديل */
-        .mode-toggle {
-            width: 44px;
-            height: 24px;
-            border-radius: 12px;
-            border: none;
-            cursor: pointer;
-            position: relative;
-            transition: all 0.35s ease;
-            flex-shrink: 0;
-            outline: none;
-        }
-
-        .mode-toggle.normal {
-            background: linear-gradient(135deg, #2e7d32, #43a047);
-            box-shadow: 0 2px 8px rgba(46, 125, 50, 0.3);
-        }
-
-        .mode-toggle.dimmed {
-            background: rgba(255, 255, 255, 0.1);
-            box-shadow: none;
-        }
-
-        .mode-toggle::after {
-            content: '';
-            position: absolute;
-            top: 3px;
-            width: 18px;
-            height: 18px;
-            border-radius: 50%;
-            background: white;
-            transition: all 0.35s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
-        }
-
-        .mode-toggle.normal::after {
-            right: 3px;
-        }
-
-        .mode-toggle.dimmed::after {
-            right: 23px;
-            background: rgba(255, 255, 255, 0.5);
-        }
-
-        .mode-toggle:focus-visible {
-            outline: 2px solid #66bb6a;
-            outline-offset: 2px;
-        }
-
-        .mode-label {
-            font-size: 0.72rem;
-            color: rgba(200, 230, 201, 0.4);
-            margin-top: 6px;
-            text-align: left;
-            transition: all 0.3s;
-        }
-
-        .position-field.active .mode-label {
-            color: rgba(129, 199, 132, 0.6);
-        }
-
-        .position-field.dimmed .mode-label {
-            color: rgba(255, 255, 255, 0.15);
-        }
-
-        /* ===== Range Slider ===== */
-        .range-wrapper {
-            position: relative;
-            direction: ltr;
-        }
-
-        input[type="range"] {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 100%;
-            height: 8px;
-            border-radius: 4px;
-            outline: none;
-            direction: ltr;
-            cursor: pointer;
-            margin: 0;
-            transition: opacity 0.4s, filter 0.4s;
-        }
-
-        input[type="range"]::-webkit-slider-runnable-track {
-            height: 8px;
-            border-radius: 4px;
-        }
-
-        input[type="range"]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #43a047, #66bb6a);
-            box-shadow: 0 2px 10px rgba(76, 175, 80, 0.5);
-            cursor: grab;
-            transition: transform 0.25s cubic-bezier(0.68, -0.55, 0.265, 1.55),
-                        box-shadow 0.25s,
-                        background 0.4s;
-            border: 3px solid #0a1a0f;
-            margin-top: -8px;
-        }
-
-        input[type="range"]::-webkit-slider-thumb:hover {
-            transform: scale(1.25);
-            box-shadow: 0 3px 18px rgba(76, 175, 80, 0.7);
-        }
-
-        input[type="range"]:active::-webkit-slider-thumb {
-            cursor: grabbing;
-            transform: scale(1.15);
-            box-shadow: 0 4px 20px rgba(76, 175, 80, 0.8);
-        }
-
-        input[type="range"]::-moz-range-thumb {
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #43a047, #66bb6a);
-            box-shadow: 0 2px 10px rgba(76, 175, 80, 0.5);
-            cursor: grab;
-            border: 3px solid #0a1a0f;
-        }
-
-        /* الوضع العادي */
-        input[type="range"].normal-mode {
-            background: linear-gradient(to right,
-                rgba(76, 175, 80, 0.5) 0%,
-                rgba(76, 175, 80, 0.5) var(--fill),
-                rgba(76, 175, 80, 0.12) var(--fill),
-                rgba(76, 175, 80, 0.12) 100%
-            );
-        }
-
-        input[type="range"].normal-mode::-webkit-slider-thumb {
-            background: linear-gradient(135deg, #43a047, #66bb6a);
-            box-shadow: 0 2px 10px rgba(76, 175, 80, 0.5);
-        }
-
-        input[type="range"].normal-mode::-moz-range-thumb {
-            background: linear-gradient(135deg, #43a047, #66bb6a);
-            box-shadow: 0 2px 10px rgba(76, 175, 80, 0.5);
-        }
-
-        /* الوضع المطلم */
-        input[type="range"].dimmed-mode {
-            background: linear-gradient(to right,
-                rgba(255, 255, 255, 0.06) 0%,
-                rgba(255, 255, 255, 0.06) 100%
-            );
-            cursor: not-allowed;
-            opacity: 0.4;
-            filter: grayscale(1);
-        }
-
-        input[type="range"].dimmed-mode::-webkit-slider-thumb {
-            background: linear-gradient(135deg, #555, #777);
-            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
-            cursor: not-allowed;
-        }
-
-        input[type="range"].dimmed-mode::-moz-range-thumb {
-            background: linear-gradient(135deg, #555, #777);
-            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
-            cursor: not-allowed;
-        }
-
-        /* توهج المؤشر */
-        .cursor-glow {
-            position: absolute;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(76, 175, 80, 0.3) 0%, transparent 70%);
-            top: 50%;
-            transform: translate(-50%, -50%);
-            pointer-events: none;
-            transition: opacity 0.4s, left 0.05s linear;
-            z-index: 1;
-        }
-
-        .position-field.dimmed .cursor-glow {
-            opacity: 0;
-        }
-
-        /* ===== الأزرار ===== */
-        .button {
-            padding: 14px 20px;
-            background: linear-gradient(135deg, #2e7d32, #43a047);
-            color: white;
-            border: none;
-            border-radius: 12px;
-            font-size: 1.1rem;
-            font-family: 'Amiri', serif;
-            font-weight: bold;
-            cursor: pointer;
+        .pos-card {
+            background: rgba(10,22,12,0.45);
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 14px 14px 12px;
             transition: all 0.3s ease;
-            width: 100%;
-            margin-top: 25px;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 4px 15px rgba(46, 125, 50, 0.3);
+        }
+        .pos-card.active {
+            background: rgba(46,125,50,0.1);
+            border-color: rgba(76,175,80,0.3);
+            box-shadow: 0 2px 16px rgba(76,175,80,0.07);
+        }
+        .pos-card.off {
+            opacity: 0.45;
+            background: rgba(10,22,12,0.2);
+            border-color: var(--border);
         }
 
-        .button::before {
-            content: '';
+        .pos-header {
+            display: flex; align-items: center; justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        .pos-name {
+            display: flex; align-items: center; gap: 7px;
+            font-size: 0.85rem; font-weight: 600;
+            color: var(--green-200);
+        }
+        .pos-emoji { font-size: 1.1rem; }
+        .pos-pct {
+            font-size: 0.85rem; font-weight: 700;
+            color: var(--green-400);
+            min-width: 36px; text-align: center;
+        }
+        .pos-card.off .pos-pct { color: var(--text-dim); }
+
+        /* toggle switch */
+        .sw {
+            position: relative; width: 40px; height: 22px;
+            flex-shrink: 0;
+        }
+        .sw input { display: none; }
+        .sw-track {
+            position: absolute; inset: 0;
+            border-radius: 11px;
+            background: rgba(255,255,255,0.08);
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .sw input:checked ~ .sw-track { background: var(--green-700); }
+        .sw-thumb {
             position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
-            transition: left 0.5s;
-        }
-
-        .button:hover::before {
-            left: 100%;
-        }
-
-        .button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 25px rgba(46, 125, 50, 0.4);
-        }
-
-        .button:active {
-            transform: translateY(0);
-        }
-
-        .button:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none !important;
-        }
-
-        .button .spinner {
-            display: none;
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(255, 255, 255, 0.3);
-            border-top-color: white;
+            top: 3px; left: 3px;
+            width: 16px; height: 16px;
             border-radius: 50%;
+            background: rgba(255,255,255,0.5);
+            transition: all 0.3s cubic-bezier(0.68,-0.55,0.27,1.55);
+            pointer-events: none;
+        }
+        .sw input:checked ~ .sw-thumb { left: 21px; background: #fff; }
+
+        /* range */
+        .pos-range { direction: ltr; margin-top: 2px; }
+        .pos-range input[type="range"] {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%; height: 6px;
+            border-radius: 3px;
+            outline: none;
+            cursor: pointer;
+            padding: 0;
+            background: linear-gradient(to right,
+                rgba(76,175,80,0.5) 0%,
+                rgba(76,175,80,0.5) var(--fill, 0%),
+                rgba(76,175,80,0.1) var(--fill, 0%),
+                rgba(76,175,80,0.1) 100%);
+            transition: opacity 0.3s;
+        }
+        .pos-range input[type="range"]:disabled {
+            cursor: not-allowed; opacity: 0.3;
+            background: rgba(255,255,255,0.06);
+        }
+        .pos-range input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px; height: 20px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--green-600), var(--green-400));
+            border: 2px solid var(--bg);
+            box-shadow: 0 2px 8px rgba(76,175,80,0.4);
+            cursor: grab;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-top: -7px;
+        }
+        .pos-range input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+            box-shadow: 0 3px 14px rgba(76,175,80,0.6);
+        }
+        .pos-range input[type="range"]:disabled::-webkit-slider-thumb {
+            background: #555; box-shadow: none; cursor: not-allowed;
+        }
+
+        /* ===== أزرار التنقل ===== */
+        .btn-row {
+            display: flex; gap: 12px; margin-top: 28px;
+        }
+        .btn {
+            flex: 1; padding: 14px;
+            border: none; border-radius: var(--radius-sm);
+            font-family: 'Cairo', sans-serif;
+            font-size: 1rem; font-weight: 700;
+            cursor: pointer;
+            transition: all var(--transition);
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            position: relative; overflow: hidden;
+        }
+        .btn::after {
+            content: '';
+            position: absolute; inset: 0;
+            background: rgba(255,255,255,0.08);
+            opacity: 0; transition: opacity 0.2s;
+        }
+        .btn:hover::after { opacity: 1; }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--green-700), var(--green-500));
+            color: #fff;
+            box-shadow: 0 4px 16px rgba(46,125,50,0.35);
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 7px 24px rgba(46,125,50,0.45);
+        }
+        .btn-primary:active { transform: translateY(0); }
+
+        .btn-secondary {
+            background: transparent;
+            border: 1.5px solid var(--border2);
+            color: var(--text-muted);
+        }
+        .btn-secondary:hover { border-color: var(--green-500); color: var(--text); }
+
+        .btn:disabled { opacity: 0.55; cursor: not-allowed; transform: none !important; }
+        .btn .spin {
+            display: none; width: 18px; height: 18px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-top-color: #fff; border-radius: 50%;
             animation: spin 0.7s linear infinite;
-            margin: 0 auto;
         }
-
-        .button.loading .button-text {
-            display: none;
-        }
-
-        .button.loading .spinner {
-            display: inline-block;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
+        .btn.loading .btn-label { display: none; }
+        .btn.loading .spin { display: block; }
+        @keyframes spin { to { transform: rotate(360deg); } }
 
         /* ===== Toast ===== */
         .toast {
-            position: fixed;
-            top: 80px;
-            left: 50%;
-            transform: translateX(-50%) translateY(-20px);
-            padding: 12px 24px;
-            border-radius: 12px;
-            font-family: 'Amiri', serif;
-            font-size: 0.95rem;
-            z-index: 9999;
-            opacity: 0;
-            transition: all 0.4s ease;
+            position: fixed; top: 72px; left: 50%;
+            transform: translateX(-50%) translateY(-12px);
+            padding: 11px 22px;
+            border-radius: var(--radius-sm);
+            font-family: 'Cairo', sans-serif; font-size: 0.9rem;
+            z-index: 9999; opacity: 0; pointer-events: none;
             backdrop-filter: blur(20px);
-            pointer-events: none;
-            max-width: 90%;
-            text-align: center;
+            transition: all 0.35s ease;
+            max-width: 88%; text-align: center;
+            display: flex; align-items: center; gap: 8px;
+        }
+        .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+        .toast.error   { background: rgba(183,28,28,0.88); color: #fff; border: 1px solid rgba(239,83,80,0.4); }
+        .toast.success { background: rgba(27,94,32,0.9);   color: #fff; border: 1px solid rgba(76,175,80,0.4); }
+        .toast.info    { background: rgba(13,71,161,0.88); color: #fff; border: 1px solid rgba(66,165,245,0.4); }
+
+        /* ===== Responsive ===== */
+        @media (max-width: 560px) {
+            .container { padding: 28px 18px 32px; }
+            .form-row { grid-template-columns: 1fr; }
+            .positions-grid { grid-template-columns: 1fr; }
+            .steps-bar { display: none; }
         }
 
-        .toast.show {
-            opacity: 1;
-            transform: translateX(-50%) translateY(0);
-        }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg); }
+        ::-webkit-scrollbar-thumb { background: rgba(76,175,80,0.25); border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(76,175,80,0.45); }
 
-        .toast.error {
-            background: rgba(211, 47, 47, 0.9);
-            color: white;
-            border: 1px solid rgba(239, 83, 80, 0.3);
+        input[type="date"]::-webkit-calendar-picker-indicator {
+            filter: invert(0.6) sepia(1) hue-rotate(90deg); cursor: pointer;
         }
-
-        .toast.success {
-            background: rgba(46, 125, 50, 0.9);
-            color: white;
-            border: 1px solid rgba(76, 175, 80, 0.3);
-        }
-
-        .form-field.has-toggle input {
-            padding-right: 44px;
-        }
-
-        @media (max-width: 640px) {
-            .container {
-                width: 95%;
-                padding: 25px 18px;
-                margin-top: 15px;
-                border-radius: 16px;
-            }
-            h1 { font-size: 1.4rem; }
-            .profile-pic { width: 100px; height: 100px; }
-            .form-field input {
-                padding: 11px 12px 11px 38px;
-                font-size: 0.95rem;
-            }
-            .button { padding: 12px 16px; font-size: 1rem; }
-            .position-field { padding: 12px; }
-            .mode-toggle { width: 38px; height: 20px; }
-            .mode-toggle::after { width: 14px; height: 14px; }
-            .mode-toggle.dimmed::after { right: 20px; }
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-            *, *::before, *::after {
-                animation-duration: 0.01ms !important;
-                transition-duration: 0.01ms !important;
-            }
-        }
-
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #0a1a0f; }
-        ::-webkit-scrollbar-thumb { background: rgba(76, 175, 80, 0.3); border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: rgba(76, 175, 80, 0.5); }
     </style>
 </head>
 <body>
-    <div class="particles" id="particles"></div>
-    <div class="toast" id="toast"></div>
 
-    <nav>
-        <div class="nav-inner">
-            <i class="fas fa-home" style="color: rgba(255,255,255,0.6);"></i>
-            <a href="/index.html">الصفحة الرئيسية</a>
+<div id="particles"></div>
+<div class="toast" id="toast"></div>
+
+<!-- ===== شريط التنقل ===== -->
+<nav>
+    <div class="nav-inner">
+        <a href="/index.html" class="nav-brand">
+            <img src="/1000067588.png" alt="شعار">
+            <span>كين ماتش</span>
+        </a>
+        <a href="/Login.html" class="nav-link">
+            <i class="fas fa-sign-in-alt"></i>
+            <span>تسجيل الدخول</span>
+        </a>
+    </div>
+</nav>
+
+<!-- ===== شريط الخطوات ===== -->
+<div class="steps-bar">
+    <div class="steps-track">
+        <div class="step-item active" data-step="1">
+            <div class="step-circle">1</div>
+            <span class="step-label">الصورة والاسم</span>
         </div>
-    </nav>
-
-    <div class="container">
-        <div class="logo">
-            <img src="/1000067588.png" alt="شعار الموقع">
+        <div class="step-item" data-step="2">
+            <div class="step-circle">2</div>
+            <span class="step-label">البيانات الشخصية</span>
         </div>
-
-        <div class="profile-pic-wrapper">
-            <label for="profilePic" style="cursor: pointer;">
-                <div class="profile-pic" id="preview" title="اضغط لاختيار صورة">
-                    <span class="camera-icon"><i class="fas fa-camera"></i></span>
-                </div>
-            </label>
-            <p class="profile-pic-info">اضغط لتغيير الصورة الشخصية</p>
-            <input type="file" id="profilePic" accept="image/*">
+        <div class="step-item" data-step="3">
+            <div class="step-circle">3</div>
+            <span class="step-label">الحساب</span>
         </div>
+        <div class="step-item" data-step="4">
+            <div class="step-circle">4</div>
+            <span class="step-label">مراكز اللعب</span>
+        </div>
+    </div>
+</div>
 
-        <h1>معلوماتك الشخصية</h1>
-        <p class="subtitle">أنشئ حسابك وانضم لمجتمع كرة القدم</p>
+<!-- ===== الحاوية الرئيسية ===== -->
+<div class="container">
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
 
-        <form id="personalForm" novalidate>
-            <div class="form-field" id="nameField">
-                <input type="text" id="name" name="name" required placeholder="الاسم الكامل" autocomplete="name">
-                <i class="fas fa-user field-icon"></i>
-                <div class="field-error">يرجى إدخال الاسم الكامل (3 أحرف على الأقل)</div>
-            </div>
-
-            <div class="form-field" id="dobField">
-                <input type="date" id="dob" name="dob" required>
-                <i class="fas fa-calendar-alt field-icon"></i>
-                <div class="field-error">يرجى اختيار تاريخ الميلاد</div>
-            </div>
-
-            <div class="form-field" id="teamField">
-                <input type="text" id="team" name="team" required placeholder="الفريق المفضل" autocomplete="off">
-                <i class="fas fa-shield-halved field-icon"></i>
-                <div class="field-error">يرجى إدخال الفريق المفضل</div>
-            </div>
-
-            <div class="form-field" id="locationField">
-                <input type="text" id="location" name="location" required placeholder="المنطقة" autocomplete="address-level2">
-                <i class="fas fa-map-marker-alt field-icon"></i>
-                <div class="field-error">يرجى إدخال المنطقة</div>
-            </div>
-
-            <div class="form-field" id="emailField">
-                <input type="email" id="email" name="email" required placeholder="البريد الإلكتروني" autocomplete="email">
-                <i class="fas fa-envelope field-icon"></i>
-                <div class="field-error">يرجى إدخال بريد إلكتروني صحيح</div>
-            </div>
-
-            <div class="form-field" id="phoneField">
-                <input type="tel" id="phone" name="phone" required placeholder="رقم الهاتف" autocomplete="tel">
-                <i class="fas fa-phone field-icon"></i>
-                <div class="field-error">يرجى إدخال رقم هاتف صحيح (8-15 رقم)</div>
-            </div>
-
-            <div class="form-field">
-                <input type="text" id="hobbies" name="hobbies" placeholder="الهوايات (اختياري)" autocomplete="off">
-                <i class="fas fa-futbol field-icon"></i>
-            </div>
-
-            <div class="form-field has-toggle" id="passwordField">
-                <div class="password-wrapper">
-                    <input type="password" id="password" name="password" required placeholder="كلمة السر" autocomplete="new-password">
-                    <i class="fas fa-lock field-icon"></i>
-                    <button type="button" class="toggle-password" id="togglePassword" aria-label="إظهار كلمة السر">
-                        <i class="fas fa-eye"></i>
-                    </button>
-                </div>
-                <div class="password-strength" id="passwordStrength">
-                    <div class="password-strength-bar" id="passwordStrengthBar"></div>
-                </div>
-                <div class="strength-text" id="strengthText"></div>
-                <div class="field-error">كلمة السر يجب أن تكون 6 أحرف على الأقل</div>
-            </div>
-
-            <div class="form-field has-toggle" id="confirmPasswordField">
-                <div class="password-wrapper">
-                    <input type="password" id="confirmPassword" name="confirmPassword" required placeholder="تأكيد كلمة السر" autocomplete="new-password">
-                    <i class="fas fa-lock field-icon"></i>
-                    <button type="button" class="toggle-password" id="toggleConfirmPassword" aria-label="إظهار كلمة السر">
-                        <i class="fas fa-eye"></i>
-                    </button>
-                </div>
-                <div class="field-error">كلمتا السر غير متطابقتين</div>
-            </div>
-
-            <!-- مراكز اللعب -->
-            <div class="positions-section">
-                <h2>مراكز اللعب</h2>
-
-                <div class="position-field active" id="goalkeeperField">
-                    <div class="position-header">
-                        <label class="position-label">
-                            <span class="pos-icon"><i class="fas fa-hands"></i></span>
-                            حارس مرمى
-                        </label>
-                        <div class="position-right">
-                            <span class="position-value" id="goalkeeperValue">0%</span>
-                            <button type="button" class="mode-toggle normal" id="goalkeeperToggle" aria-label="تبديل وضع حارس المرمى"></button>
-                        </div>
+    <!-- صورة الملف الشخصي (ثابتة دائماً) -->
+    <div class="profile-section">
+        <label for="profilePic">
+            <div class="profile-pic-ring" id="profileRing">
+                <div class="profile-pic" id="profilePreview">
+                    <div class="cam-icon">
+                        <i class="fas fa-camera"></i>
+                        <span class="cam-hint">اختر صورة</span>
                     </div>
-                    <div class="range-wrapper">
-                        <div class="cursor-glow" id="goalkeeperGlow"></div>
-                        <input type="range" min="0" max="100" value="0" id="goalkeeper" class="normal-mode" style="--fill: 0%;">
-                    </div>
-                    <div class="mode-label" id="goalkeeperModeLabel"><i class="fas fa-check-circle"></i> وضع عادي</div>
-                </div>
-
-                <div class="position-field active" id="defenderField">
-                    <div class="position-header">
-                        <label class="position-label">
-                            <span class="pos-icon"><i class="fas fa-shield"></i></span>
-                            مدافع
-                        </label>
-                        <div class="position-right">
-                            <span class="position-value" id="defenderValue">0%</span>
-                            <button type="button" class="mode-toggle normal" id="defenderToggle" aria-label="تبديل وضع المدافع"></button>
-                        </div>
-                    </div>
-                    <div class="range-wrapper">
-                        <div class="cursor-glow" id="defenderGlow"></div>
-                        <input type="range" min="0" max="100" value="0" id="defender" class="normal-mode" style="--fill: 0%;">
-                    </div>
-                    <div class="mode-label" id="defenderModeLabel"><i class="fas fa-check-circle"></i> وضع عادي</div>
-                </div>
-
-                <div class="position-field active" id="midfielderField">
-                    <div class="position-header">
-                        <label class="position-label">
-                            <span class="pos-icon"><i class="fas fa-arrows-alt"></i></span>
-                            وسط
-                        </label>
-                        <div class="position-right">
-                            <span class="position-value" id="midfielderValue">0%</span>
-                            <button type="button" class="mode-toggle normal" id="midfielderToggle" aria-label="تبديل وضع الوسط"></button>
-                        </div>
-                    </div>
-                    <div class="range-wrapper">
-                        <div class="cursor-glow" id="midfielderGlow"></div>
-                        <input type="range" min="0" max="100" value="0" id="midfielder" class="normal-mode" style="--fill: 0%;">
-                    </div>
-                    <div class="mode-label" id="midfielderModeLabel"><i class="fas fa-check-circle"></i> وضع عادي</div>
-                </div>
-
-                <div class="position-field active" id="forwardField">
-                    <div class="position-header">
-                        <label class="position-label">
-                            <span class="pos-icon"><i class="fas fa-crosshairs"></i></span>
-                            مهاجم
-                        </label>
-                        <div class="position-right">
-                            <span class="position-value" id="forwardValue">0%</span>
-                            <button type="button" class="mode-toggle normal" id="forwardToggle" aria-label="تبديل وضع المهاجم"></button>
-                        </div>
-                    </div>
-                    <div class="range-wrapper">
-                        <div class="cursor-glow" id="forwardGlow"></div>
-                        <input type="range" min="0" max="100" value="0" id="forward" class="normal-mode" style="--fill: 0%;">
-                    </div>
-                    <div class="mode-label" id="forwardModeLabel"><i class="fas fa-check-circle"></i> وضع عادي</div>
                 </div>
             </div>
-
-            <button type="submit" class="button" id="submitBtn">
-                <span class="button-text">حفظ المعلومات</span>
-                <span class="spinner"></span>
-            </button>
-        </form>
+        </label>
+        <input type="file" id="profilePic" accept="image/*">
+        <div class="profile-name-preview" id="namePreview">—</div>
+        <div class="profile-subtitle">انضم لمجتمع كرة القدم</div>
     </div>
 
-    <script type="module">
-        // === استيراد Firebase ===
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getAuth, createUserWithEmailAndPassword, sendEmailVerification } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-        import { getFirestore, doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+    <form id="regForm" novalidate>
 
-        // === تكوين Firebase الجديد ===
-        const firebaseConfig = {
-            apiKey: "AIzaSyDaSsBM2GuRlrewSmYRqwA60ZMcJMIIftQ",
-            authDomain: "kainmatch.firebaseapp.com",
-            projectId: "kainmatch",
-            storageBucket: "kainmatch.firebasestorage.app",
-            messagingSenderId: "31352105772",
-            appId: "1:31352105772:web:16f4043cd987a77ada9a89",
-            measurementId: "G-M0PV4Z1PD6"
-        };
+        <!-- ===== الخطوة 1: معلومات أساسية ===== -->
+        <div class="form-step active" data-step="1">
+            <div class="step-title">
+                <i class="fas fa-user-circle"></i>
+                المعلومات الأساسية
+            </div>
 
-        // === تهيئة Firebase ===
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
+            <div class="form-field" id="f-name">
+                <label>الاسم الكامل <span style="color:var(--error)">*</span></label>
+                <div class="input-wrap">
+                    <input type="text" id="name" placeholder="مثال: أحمد محمد" autocomplete="name" required>
+                    <i class="fas fa-user f-icon"></i>
+                    <span class="status-icon"></span>
+                </div>
+                <span class="field-msg" id="m-name"></span>
+            </div>
 
-        // === العناصر ===
-        const form = document.getElementById('personalForm');
-        const profilePicInput = document.getElementById('profilePic');
-        const preview = document.getElementById('preview');
-        const submitBtn = document.getElementById('submitBtn');
-        const passwordInput = document.getElementById('password');
-        const confirmPasswordInput = document.getElementById('confirmPassword');
+            <div class="form-row">
+                <div class="form-field" id="f-dob">
+                    <label>تاريخ الميلاد <span style="color:var(--error)">*</span></label>
+                    <div class="input-wrap">
+                        <input type="date" id="dob" required>
+                        <i class="fas fa-calendar-alt f-icon"></i>
+                        <span class="status-icon"></span>
+                    </div>
+                    <span class="field-msg" id="m-dob"></span>
+                </div>
+                <div class="form-field" id="f-location">
+                    <label>المنطقة <span style="color:var(--error)">*</span></label>
+                    <div class="input-wrap">
+                        <input type="text" id="location" placeholder="مدينتك" autocomplete="address-level2" required>
+                        <i class="fas fa-map-marker-alt f-icon"></i>
+                        <span class="status-icon"></span>
+                    </div>
+                    <span class="field-msg" id="m-location"></span>
+                </div>
+            </div>
 
-        // === الجزيئات ===
-        (function createParticles() {
-            const container = document.getElementById('particles');
-            for (let i = 0; i < 25; i++) {
-                const p = document.createElement('div');
-                p.className = 'particle';
-                p.style.left = Math.random() * 100 + '%';
-                p.style.width = p.style.height = (2 + Math.random() * 4) + 'px';
-                p.style.animationDuration = (8 + Math.random() * 15) + 's';
-                p.style.animationDelay = Math.random() * 10 + 's';
-                p.style.opacity = 0.1 + Math.random() * 0.3;
-                container.appendChild(p);
-            }
-        })();
+            <div class="form-row">
+                <div class="form-field" id="f-team">
+                    <label>الفريق المفضل</label>
+                    <div class="input-wrap">
+                        <input type="text" id="team" placeholder="مثال: ريال مدريد" autocomplete="off">
+                        <i class="fas fa-shield-halved f-icon"></i>
+                    </div>
+                </div>
+                <div class="form-field" id="f-hobbies">
+                    <label>الهوايات</label>
+                    <div class="input-wrap">
+                        <input type="text" id="hobbies" placeholder="مثال: السباحة، الجري" autocomplete="off">
+                        <i class="fas fa-star f-icon"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-        // === إشعار Toast ===
-        function showToast(message, type = 'error') {
-            const toast = document.getElementById('toast');
-            toast.textContent = message;
-            toast.className = 'toast ' + type + ' show';
-            setTimeout(() => toast.classList.remove('show'), 3500);
-        }
+        <!-- ===== الخطوة 2: بيانات التواصل ===== -->
+        <div class="form-step" data-step="2">
+            <div class="step-title">
+                <i class="fas fa-address-card"></i>
+                بيانات التواصل
+            </div>
 
-        // === الصورة الشخصية ===
-        let profilePicData = null;
+            <div class="form-field" id="f-email">
+                <label>البريد الإلكتروني <span style="color:var(--error)">*</span></label>
+                <div class="input-wrap">
+                    <input type="email" id="email" placeholder="example@gmail.com" autocomplete="email" required>
+                    <i class="fas fa-envelope f-icon"></i>
+                    <span class="status-icon"></span>
+                </div>
+                <span class="field-msg" id="m-email"></span>
+            </div>
 
-        profilePicInput.addEventListener('change', function () {
-            const file = this.files[0];
-            if (!file) return;
-            if (!file.type.startsWith('image/')) {
-                showToast('يرجى اختيار ملف صورة صالح');
-                this.value = "";
-                return;
-            }
-            if (file.size > 2 * 1024 * 1024) {
-                showToast('حجم الصورة يجب أن يكون أقل من 2 ميجابايت');
-                this.value = "";
-                return;
-            }
-            const reader = new FileReader();
-            reader.onload = e => {
-                preview.style.backgroundImage = `url('${e.target.result}')`;
-                const img = new Image();
-                img.onload = () => {
-                    const canvas = document.createElement('canvas');
-                    const maxSize = 200;
-                    let w = img.width, h = img.height;
-                    if (w > h) { h = h * maxSize / w; w = maxSize; }
-                    else { w = w * maxSize / h; h = maxSize; }
-                    canvas.width = w;
-                    canvas.height = h;
-                    canvas.getContext('2d').drawImage(img, 0, 0, w, h);
-                    profilePicData = canvas.toDataURL('image/jpeg', 0.7);
-                };
-                img.src = e.target.result;
+            <div class="form-field" id="f-phone">
+                <label>رقم الهاتف <span style="color:var(--error)">*</span></label>
+                <div class="input-wrap">
+                    <input type="tel" id="phone" placeholder="05XXXXXXXX" autocomplete="tel" required>
+                    <i class="fas fa-phone f-icon"></i>
+                    <span class="status-icon"></span>
+                </div>
+                <span class="field-msg" id="m-phone"></span>
+            </div>
+        </div>
+
+        <!-- ===== الخطوة 3: كلمة السر ===== -->
+        <div class="form-step" data-step="3">
+            <div class="step-title">
+                <i class="fas fa-lock"></i>
+                إعداد كلمة السر
+            </div>
+
+            <div class="form-field" id="f-password">
+                <label>كلمة السر <span style="color:var(--error)">*</span></label>
+                <div class="input-wrap">
+                    <input type="password" id="password" placeholder="6 أحرف على الأقل" autocomplete="new-password" required>
+                    <i class="fas fa-lock f-icon"></i>
+                    <button type="button" class="toggle-pw" id="togPw"><i class="fas fa-eye"></i></button>
+                </div>
+                <div class="pw-strength" id="pwStrength">
+                    <div class="pw-bars">
+                        <div class="pw-bar" id="bar1"></div>
+                        <div class="pw-bar" id="bar2"></div>
+                        <div class="pw-bar" id="bar3"></div>
+                        <div class="pw-bar" id="bar4"></div>
+                        <div class="pw-bar" id="bar5"></div>
+                    </div>
+                    <span class="pw-label" id="pwLabel"></span>
+                </div>
+                <span class="field-msg" id="m-password"></span>
+            </div>
+
+            <div class="form-field" id="f-confirm">
+                <label>تأكيد كلمة السر <span style="color:var(--error)">*</span></label>
+                <div class="input-wrap">
+                    <input type="password" id="confirm" placeholder="أعد كتابة كلمة السر" autocomplete="new-password" required>
+                    <i class="fas fa-lock f-icon"></i>
+                    <button type="button" class="toggle-pw" id="togConfirm"><i class="fas fa-eye"></i></button>
+                </div>
+                <span class="field-msg" id="m-confirm"></span>
+            </div>
+
+            <div style="background:rgba(76,175,80,0.06);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px 16px;font-size:0.82rem;color:var(--text-muted);line-height:1.8;">
+                <i class="fas fa-shield-check" style="color:var(--green-400);margin-left:6px;"></i>
+                نصيحة: استخدم مزيجاً من الأحرف الكبيرة والصغيرة والأرقام والرموز لكلمة سر أقوى.
+            </div>
+        </div>
+
+        <!-- ===== الخطوة 4: مراكز اللعب ===== -->
+        <div class="form-step" data-step="4">
+            <div class="step-title">
+                <i class="fas fa-futbol"></i>
+                مراكز اللعب
+            </div>
+            <p style="font-size:0.83rem;color:var(--text-muted);margin-bottom:18px;line-height:1.7;">
+                حدد نسبة إتقانك لكل مركز. يمكنك تعطيل المراكز التي لا تلعبها.
+            </p>
+
+            <div class="positions-grid">
+                <!-- حارس -->
+                <div class="pos-card active" id="pc-gk">
+                    <div class="pos-header">
+                        <div class="pos-name">
+                            <span class="pos-emoji">🧤</span>
+                            حارس
+                        </div>
+                        <div style="display:flex;align-items:center;gap:8px;">
+                            <span class="pos-pct" id="pct-gk">0%</span>
+                            <label class="sw">
+                                <input type="checkbox" id="sw-gk" checked onchange="togglePos('gk')">
+                                <div class="sw-track"></div>
+                                <div class="sw-thumb"></div>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="pos-range">
+                        <input type="range" min="0" max="100" value="0" step="1" id="r-gk" style="--fill:0%;" oninput="updateRange('gk',this.value)">
+                    </div>
+                </div>
+
+                <!-- مدافع -->
+                <div class="pos-card active" id="pc-def">
+                    <div class="pos-header">
+                        <div class="pos-name">
+                            <span class="pos-emoji">🛡️</span>
+                            مدافع
+                        </div>
+                        <div style="display:flex;align-items:center;gap:8px;">
+                            <span class="pos-pct" id="pct-def">0%</span>
+                            <label class="sw">
+                                <input type="checkbox" id="sw-def" checked onchange="togglePos('def')">
+                                <div class="sw-track"></div>
+                                <div class="sw-thumb"></div>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="pos-range">
+                        <input type="range" min="0" max="100" value="0" step="1" id="r-def" style="--fill:0%;" oninput="updateRange('def',this.value)">
+                    </div>
+                </div>
+
+                <!-- وسط -->
+                <div class="pos-card active" id="pc-mid">
+                    <div class="pos-header">
+                        <div class="pos-name">
+                            <span class="pos-emoji">⚙️</span>
+                            وسط
+                        </div>
+                        <div style="display:flex;align-items:center;gap:8px;">
+                            <span class="pos-pct" id="pct-mid">0%</span>
+                            <label class="sw">
+                                <input type="checkbox" id="sw-mid" checked onchange="togglePos('mid')">
+                                <div class="sw-track"></div>
+                                <div class="sw-thumb"></div>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="pos-range">
+                        <input type="range" min="0" max="100" value="0" step="1" id="r-mid" style="--fill:0%;" oninput="updateRange('mid',this.value)">
+                    </div>
+                </div>
+
+                <!-- مهاجم -->
+                <div class="pos-card active" id="pc-fwd">
+                    <div class="pos-header">
+                        <div class="pos-name">
+                            <span class="pos-emoji">⚡</span>
+                            مهاجم
+                        </div>
+                        <div style="display:flex;align-items:center;gap:8px;">
+                            <span class="pos-pct" id="pct-fwd">0%</span>
+                            <label class="sw">
+                                <input type="checkbox" id="sw-fwd" checked onchange="togglePos('fwd')">
+                                <div class="sw-track"></div>
+                                <div class="sw-thumb"></div>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="pos-range">
+                        <input type="range" min="0" max="100" value="0" step="1" id="r-fwd" style="--fill:0%;" oninput="updateRange('fwd',this.value)">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== أزرار التنقل ===== -->
+        <div class="btn-row">
+            <button type="button" class="btn btn-secondary" id="btnBack" onclick="goBack()" style="display:none;">
+                <i class="fas fa-arrow-right"></i>
+                <span class="btn-label">السابق</span>
+            </button>
+            <button type="button" class="btn btn-primary" id="btnNext" onclick="goNext()">
+                <span class="btn-label">التالي <i class="fas fa-arrow-left"></i></span>
+                <div class="spin"></div>
+            </button>
+        </div>
+
+    </form>
+</div>
+
+<!-- Firebase -->
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getAuth, createUserWithEmailAndPassword, sendEmailVerification } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+    import { getFirestore, doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyDaSsBM2GuRlrewSmYRqwA60ZMcJMIIftQ",
+        authDomain: "kainmatch.firebaseapp.com",
+        projectId: "kainmatch",
+        storageBucket: "kainmatch.firebasestorage.app",
+        messagingSenderId: "31352105772",
+        appId: "1:31352105772:web:16f4043cd987a77ada9a89"
+    };
+
+    const app  = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db   = getFirestore(app);
+
+    window._submitRegistration = async function(data) {
+        const btn = document.getElementById('btnNext');
+        btn.classList.add('loading'); btn.disabled = true;
+        try {
+            const cred = await createUserWithEmailAndPassword(auth, data.email, data.password);
+            const user = cred.user;
+            await sendEmailVerification(user);
+            const userData = {
+                name: data.name, dob: data.dob,
+                team: data.team, location: data.location,
+                email: data.email, phone: data.phone,
+                hobbies: data.hobbies,
+                profilePic: data.profilePic || null,
+                positions: data.positions,
+                emailVerified: false,
+                createdAt: serverTimestamp()
             };
-            reader.readAsDataURL(file);
-        });
+            await setDoc(doc(db, "users", user.uid), userData);
+            localStorage.setItem('loggedIn', 'true');
+            localStorage.setItem('userId', user.uid);
 
-        // === التحقق الفوري من الحقول ===
-        function validateField(fieldId, validator) {
-            const field = document.getElementById(fieldId);
-            const input = field.querySelector('input');
-            if (!input) return true;
-            const value = input.value.trim();
-            if (!value) { field.classList.remove('success', 'error'); return false; }
-            const isValid = validator(value);
-            field.classList.toggle('error', !isValid);
-            field.classList.toggle('success', isValid);
-            return isValid;
+            Swal.fire({
+                icon: 'success',
+                title: '🎉 تم التسجيل بنجاح!',
+                html: 'تم إرسال رسالة تأكيد إلى<br><b>' + data.email + '</b><br>يرجى التحقق من بريدك.',
+                confirmButtonText: 'الذهاب لتسجيل الدخول',
+                confirmButtonColor: '#2e7d32',
+                background: '#0f2313',
+                color: '#e8f5e9'
+            }).then(() => { window.location.href = 'Login.html'; });
+
+        } catch (err) {
+            const msgs = {
+                'auth/email-already-in-use': 'هذا البريد مستخدم بالفعل، جرب تسجيل الدخول.',
+                'auth/weak-password': 'كلمة السر ضعيفة جداً.',
+                'auth/invalid-email': 'صيغة البريد غير صحيحة.',
+                'auth/network-request-failed': 'تحقق من اتصالك بالإنترنت.'
+            };
+            window._showToast(msgs[err.code] || 'حدث خطأ، حاول مجدداً.', 'error');
+        } finally {
+            btn.classList.remove('loading'); btn.disabled = false;
         }
+    };
+</script>
 
-        document.getElementById('name').addEventListener('input', function () {
-            validateField('nameField', v => v.length >= 3);
-        });
-
-        document.getElementById('dob').addEventListener('change', function () {
-            validateField('dobField', v => {
-                const age = (new Date() - new Date(v)) / (365.25 * 24 * 60 * 60 * 1000);
-                return age >= 5 && age <= 100;
+<script>
+    /* ===== جزيئات ===== */
+    (function(){
+        const c = document.getElementById('particles');
+        for(let i=0;i<22;i++){
+            const p=document.createElement('div'); p.className='particle';
+            const s=(2+Math.random()*4)+'px';
+            Object.assign(p.style,{
+                left:Math.random()*100+'%', width:s, height:s,
+                animationDuration:(9+Math.random()*14)+'s',
+                animationDelay:Math.random()*12+'s',
+                opacity:0.1+Math.random()*0.25
             });
-        });
-
-        document.getElementById('team').addEventListener('input', function () {
-            validateField('teamField', v => v.length >= 2);
-        });
-
-        document.getElementById('location').addEventListener('input', function () {
-            validateField('locationField', v => v.length >= 2);
-        });
-
-        document.getElementById('email').addEventListener('input', function () {
-            validateField('emailField', v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v));
-        });
-
-        document.getElementById('phone').addEventListener('input', function () {
-            this.value = this.value.replace(/[^0-9]/g, '');
-            validateField('phoneField', v => v.length >= 8 && v.length <= 15);
-        });
-
-        // === قوة كلمة السر ===
-        passwordInput.addEventListener('input', function () {
-            const val = this.value;
-            const strengthDiv = document.getElementById('passwordStrength');
-            const strengthBar = document.getElementById('passwordStrengthBar');
-            const strengthText = document.getElementById('strengthText');
-            if (!val) {
-                strengthDiv.classList.remove('visible');
-                strengthText.classList.remove('visible');
-                validateField('passwordField', () => false);
-                return;
-            }
-            strengthDiv.classList.add('visible');
-            strengthText.classList.add('visible');
-            let score = 0;
-            if (val.length >= 6) score++;
-            if (val.length >= 10) score++;
-            if (/[A-Z]/.test(val)) score++;
-            if (/[0-9]/.test(val)) score++;
-            if (/[^A-Za-z0-9]/.test(val)) score++;
-            const levels = [
-                { width: '20%', color: '#ef5350', text: 'ضعيفة جداً' },
-                { width: '40%', color: '#ff9800', text: 'ضعيفة' },
-                { width: '60%', color: '#fdd835', text: 'متوسطة' },
-                { width: '80%', color: '#66bb6a', text: 'جيدة' },
-                { width: '100%', color: '#43a047', text: 'قوية' }
-            ];
-            const level = levels[Math.min(score, levels.length) - 1] || levels[0];
-            strengthBar.style.width = level.width;
-            strengthBar.style.background = level.color;
-            strengthText.textContent = level.text;
-            strengthText.style.color = level.color;
-            validateField('passwordField', v => v.length >= 6);
-            if (confirmPasswordInput.value) {
-                validateField('confirmPasswordField', v => v === passwordInput.value);
-            }
-        });
-
-        confirmPasswordInput.addEventListener('input', function () {
-            if (this.value) {
-                validateField('confirmPasswordField', v => v === passwordInput.value);
-            } else {
-                document.getElementById('confirmPasswordField').classList.remove('success', 'error');
-            }
-        });
-
-        // === إظهار/إخفاء كلمة السر ===
-        function setupPasswordToggle(btnId, inputEl) {
-            document.getElementById(btnId).addEventListener('click', function () {
-                const icon = this.querySelector('i');
-                if (inputEl.type === 'password') {
-                    inputEl.type = 'text';
-                    icon.classList.replace('fa-eye', 'fa-eye-slash');
-                } else {
-                    inputEl.type = 'password';
-                    icon.classList.replace('fa-eye-slash', 'fa-eye');
-                }
-            });
+            c.appendChild(p);
         }
-        setupPasswordToggle('togglePassword', passwordInput);
-        setupPasswordToggle('toggleConfirmPassword', confirmPasswordInput);
+    })();
 
-        // === مراكز اللعب: الوضع العادي والمطلم ===
-        const positions = [
-            { id: 'goalkeeper', fieldId: 'goalkeeperField', toggleId: 'goalkeeperToggle', valueId: 'goalkeeperValue', glowId: 'goalkeeperGlow', labelId: 'goalkeeperModeLabel' },
-            { id: 'defender', fieldId: 'defenderField', toggleId: 'defenderToggle', valueId: 'defenderValue', glowId: 'defenderGlow', labelId: 'defenderModeLabel' },
-            { id: 'midfielder', fieldId: 'midfielderField', toggleId: 'midfielderToggle', valueId: 'midfielderValue', glowId: 'midfielderGlow', labelId: 'midfielderModeLabel' },
-            { id: 'forward', fieldId: 'forwardField', toggleId: 'forwardToggle', valueId: 'forwardValue', glowId: 'forwardGlow', labelId: 'forwardModeLabel' }
+    /* ===== Toast ===== */
+    window._showToast = function(msg, type='error', icon=''){
+        const t=document.getElementById('toast');
+        t.innerHTML = (icon?`<i class="${icon}"></i> `:'') + msg;
+        t.className='toast '+type+' show';
+        clearTimeout(t._tid);
+        t._tid=setTimeout(()=>t.classList.remove('show'),3600);
+    };
+
+    /* ===== الصورة الشخصية ===== */
+    let profilePicData = null;
+    document.getElementById('profilePic').addEventListener('change', function(){
+        const file=this.files[0];
+        if(!file) return;
+        if(!file.type.startsWith('image/')){ _showToast('اختر ملف صورة صالح'); this.value=''; return; }
+        if(file.size>3*1024*1024){ _showToast('حجم الصورة يجب أن يكون أقل من 3 ميجابايت'); this.value=''; return; }
+        const reader=new FileReader();
+        reader.onload=e=>{
+            const prev=document.getElementById('profilePreview');
+            prev.style.backgroundImage=`url('${e.target.result}')`;
+            prev.style.backgroundSize='cover';
+            prev.querySelector('.cam-icon').style.opacity='0';
+            const img=new Image();
+            img.onload=()=>{
+                const canvas=document.createElement('canvas');
+                const mx=220; let w=img.width,h=img.height;
+                if(w>h){h=h*mx/w;w=mx;}else{w=w*mx/h;h=mx;}
+                canvas.width=w; canvas.height=h;
+                canvas.getContext('2d').drawImage(img,0,0,w,h);
+                profilePicData=canvas.toDataURL('image/jpeg',0.75);
+            };
+            img.src=e.target.result;
+        };
+        reader.readAsDataURL(file);
+    });
+
+    /* ===== متابعة الاسم ===== */
+    document.getElementById('name').addEventListener('input',function(){
+        const v=this.value.trim();
+        document.getElementById('namePreview').textContent = v || '—';
+    });
+
+    /* ===== شريط التقدم وخطوات التسجيل ===== */
+    let currentStep = 1;
+    const TOTAL = 4;
+
+    function updateProgress(){
+        const pct = ((currentStep-1)/(TOTAL-1))*100;
+        document.getElementById('progressFill').style.width = pct+'%';
+        document.querySelectorAll('.step-item').forEach(el=>{
+            const s=+el.dataset.step;
+            el.classList.remove('active','done');
+            if(s===currentStep) el.classList.add('active');
+            else if(s<currentStep) el.classList.add('done');
+        });
+        const btnBack=document.getElementById('btnBack');
+        const btnNext=document.getElementById('btnNext');
+        btnBack.style.display = currentStep>1 ? 'flex' : 'none';
+        const isLast = currentStep===TOTAL;
+        btnNext.querySelector('.btn-label').innerHTML = isLast
+            ? '<i class="fas fa-check"></i> إنشاء الحساب'
+            : 'التالي <i class="fas fa-arrow-left"></i>';
+    }
+
+    function showStep(n){
+        document.querySelectorAll('.form-step').forEach(s=>{
+            s.classList.remove('active');
+            if(+s.dataset.step===n) s.classList.add('active');
+        });
+        currentStep=n;
+        updateProgress();
+        window.scrollTo({top:0,behavior:'smooth'});
+    }
+
+    /* ===== التحقق من الحقول ===== */
+    function setField(id, state, msg=''){
+        const el=document.getElementById('f-'+id);
+        if(!el) return;
+        el.classList.remove('valid','invalid');
+        const msgEl=document.getElementById('m-'+id);
+        if(msgEl){ msgEl.textContent=msg; msgEl.className='field-msg'+(state==='error'?' error':state==='hint'?' hint':''); }
+        if(state==='ok') el.classList.add('valid');
+        if(state==='error') el.classList.add('invalid');
+    }
+
+    function validateStep(step){
+        let ok=true;
+        if(step===1){
+            const name=document.getElementById('name').value.trim();
+            if(name.length<3){ setField('name','error','الاسم يجب أن يكون 3 أحرف على الأقل'); ok=false; }
+            else setField('name','ok');
+
+            const dob=document.getElementById('dob').value;
+            if(!dob){ setField('dob','error','يرجى اختيار تاريخ الميلاد'); ok=false; }
+            else{
+                const age=(Date.now()-new Date(dob))/(365.25*864e5);
+                if(age<5||age>100){ setField('dob','error','العمر يجب أن يكون بين 5 و 100 سنة'); ok=false; }
+                else setField('dob','ok');
+            }
+
+            const loc=document.getElementById('location').value.trim();
+            if(loc.length<2){ setField('location','error','يرجى إدخال المنطقة'); ok=false; }
+            else setField('location','ok');
+        }
+        if(step===2){
+            const email=document.getElementById('email').value.trim();
+            if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){ setField('email','error','أدخل بريد إلكتروني صحيح'); ok=false; }
+            else setField('email','ok');
+
+            const phone=document.getElementById('phone').value.replace(/\D/g,'');
+            if(phone.length<8||phone.length>15){ setField('phone','error','رقم الهاتف يجب أن يكون 8-15 رقم'); ok=false; }
+            else setField('phone','ok');
+        }
+        if(step===3){
+            const pw=document.getElementById('password').value;
+            if(pw.length<6){ setField('password','error','كلمة السر يجب أن تكون 6 أحرف على الأقل'); ok=false; }
+            else setField('password','ok');
+
+            const conf=document.getElementById('confirm').value;
+            if(conf!==pw){ setField('confirm','error','كلمتا السر غير متطابقتين'); ok=false; }
+            else if(conf) setField('confirm','ok');
+        }
+        return ok;
+    }
+
+    window.goNext = function(){
+        if(!validateStep(currentStep)){
+            _showToast('يرجى تصحيح الحقول المطلوبة','error','fas fa-exclamation-circle');
+            return;
+        }
+        if(currentStep<TOTAL){ showStep(currentStep+1); }
+        else { submitForm(); }
+    };
+
+    window.goBack = function(){
+        if(currentStep>1) showStep(currentStep-1);
+    };
+
+    /* ===== قوة كلمة السر ===== */
+    document.getElementById('password').addEventListener('input', function(){
+        const v=this.value;
+        const str=document.getElementById('pwStrength');
+        const lbl=document.getElementById('pwLabel');
+        if(!v){ str.classList.remove('show'); return; }
+        str.classList.add('show');
+        let score=0;
+        if(v.length>=6) score++;
+        if(v.length>=10) score++;
+        if(/[A-Z]/.test(v)) score++;
+        if(/[0-9]/.test(v)) score++;
+        if(/[^A-Za-z0-9]/.test(v)) score++;
+        const levels=[
+            {color:'#ef5350',label:'ضعيفة جداً'},
+            {color:'#ff9800',label:'ضعيفة'},
+            {color:'#fdd835',label:'متوسطة'},
+            {color:'#66bb6a',label:'جيدة'},
+            {color:'#43a047',label:'قوية جداً'}
         ];
+        const lv=levels[Math.min(score,5)-1]||levels[0];
+        for(let i=1;i<=5;i++){
+            const b=document.getElementById('bar'+i);
+            b.style.background = i<=score ? lv.color : 'rgba(76,175,80,0.1)';
+        }
+        lbl.textContent=lv.label; lbl.style.color=lv.color;
 
-        // حالة كل مركز: true = عادي، false = مطلم
-        const positionModes = {};
+        if(document.getElementById('confirm').value)
+            validateStep(3);
+    });
 
-        positions.forEach(pos => {
-            positionModes[pos.id] = true;
-            const range = document.getElementById(pos.id);
-            const toggle = document.getElementById(pos.toggleId);
-            const field = document.getElementById(pos.fieldId);
-            const valueEl = document.getElementById(pos.valueId);
-            const glowEl = document.getElementById(pos.glowId);
-            const labelEl = document.getElementById(pos.labelId);
+    document.getElementById('confirm').addEventListener('input',function(){
+        if(this.value){
+            const pw=document.getElementById('password').value;
+            if(this.value===pw) setField('confirm','ok');
+            else setField('confirm','error','كلمتا السر غير متطابقتين');
+        } else { setField('confirm',''); }
+    });
 
-            // تحديث المظهر حسب الوضع
-            function updateVisuals() {
-                const val = range.value;
-                const percent = val + '%';
-                valueEl.textContent = percent;
+    /* ===== إظهار/إخفاء كلمة السر ===== */
+    function setupToggle(btnId, inputId){
+        document.getElementById(btnId).addEventListener('click',function(){
+            const inp=document.getElementById(inputId);
+            const ic=this.querySelector('i');
+            const hidden=inp.type==='password';
+            inp.type=hidden?'text':'password';
+            ic.className=hidden?'fas fa-eye-slash':'fas fa-eye';
+        });
+    }
+    setupToggle('togPw','password');
+    setupToggle('togConfirm','confirm');
 
-                if (positionModes[pos.id]) {
-                    range.style.setProperty('--fill', percent);
-                    range.classList.add('normal-mode');
-                    range.classList.remove('dimmed-mode');
-                    range.disabled = false;
-                    field.classList.add('active');
-                    field.classList.remove('dimmed');
-                    toggle.classList.add('normal');
-                    toggle.classList.remove('dimmed');
-                    labelEl.innerHTML = '<i class="fas fa-check-circle"></i> وضع عادي';
-                    glowEl.style.left = percent;
-                    glowEl.style.opacity = '1';
-                } else {
-                    range.classList.remove('normal-mode');
-                    range.classList.add('dimmed-mode');
-                    range.disabled = true;
-                    field.classList.remove('active');
-                    field.classList.add('dimmed');
-                    toggle.classList.remove('normal');
-                    toggle.classList.add('dimmed');
-                    labelEl.innerHTML = '<i class="fas fa-moon"></i> وضع مطلم';
-                    glowEl.style.opacity = '0';
-                }
-            }
+    /* ===== رقم الهاتف: أرقام فقط ===== */
+    document.getElementById('phone').addEventListener('input',function(){
+        this.value=this.value.replace(/[^0-9+\-\s]/g,'');
+    });
 
-            // زر التبديل بين الوضعين
-            toggle.addEventListener('click', function () {
-                positionModes[pos.id] = !positionModes[pos.id];
-                if (!positionModes[pos.id]) {
-                    // الانتقال للمطلم: نحفظ القيمة الحالية ونصفر بصرياً
-                    range.dataset.savedValue = range.value;
-                    range.value = 0;
-                } else {
-                    // الانتقال للعادي: نسترجع القيمة المحفوظة
-                    if (range.dataset.savedValue !== undefined) {
-                        range.value = range.dataset.savedValue;
-                    }
-                }
-                updateVisuals();
-            });
+    /* ===== مراكز اللعب ===== */
+    const posIds=['gk','def','mid','fwd'];
 
-            // تحديث أثناء التحريك
-            range.addEventListener('input', function () {
-                const percent = this.value + '%';
-                valueEl.textContent = percent;
-                this.style.setProperty('--fill', percent);
-                glowEl.style.left = percent;
-            });
+    window.updateRange = function(id, val){
+        document.getElementById('pct-'+id).textContent = val+'%';
+        document.getElementById('r-'+id).style.setProperty('--fill', val+'%');
+    };
 
-            // تأثير التوهج عند السحب
-            range.addEventListener('mousedown', () => glowEl.style.opacity = '0.6');
-            range.addEventListener('mouseup', () => glowEl.style.opacity = '1');
-            range.addEventListener('touchstart', () => glowEl.style.opacity = '0.6');
-            range.addEventListener('touchend', () => glowEl.style.opacity = '1');
+    window.togglePos = function(id){
+        const on=document.getElementById('sw-'+id).checked;
+        const card=document.getElementById('pc-'+id);
+        const range=document.getElementById('r-'+id);
+        card.classList.toggle('active', on);
+        card.classList.toggle('off', !on);
+        range.disabled = !on;
+        if(!on){ range.dataset.saved=range.value; range.value=0; updateRange(id,0); }
+        else { range.value=range.dataset.saved||0; updateRange(id,range.value); }
+    };
 
-            updateVisuals();
+    /* ===== إرسال النموذج ===== */
+    function submitForm(){
+        const positions={};
+        posIds.forEach(id=>{
+            const on=document.getElementById('sw-'+id).checked;
+            positions[id] = on ? parseInt(document.getElementById('r-'+id).value) : 0;
         });
 
-        // === إرسال النموذج ===
-        form.addEventListener('submit', async function (e) {
-            e.preventDefault();
+        const data = {
+            name:     document.getElementById('name').value.trim(),
+            dob:      document.getElementById('dob').value,
+            team:     document.getElementById('team').value.trim(),
+            location: document.getElementById('location').value.trim(),
+            email:    document.getElementById('email').value.trim(),
+            phone:    document.getElementById('phone').value.trim(),
+            hobbies:  document.getElementById('hobbies').value.trim(),
+            password: document.getElementById('password').value,
+            profilePic: profilePicData,
+            positions
+        };
+        window._submitRegistration(data);
+    }
 
-            // التحقق من جميع الحقول المطلوبة
-            const nameOk = validateField('nameField', v => v.length >= 3);
-            const dobOk = validateField('dobField', v => {
-                const age = (new Date() - new Date(v)) / (365.25 * 24 * 60 * 60 * 1000);
-                return age >= 5 && age <= 100;
-            });
-            const teamOk = validateField('teamField', v => v.length >= 2);
-            const locationOk = validateField('locationField', v => v.length >= 2);
-            const emailOk = validateField('emailField', v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v));
-            const phoneOk = validateField('phoneField', v => v.length >= 8 && v.length <= 15);
-            const passwordOk = validateField('passwordField', v => v.length >= 6);
-            const confirmOk = validateField('confirmPasswordField', v => v === passwordInput.value);
-
-            if (!nameOk || !dobOk || !teamOk || !locationOk || !emailOk || !phoneOk || !passwordOk || !confirmOk) {
-                showToast('يرجى تصحيح الحقول المطلوبة');
-                const firstError = form.querySelector('.form-field.error');
-                if (firstError) firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                return;
-            }
-
-            const name = document.getElementById('name').value.trim();
-            const email = document.getElementById('email').value.trim();
-            const password = passwordInput.value;
-
-            // حالة التحميل
-            submitBtn.classList.add('loading');
-            submitBtn.disabled = true;
-
-            try {
-                // إنشاء الحساب
-                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-                const user = userCredential.user;
-
-                // إرسال بريد التأكيد
-                await sendEmailVerification(user);
-
-                // جمع قيم المراكز (المطلم = 0)
-                const positionsData = {};
-                const modesData = {};
-                positions.forEach(pos => {
-                    const range = document.getElementById(pos.id);
-                    positionsData[pos.id] = positionModes[pos.id] ? parseInt(range.value) : 0;
-                    modesData[pos.id] = positionModes[pos.id];
-                });
-
-                // حفظ البيانات في Firestore (بدون كلمة السر)
-                const userData = {
-                    name: name,
-                    dob: document.getElementById('dob').value,
-                    team: document.getElementById('team').value.trim(),
-                    location: document.getElementById('location').value.trim(),
-                    email: email,
-                    phone: document.getElementById('phone').value.trim(),
-                    hobbies: document.getElementById('hobbies').value.trim(),
-                    profilePic: profilePicData || null,
-                    positions: positionsData,
-                    positionModes: modesData,
-                    emailVerified: false,
-                    createdAt: serverTimestamp()
-                };
-
-                await setDoc(doc(db, "users", user.uid), userData);
-
-                // حفظ حالة الدخول محلياً
-                localStorage.setItem('loggedIn', 'true');
-                localStorage.setItem('userId', user.uid);
-
-                // إعادة تعيين النموذج
-                form.reset();
-                preview.style.backgroundImage = '';
-                profilePicData = null;
-                document.getElementById('passwordStrength').classList.remove('visible');
-                document.getElementById('strengthText').classList.remove('visible');
-
-                // إعادة مراكز اللعب للوضع الابتدائي
-                positions.forEach(pos => {
-                    const range = document.getElementById(pos.id);
-                    range.value = 0;
-                    range.dataset.savedValue = '0';
-                    positionModes[pos.id] = true;
-                    document.getElementById(pos.fieldId).classList.add('active');
-                    document.getElementById(pos.fieldId).classList.remove('dimmed');
-                    document.getElementById(pos.toggleId).classList.add('normal');
-                    document.getElementById(pos.toggleId).classList.remove('dimmed');
-                    document.getElementById(pos.valueId).textContent = '0%';
-                    document.getElementById(pos.labelId).innerHTML = '<i class="fas fa-check-circle"></i> وضع عادي';
-                    range.style.setProperty('--fill', '0%');
-                    range.classList.add('normal-mode');
-                    range.classList.remove('dimmed-mode');
-                    range.disabled = false;
-                    document.getElementById(pos.glowId).style.left = '0%';
-                    document.getElementById(pos.glowId).style.opacity = '1';
-                });
-
-                // إزالة حالات التحقق
-                form.querySelectorAll('.form-field').forEach(f => f.classList.remove('success', 'error'));
-
-                // رسالة النجاح
-                Swal.fire({
-                    icon: 'success',
-                    title: 'تم التسجيل بنجاح',
-                    text: 'تم إرسال بريد التأكيد إلى بريدك الإلكتروني. يرجى التحقق منه قبل تسجيل الدخول.',
-                    confirmButtonText: 'حسناً',
-                    confirmButtonColor: '#2e7d32',
-                    background: '#1a2e1f',
-                    color: '#e8f5e9'
-                }).then(() => {
-                    window.location.href = 'Login.html';
-                });
-
-            } catch (error) {
-                let message = 'حدث خطأ غير متوقع';
-                const errorMap = {
-                    'auth/email-already-in-use': 'هذا البريد الإلكتروني مستخدم بالفعل',
-                    'auth/weak-password': 'كلمة السر ضعيفة، يرجى اختيار كلمة سر أقوى',
-                    'auth/invalid-email': 'صيغة البريد الإلكتروني غير صحيحة',
-                    'auth/network-request-failed': 'مشكلة في الاتصال بالإنترنت، يرجى المحاولة لاحقاً'
-                };
-                if (errorMap[error.code]) {
-                    message = errorMap[error.code];
-                } else if (error.message) {
-                    message = error.message;
-                }
-                showToast(message);
-            } finally {
-                submitBtn.classList.remove('loading');
-                submitBtn.disabled = false;
-            }
-        });
-    </script>
+    /* init */
+    updateProgress();
+</script>
 </body>
 </html>
