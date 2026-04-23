@@ -1,193 +1,138 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="google-site-verification" content="google8698ec0481bef4a2">
-  <title>تطبيق حجز ملعب</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-  <style>
-    /* الحماية: إخفاء المحتوى حتى يتم التحقق من الدخول */
-    #main-wrapper { display: none; }
+<meta charset="UTF-8">
+<title>الرئيسية</title>
 
-    /* Reset & General Styles */
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+<style>
+body{
+  font-family: Arial;
+  margin:0;
+}
 
-    body {
-      font-family: 'Cairo', sans-serif, "Segoe UI Emoji", "Apple Color Emoji", "Noto Color Emoji";
-      background: linear-gradient(to bottom, #4CAF50, #f0f0f5);
-      color: #333;
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-      transition: background 0.5s ease, color 0.5s ease;
-    }
+/* القائمة */
+.menu{
+  position:fixed;
+  top:0;
+  left:0;
+  width:260px;
+  height:100%;
+  background:#4CAF50;
+  color:white;
+  transform:translateX(-100%);
+  transition:0.4s;
+  padding:15px;
+}
 
-    /* الوضع الليلي */
-    body.dark-mode { background: linear-gradient(to bottom, #1e1e1e, #121212); color: #ffffff; }
-    body.dark-mode header { background-color: #2c2c2c; }
-    body.dark-mode .card { background-color: #2c2c2c; color: #ffffff; box-shadow: 0px 4px 10px rgba(255, 255, 255, 0.1); }
-    body.dark-mode .menu { background-color: #2c2c2c; }
+/* زر القائمة */
+.menu-btn{
+  position:fixed;
+  top:15px;
+  left:15px;
+  font-size:25px;
+  background:#4CAF50;
+  color:white;
+  border:none;
+  padding:10px;
+  border-radius:50%;
+}
 
-    header { background-color: #4CAF50; color: white; padding: 15px; text-align: center; font-size: 24px; font-weight: bold; }
-    
-    /* استايل الملف الشخصي الجديد داخل المنيو */
-    .profile-sidebar-info {
-      padding: 20px;
-      text-align: center;
-      border-bottom: 1px solid rgba(255,255,255,0.1);
-      margin-bottom: 15px;
-    }
-    .profile-sidebar-info img {
-      width: 70px; height: 70px; border-radius: 50%; border: 2px solid #fff; object-fit: cover;
-    }
-    .profile-sidebar-info h3 { font-size: 16px; margin-top: 10px; color: #fff; }
-    .profile-sidebar-info p { font-size: 12px; color: #eee; opacity: 0.8; }
+/* البروفايل */
+.profile-sidebar-info{
+  text-align:center;
+  margin-bottom:20px;
+}
 
-    .logo { width: 100px; height: 100px; margin: 0 auto; display: block; }
-    body.dark-mode .logo { content: url('/1000069661.png'); }
-    body:not(.dark-mode) .logo { content: url('/1000067588.png'); }
+.profile-sidebar-info img{
+  width:80px;
+  height:80px;
+  border-radius:50%;
+  border:3px solid white;
+}
 
-    .section { padding: 20px; text-align: center; flex: 1; }
-    .card { background-color: #fff; margin: 15px auto; padding: 20px; width: 90%; max-width: 450px; border-radius: 10px; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); transition: 0.3s; cursor: pointer; }
-    .card:hover { transform: translateY(-5px); }
+.profile-sidebar-info h3{
+  margin:10px 0 5px;
+}
 
-    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-    th, td { padding: 10px; border: 1px solid #ddd; text-align: right; }
-    th { background-color: #4CAF50; color: white; }
+.profile-sidebar-info p{
+  font-size:14px;
+}
 
-    .floating-button { position: fixed; bottom: 30px; right: 30px; background-color: #4CAF50; color: white; border: none; border-radius: 30px; font-size: 18px; font-weight: bold; padding: 0 25px; height: 60px; box-shadow: 0px 4px 15px rgba(0,0,0,0.2); cursor: pointer; animation: jump 2s infinite; display: flex; align-items: center; gap: 10px; }
-    @keyframes jump { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+/* الروابط */
+.menu a{
+  display:block;
+  margin:10px 0;
+  padding:10px;
+  background:rgba(255,255,255,0.2);
+  border-radius:8px;
+  text-decoration:none;
+  color:white;
+}
 
-    /* القائمة الجانبية المحدثة */
-    .menu { position: fixed; top: 0; left: 0; width: 260px; height: 100%; background-color: #4CAF50; color: white; transform: translateX(-100%); transition: 0.3s ease; z-index: 1000; overflow-y: auto; }
-    .menu a { display: block; color: white; text-decoration: none; margin: 5px 10px; padding: 12px; background-color: rgba(255, 255, 255, 0.1); border-radius: 8px; text-align: right; font-size: 16px; }
-    .menu a i { margin-left: 10px; }
-    .logout-link { background-color: rgba(255, 0, 0, 0.2) !important; color: #ffcccc !important; margin-top: 20px !important; }
-
-    .menu-btn { position: fixed; top: 20px; left: 20px; background-color: #4CAF50; color: white; border: none; border-radius: 50%; width: 50px; height: 50px; font-size: 24px; cursor: pointer; z-index: 1001; }
-    .theme-toggle { position: fixed; top: 20px; right: 20px; background: transparent; border: none; cursor: pointer; font-size: 24px; color: #FFD700; }
-    .language-toggle { position: fixed; top: 20px; right: 80px; background: #4CAF50; color: white; border: none; border-radius: 20px; padding: 10px 20px; cursor: pointer; }
-
-    #toast { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #4CAF50; color: white; padding: 20px; border-radius: 10px; visibility: hidden; opacity: 0; transition: 0.5s; z-index: 2000; }
-    #toast.show { visibility: visible; opacity: 1; }
-  </style>
+/* تسجيل الخروج */
+.logout{
+  position:absolute;
+  bottom:20px;
+  width:90%;
+  background:red;
+  text-align:center;
+}
+</style>
 </head>
+
 <body>
 
+<!-- 🔐 حماية الصفحة -->
 <script>
-  // التحقق من تسجيل الدخول قبل تحميل أي كود آخر
-  (function() {
-    const loggedIn = localStorage.getItem('loggedIn');
-    if (loggedIn !== 'true') {
-      window.location.href = 'Login.html';
-    }
-  })();
+if(!localStorage.getItem("isLoggedIn")){
+  window.location.href = "Login.html";
+}
 </script>
 
-<div id="main-wrapper">
-  <button class="theme-toggle" id="themeToggle"><i class="fas fa-sun"></i></button>
-  <button class="language-toggle" id="languageToggle"><span id="languageText">English</span></button>
+<button class="menu-btn" onclick="toggleMenu()">☰</button>
 
-  <header id="headerText">تطبيق كين ماتش</header>
-  <div class="logo"></div>
+<div class="menu" id="menu">
 
-  <div class="section">
-    <h1 id="welcomeText">مرحبًا بك في تطبيق حجز الملاعب! ⚽</h1>
-    <p id="descriptionText">نحن هنا لتوفير أفضل تجربة لك في حجز الملاعب الرياضية.</p>
-
-    <div class="card" onclick="toggleBookingInfo()">
-      <h2 id="myBookingsText">حجوزاتي 📅</h2>
-      <div id="bookingInfo" style="display: none;"></div>
-    </div>
-    
-    <div class="card" onclick="redirectToSportsBooking()">
-      <h2 id="sportsGearText">شراء الملابس الرياضية 👕</h2>
-      <p>اضغط هنا للتسوق. 🛒</p>
-    </div>
+  <!-- 👤 البروفايل -->
+  <div class="profile-sidebar-info">
+    <img src="https://i.imgur.com/6VBx3io.png">
+    <h3 id="username"></h3>
+    <p id="email"></p>
   </div>
 
-  <button class="floating-button" onclick="redirectToBooking()" id="bookNowButton">
-    <span>⚽</span> <span id="bookNowText">احجز ملعبك الآن</span>
-  </button>
+  <a href="#">الرئيسية</a>
+  <a href="#">حجوزاتي</a>
 
-  <button class="menu-btn" onclick="toggleMenu()">☰</button>
+  <!-- 🚪 تسجيل الخروج -->
+  <a href="#" class="logout" onclick="logout()">تسجيل الخروج</a>
 
-  <div class="menu" id="menu">
-    <div class="profile-sidebar-info">
-      <img id="userImg" src="https://via.placeholder.com/70" alt="Profile">
-      <h3 id="userName">المستخدم</h3>
-      <p id="userEmail">example@mail.com</p>
-    </div>
-
-    <a href="index.html"><i class="fas fa-home"></i> الرئيسية</a>
-    <a href="profile.html"><i class="fas fa-user-edit"></i> تعديل البروفايل</a>
-    <a href="#" onclick="showInfo(); closeMenu()"><i class="fas fa-info-circle"></i> معلومات التطبيق</a>
-    
-    <a href="#" class="logout-link" onclick="logout()"><i class="fas fa-sign-out-alt"></i> تسجيل الخروج</a>
-  </div>
-
-  <div id="toast">تطبيق حجز الملاعب - الإصدار 1.0</div>
 </div>
 
+<h1 style="text-align:center;margin-top:100px;">مرحبا بك 👋</h1>
+
 <script>
-  // إظهار المحتوى بعد التحقق
-  document.getElementById('main-wrapper').style.display = 'block';
+/* فتح واغلاق القائمة */
+function toggleMenu(){
+  let menu = document.getElementById("menu");
+  menu.style.transform =
+    menu.style.transform === "translateX(0px)"
+    ? "translateX(-100%)"
+    : "translateX(0)";
+}
 
-  // تحميل بيانات المستخدم في المنيو
-  function loadUserData() {
-    const userData = JSON.parse(localStorage.getItem('userData'));
-    if (userData) {
-      document.getElementById('userName').innerText = userData.name || 'مستخدم كين ماتش';
-      document.getElementById('userEmail').innerText = userData.email || '';
-      if (userData.picture) document.getElementById('userImg').src = userData.picture;
-    }
-  }
+/* تحميل بيانات المستخدم */
+document.getElementById("username").innerText =
+  localStorage.getItem("username") || "User";
 
-  function toggleMenu() {
-    const menu = document.getElementById('menu');
-    menu.style.transform = menu.style.transform === 'translateX(0px)' ? 'translateX(-100%)' : 'translateX(0px)';
-  }
+document.getElementById("email").innerText =
+  localStorage.getItem("email") || "email@example.com";
 
-  function logout() {
-    if(confirm("هل أنت متأكد من تسجيل الخروج؟")) {
-      localStorage.removeItem('loggedIn');
-      window.location.href = 'Login.html';
-    }
-  }
-
-  function toggleTheme() {
-    document.body.classList.toggle('dark-mode');
-    localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
-  }
-
-  document.getElementById('themeToggle').addEventListener('click', toggleTheme);
-
-  function redirectToBooking() { window.location.href = "KainMatch now.html"; }
-  function redirectToSportsBooking() { window.location.href = "réservation.html"; }
-
-  function showInfo() {
-    const t = document.getElementById('toast');
-    t.classList.add('show');
-    setTimeout(() => t.classList.remove('show'), 2000);
-  }
-
-  function toggleBookingInfo() {
-    const info = document.getElementById("bookingInfo");
-    info.style.display = info.style.display === "none" ? "block" : "none";
-  }
-
-  // إغلاق المنيو عند الضغط خارجه
-  document.addEventListener('click', (e) => {
-    const menu = document.getElementById('menu');
-    const btn = document.querySelector('.menu-btn');
-    if (!menu.contains(e.target) && e.target !== btn) {
-      menu.style.transform = 'translateX(-100%)';
-    }
-  });
-
-  window.onload = loadUserData;
+/* تسجيل الخروج */
+function logout(){
+  localStorage.removeItem("isLoggedIn");
+  window.location.href = "Login.html";
+}
 </script>
+
 </body>
 </html>
