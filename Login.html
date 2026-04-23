@@ -5,14 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>تسجيل الدخول - تطبيق حجز الملاعب</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <!-- إضافة Font Awesome للأيقونات -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
+        /* تهيئة وتنسيقات عامة */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-
         body {
             font-family: 'Cairo', sans-serif;
             background: linear-gradient(to bottom, #4CAF50, #f0f0f5);
@@ -22,16 +23,17 @@
             align-items: center;
             min-height: 100vh;
             text-align: center;
-            overflow-x: hidden;
+            overflow: hidden;
             transition: background 0.5s ease, color 0.5s ease;
         }
 
+        /* الوضع الليلي */
         body.dark-mode {
             background: linear-gradient(to bottom, #1e1e1e, #121212);
             color: #ffffff;
         }
 
-        /* الشعار */
+        /* تنسيقات الشعار */
         .logo {
             margin-top: 20px;
             width: 150px;
@@ -45,7 +47,6 @@
             opacity: 0;
             animation: fadeIn 2s ease-in-out forwards, moveUp 2s ease-in-out 2s forwards;
             transition: opacity 0.5s ease;
-            z-index: 2;
         }
 
         .logo img {
@@ -55,7 +56,7 @@
             transition: opacity 0.5s ease;
         }
 
-        /* حاوية تسجيل الدخول */
+        /* تنسيقات حاوية تسجيل الدخول */
         .login-container {
             background-color: #fff;
             padding: 40px;
@@ -87,7 +88,7 @@
             color: #6fbf73;
         }
 
-        /* النموذج */
+        /* تنسيقات النموذج */
         .login-form {
             display: flex;
             flex-direction: column;
@@ -118,7 +119,6 @@
             direction: rtl;
             background-color: #f9f9f9;
             transition: border-color 0.5s ease, background-color 0.5s ease;
-            font-family: 'Cairo', sans-serif;
         }
 
         body.dark-mode .form-group input {
@@ -133,33 +133,6 @@
             box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
         }
 
-        .password-wrapper {
-            position: relative;
-            width: 100%;
-        }
-
-        .password-wrapper input {
-            padding-left: 45px;
-        }
-
-        #togglePassword {
-            position: absolute;
-            left: 12px;
-            top: 50%;
-            transform: translateY(-50%);
-            cursor: pointer;
-            font-size: 18px;
-            background: none;
-            border: none;
-            color: #888;
-            transition: color 0.3s;
-            padding: 4px;
-        }
-
-        #togglePassword:hover {
-            color: #4CAF50;
-        }
-
         .login-button {
             background-color: #4CAF50;
             color: white;
@@ -168,8 +141,7 @@
             border-radius: 10px;
             cursor: pointer;
             font-size: 18px;
-            font-family: 'Cairo', sans-serif;
-            transition: background-color 0.5s ease, transform 0.2s ease, opacity 0.3s;
+            transition: background-color 0.5s ease, transform 0.2s ease;
             width: 100%;
             margin-top: 20px;
         }
@@ -177,30 +149,6 @@
         .login-button:hover {
             background-color: #45a049;
             transform: scale(1.05);
-        }
-
-        .login-button:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        .login-button .spinner {
-            display: none;
-            width: 22px;
-            height: 22px;
-            border: 3px solid rgba(255, 255, 255, 0.3);
-            border-top-color: white;
-            border-radius: 50%;
-            animation: spin 0.7s linear infinite;
-            margin: 0 auto;
-        }
-
-        .login-button.loading .btn-text { display: none; }
-        .login-button.loading .spinner { display: inline-block; }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
         }
 
         .signup-link {
@@ -219,13 +167,14 @@
             text-decoration: underline;
         }
 
+        /* تنسيقات الحقوق */
         .copyright {
             margin-top: 30px;
             font-size: 14px;
             color: #888;
         }
 
-        /* رسالة الخطأ */
+        /* تنسيقات رسالة الخطأ */
         .error-message {
             background-color: #ffebee;
             color: #c62828;
@@ -235,7 +184,6 @@
             font-size: 14px;
             text-align: center;
             display: none;
-            width: 100%;
         }
 
         body.dark-mode .error-message {
@@ -245,38 +193,9 @@
 
         .error-message.show {
             display: block;
-            animation: shakeIn 0.3s ease;
         }
 
-        @keyframes shakeIn {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(5px); }
-            75% { transform: translateX(-5px); }
-        }
-
-        /* رسالة النجاح */
-        .success-message {
-            background-color: #e8f5e9;
-            color: #2e7d32;
-            padding: 10px;
-            border-radius: 5px;
-            margin-top: 10px;
-            font-size: 14px;
-            text-align: center;
-            display: none;
-            width: 100%;
-        }
-
-        body.dark-mode .success-message {
-            background-color: #1b3a1b;
-            color: #66bb6a;
-        }
-
-        .success-message.show {
-            display: block;
-        }
-
-        /* زر جوجل */
+        /* تنسيقات زر تسجيل الدخول باستخدام جوجل */
         .google-signin-button {
             background-color: #4285F4;
             color: white;
@@ -284,7 +203,6 @@
             padding: 12px 20px;
             border-radius: 8px;
             font-size: 16px;
-            font-family: 'Cairo', sans-serif;
             cursor: pointer;
             display: flex;
             align-items: center;
@@ -292,12 +210,11 @@
             gap: 10px;
             width: 100%;
             margin-top: 20px;
-            transition: background-color 0.5s ease, transform 0.2s ease;
+            transition: background-color 0.5s ease;
         }
 
         .google-signin-button:hover {
             background-color: #357ABD;
-            transform: scale(1.02);
         }
 
         .google-signin-button img {
@@ -305,6 +222,7 @@
             height: 20px;
         }
 
+        /* Animations */
         @keyframes fadeIn {
             from { opacity: 0; }
             to { opacity: 1; }
@@ -324,14 +242,13 @@
             border: none;
             cursor: pointer;
             font-size: 24px;
-            color: #FFD700;
-            opacity: 0;
+            color: #FFD700; /* لون الشمس */
+            opacity: 0; /* مخفي في البداية */
             transition: opacity 0.5s ease, color 0.5s ease;
-            z-index: 50;
         }
 
         body.dark-mode .theme-toggle {
-            color: #FFFFFF;
+            color: #FFFFFF; /* لون القمر */
         }
 
         .theme-toggle i {
@@ -360,358 +277,130 @@
             opacity: 1;
             transform: rotate(0deg);
         }
-
-        /* Toast إشعار */
-        .toast {
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%) translateY(-30px);
-            padding: 12px 24px;
-            border-radius: 10px;
-            font-family: 'Cairo', sans-serif;
-            font-size: 15px;
-            z-index: 9999;
-            opacity: 0;
-            transition: all 0.4s ease;
-            pointer-events: none;
-            max-width: 90%;
-            text-align: center;
-        }
-
-        .toast.show {
-            opacity: 1;
-            transform: translateX(-50%) translateY(0);
-        }
-
-        .toast.error {
-            background: rgba(211, 47, 47, 0.95);
-            color: white;
-        }
-
-        .toast.warning {
-            background: rgba(255, 160, 0, 0.95);
-            color: white;
-        }
-
-        .toast.info {
-            background: rgba(33, 150, 243, 0.95);
-            color: white;
-        }
-
-        /* رابط نسخ كلمة المرور المنسية */
-        .forgot-link {
-            margin-top: 8px;
-            width: 100%;
-            text-align: left;
-        }
-
-        .forgot-link a {
-            color: #888;
-            text-decoration: none;
-            font-size: 14px;
-            transition: color 0.3s;
-        }
-
-        .forgot-link a:hover {
-            color: #4CAF50;
-        }
-
-        /* إخفاء زر جوجل الافتراضي */
-        .g_id_signin {
-            display: none !important;
-        }
     </style>
 </head>
 <body>
     <!-- زر تبديل الوضع -->
     <button class="theme-toggle" id="themeToggle">
-        <i class="fas fa-sun"></i>
-        <i class="fas fa-moon"></i>
+        <i class="fas fa-sun"></i> <!-- أيقونة الشمس -->
+        <i class="fas fa-moon"></i> <!-- أيقونة القمر -->
     </button>
 
-    <!-- إشعار Toast -->
-    <div class="toast" id="toast"></div>
-
-    <!-- الشعار -->
+    <!-- الشعار في الأعلى -->
     <div class="logo">
         <img id="logoImage" src="/1000067588.png" alt="شعار التطبيق">
     </div>
 
-    <!-- حاوية تسجيل الدخول -->
+    <!-- حاوية تسجيل الدخول أسفل الشعار -->
     <div class="login-container">
         <h2>تسجيل الدخول</h2>
         <form class="login-form" id="loginForm">
             <div class="form-group">
                 <label for="email">البريد الإلكتروني</label>
-                <input type="email" id="email" name="email" placeholder="أدخل البريد الإلكتروني" required autocomplete="email">
+                <input type="email" id="email" name="email" placeholder="أدخل البريد الإلكتروني" required>
             </div>
             <div class="form-group">
                 <label for="password">كلمة المرور</label>
-                <div class="password-wrapper">
-                    <input type="password" id="password" name="password" placeholder="أدخل كلمة المرور" required autocomplete="current-password">
-                    <button type="button" id="togglePassword" aria-label="إظهار كلمة المرور">
-                        <i class="fas fa-eye"></i>
-                    </button>
-                </div>
-                <div class="forgot-link">
-                    <a href="#" id="forgotPasswordLink">نسيت كلمة المرور؟</a>
+                <div style="position: relative;">
+                    <input type="password" id="password" name="password" placeholder="أدخل كلمة المرور" required>
+                    <span id="togglePassword" style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); cursor: pointer;">👁️</span>
                 </div>
             </div>
-            <!-- رسائل -->
-            <div id="errorMessage" class="error-message"></div>
-            <div id="successMessage" class="success-message"></div>
-            <!-- زر الإرسال -->
-            <button type="submit" class="login-button" id="loginBtn">
-                <span class="btn-text">تسجيل الدخول</span>
-                <span class="spinner"></span>
-            </button>
+            <!-- رسالة الخطأ -->
+            <div id="errorMessage" class="error-message">
+                البريد الإلكتروني أو كلمة المرور غير صحيحة!
+            </div>
+            <button type="submit" class="login-button">تسجيل الدخول</button>
             <div class="signup-link">
                 ليس لديك حساب؟ <a href="/profile.html">إنشاء حساب</a>
             </div>
         </form>
 
-        <!-- زر تسجيل الدخول بجوجل -->
+        <!-- زر تسجيل الدخول باستخدام جوجل -->
         <button id="googleSignInButton" class="google-signin-button">
             <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="Google Logo">
             تسجيل الدخول باستخدام جوجل
         </button>
-        <!-- حاوية مخفية لزر جوجل الافتراضي -->
-        <div id="googleButtonContainer"></div>
 
         <div class="copyright">
-            &copy; 2024 تطبيق كين ماتش. جميع الحقوق محفوظة.
+            © 2024 تطبيق كين ماتش. جميع الحقوق محفوظة.
         </div>
     </div>
 
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js"></script>
     <!-- مكتبة Google Identity Services -->
     <script src="https://accounts.google.com/gsi/client" async defer></script>
 
     <script>
-        // === تهيئة Firebase بقاعدة البيانات الجديدة ===
-        const firebaseConfig = {
-            apiKey: "AIzaSyDaSsBM2GuRlrewSmYRqwA60ZMcJMIIftQ",
-            authDomain: "kainmatch.firebaseapp.com",
-            projectId: "kainmatch",
-            storageBucket: "kainmatch.firebasestorage.app",
-            messagingSenderId: "31352105772",
-            appId: "1:31352105772:web:16f4043cd987a77ada9a89",
-            measurementId: "G-M0PV4Z1PD6"
-        };
-
-        firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
-
-        // === عناصر الصفحة ===
+        // إدارة الوضع الليلي
         const themeToggle = document.getElementById('themeToggle');
+        const body = document.body;
         const logoImage = document.getElementById('logoImage');
-        const loginForm = document.getElementById('loginForm');
-        const loginBtn = document.getElementById('loginBtn');
-        const emailInput = document.getElementById('email');
-        const passwordInput = document.getElementById('password');
-        const errorMessage = document.getElementById('errorMessage');
-        const successMessage = document.getElementById('successMessage');
 
-        // === إدارة الوضع الليلي ===
+        // تبديل الوضع
         themeToggle.addEventListener('click', () => {
-            document.body.classList.toggle('dark-mode');
-            const isDarkMode = document.body.classList.contains('dark-mode');
-            logoImage.src = isDarkMode ? "/1000069661.png" : "/1000067588.png";
+            body.classList.toggle('dark-mode');
+            const isDarkMode = body.classList.contains('dark-mode');
+            logoImage.src = isDarkMode ? "/1000069661.png" : "/1000067588.png"; // تغيير الشعار
         });
 
         // إظهار زر التبديل بعد انتهاء حركة الشعار
         setTimeout(() => {
-            themeToggle.style.opacity = '1';
-        }, 4000);
+            themeToggle.style.opacity = '1'; // إظهار زر التبديل
+        }, 4000); // بعد 4 ثواني (وقت انتهاء حركة الشعار)
 
-        // === إظهار/إخفاء كلمة المرور ===
-        document.getElementById('togglePassword').addEventListener('click', function () {
-            const icon = this.querySelector('i');
+        // إظهار/إخفاء كلمة المرور
+        document.getElementById('togglePassword').addEventListener('click', function() {
+            const passwordInput = document.getElementById('password');
             if (passwordInput.type === 'password') {
                 passwordInput.type = 'text';
-                icon.classList.replace('fa-eye', 'fa-eye-slash');
+                this.textContent = '👁️'; // تغيير الأيقونة عند إظهار كلمة المرور
             } else {
                 passwordInput.type = 'password';
-                icon.classList.replace('fa-eye-slash', 'fa-eye');
+                this.textContent = '👁️'; // تغيير الأيقونة عند إخفاء كلمة المرور
             }
         });
 
-        // === إشعار Toast ===
-        function showToast(message, type = 'error') {
-            const toast = document.getElementById('toast');
-            toast.textContent = message;
-            toast.className = 'toast ' + type + ' show';
-            setTimeout(() => toast.classList.remove('show'), 4000);
-        }
-
-        // === إخفاء رسائل الخطأ والنجاح ===
-        function hideMessages() {
-            errorMessage.classList.remove('show');
-            successMessage.classList.remove('show');
-        }
-
-        // === تسجيل الدخول بالبريد وكلمة السر عبر Firebase ===
-        loginForm.addEventListener('submit', function (event) {
+        // إضافة حدث عند إرسال النموذج
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
             event.preventDefault();
-            hideMessages();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const userData = JSON.parse(localStorage.getItem('userData'));
 
-            const email = emailInput.value.trim();
-            const password = passwordInput.value;
-
-            if (!email || !password) {
-                errorMessage.textContent = 'يرجى إدخال البريد الإلكتروني وكلمة المرور';
+            if (userData && userData.email === email && userData.password === password) {
+                localStorage.setItem('loggedIn', true);
+                window.location.href = "index.html";
+            } else {
+                const errorMessage = document.getElementById('errorMessage');
                 errorMessage.classList.add('show');
-                return;
             }
-
-            // حالة التحميل
-            loginBtn.classList.add('loading');
-            loginBtn.disabled = true;
-
-            auth.signInWithEmailAndPassword(email, password)
-                .then((userCredential) => {
-                    const user = userCredential.user;
-
-                    // التحقق من تأكيد البريد الإلكتروني
-                    if (!user.emailVerified) {
-                        errorMessage.textContent = 'يرجى تأكيد بريدك الإلكتروني أولاً. تحقق من صندوق الوارد أو الرسائل غير المرغوب فيها.';
-                        errorMessage.classList.add('show');
-                        // إعادة إرسال بريد التأكيد
-                        user.sendEmailVerification().then(() => {
-                            showToast('تم إعادة إرسال بريد التأكيد', 'info');
-                        }).catch(() => {});
-                        auth.signOut();
-                        return;
-                    }
-
-                    // تسجيل الدخول ناجح
-                    localStorage.setItem('loggedIn', 'true');
-                    localStorage.setItem('userId', user.uid);
-                    successMessage.textContent = 'تم تسجيل الدخول بنجاح! جاري التحويل...';
-                    successMessage.classList.add('show');
-
-                    setTimeout(() => {
-                        window.location.href = "index.html";
-                    }, 1000);
-                })
-                .catch((error) => {
-                    let message = 'حدث خطأ غير متوقع';
-                    switch (error.code) {
-                        case 'auth/user-not-found':
-                            message = 'لا يوجد حساب مرتبط بهذا البريد الإلكتروني';
-                            break;
-                        case 'auth/wrong-password':
-                            message = 'كلمة المرور غير صحيحة';
-                            break;
-                        case 'auth/invalid-email':
-                            message = 'صيغة البريد الإلكتروني غير صحيحة';
-                            break;
-                        case 'auth/too-many-requests':
-                            message = 'تم تجاوز عدد المحاولات. يرجى المحاولة لاحقاً';
-                            break;
-                        case 'auth/user-disabled':
-                            message = 'تم تعطيل هذا الحساب. تواصل مع الدعم';
-                            break;
-                        case 'auth/network-request-failed':
-                            message = 'مشكلة في الاتصال بالإنترنت';
-                            break;
-                        case 'auth/invalid-credential':
-                            message = 'البريد الإلكتروني أو كلمة المرور غير صحيحة';
-                            break;
-                    }
-                    errorMessage.textContent = message;
-                    errorMessage.classList.add('show');
-                })
-                .finally(() => {
-                    loginBtn.classList.remove('loading');
-                    loginBtn.disabled = false;
-                });
         });
 
-        // === نسيت كلمة المرور ===
-        document.getElementById('forgotPasswordLink').addEventListener('click', function (e) {
-            e.preventDefault();
-            const email = emailInput.value.trim();
-            if (!email) {
-                showToast('أدخل بريدك الإلكتروني أولاً ثم اضغط نسيت كلمة المرور', 'warning');
-                emailInput.focus();
-                return;
-            }
-            auth.sendPasswordResetEmail(email)
-                .then(() => {
-                    showToast('تم إرسال رابط إعادة تعيين كلمة المرور إلى بريدك', 'info');
-                })
-                .catch((error) => {
-                    let message = 'حدث خطأ';
-                    if (error.code === 'auth/user-not-found') {
-                        message = 'لا يوجد حساب مرتبط بهذا البريد';
-                    } else if (error.code === 'auth/network-request-failed') {
-                        message = 'مشكلة في الاتصال بالإنترنت';
-                    }
-                    showToast(message, 'error');
-                });
-        });
-
-        // === تسجيل الدخول بجوجل ===
-        function handleGoogleCredentialResponse(response) {
+        // تهيئة تسجيل الدخول باستخدام جوجل
+        function handleCredentialResponse(response) {
             if (response.credential) {
-                // بناء بيانات الاعتماد من رمز جوجل
-                const credential = firebase.auth.GoogleAuthProvider.credential(response.credential);
-                auth.signInWithCredential(credential)
-                    .then((result) => {
-                        const user = result.user;
-                        localStorage.setItem('loggedIn', 'true');
-                        localStorage.setItem('userId', user.uid);
-                        localStorage.setItem('userData', JSON.stringify({
-                            name: user.displayName,
-                            email: user.email,
-                            picture: user.photoURL
-                        }));
-                        window.location.href = "index.html";
-                    })
-                    .catch((error) => {
-                        let message = 'فشل تسجيل الدخول بجوجل';
-                        if (error.code === 'auth/account-exists-with-different-credential') {
-                            message = 'يوجد حساب بنفس البريد الإلكتروني مسجل بطريقة أخرى';
-                        }
-                        showToast(message, 'error');
-                    });
+                const payload = JSON.parse(atob(response.credential.split('.')[1]));
+                const userData = {
+                    name: payload.name,
+                    email: payload.email,
+                    picture: payload.picture
+                };
+                localStorage.setItem('userData', JSON.stringify(userData));
+                localStorage.setItem('loggedIn', true);
+                window.location.href = "index.html";
             }
         }
 
         window.onload = function () {
-            // تهيئة Google Identity Services
             google.accounts.id.initialize({
                 client_id: '674743145268-cnflb7morj1am52k64g5coqk0hfbroro.apps.googleusercontent.com',
-                callback: handleGoogleCredentialResponse
+                callback: handleCredentialResponse
             });
 
-            //render الزر في حاوية مخفية (للحصول على الوظيفة دون عرض الزر الافتراضي)
             google.accounts.id.renderButton(
-                document.getElementById('googleButtonContainer'),
+                document.getElementById('googleSignInButton'),
                 { theme: 'outline', size: 'large' }
             );
-
-            // ربط الزر المخصص بنقرة جوجل
-            document.getElementById('googleSignInButton').addEventListener('click', function () {
-                google.accounts.id.prompt((notification) => {
-                    if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
-                        // إذا فشل النافذة المنبثقة، نحاول الطريقة الأخرى
-                        document.getElementById('googleButtonContainer').querySelector('div').click();
-                    }
-                });
-            });
-
-            // التحقق مما إذا كان المستخدم مسجلاً بالفعل
-            auth.onAuthStateChanged((user) => {
-                if (user && user.emailVerified) {
-                    localStorage.setItem('loggedIn', 'true');
-                    localStorage.setItem('userId', user.uid);
-                }
-            });
         };
     </script>
 </body>
